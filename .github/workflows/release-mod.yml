@@ -1,12 +1,14 @@
 name: Build and Release Mod
 
-on: workflow_dispatch
+on:
+  create:
 
 permissions:
   contents: write
 
 jobs:
   build-and-release:
+    if: github.event.ref_type == 'tag'
     runs-on: ubuntu-latest
 
     steps:
