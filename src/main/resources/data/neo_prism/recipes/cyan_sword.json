@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "neo_prism:cyan_shard"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    "#",
+    "#",
+    "S"
+  ],
+  "result": {
+    "item": "neo_prism:cyan_sword"
+  },
+  "show_notification": true
+}

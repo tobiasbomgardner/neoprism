@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_red_hay_bale": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "neo_prism:red_hay_bale"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "neo_prism:red_wheat_de"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_red_hay_bale",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "neo_prism:red_wheat_de"
+    ]
+  },
+  "sends_telemetry_event": false
+}

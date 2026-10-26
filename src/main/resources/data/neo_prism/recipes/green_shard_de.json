@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "neo_prism:green_gem"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "neo_prism:green_shard"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "neo_prism:purple_wheat"
+    }
+  },
+  "pattern": [
+    "###"
+  ],
+  "result": {
+    "item": "neo_prism:purple_bread"
+  },
+  "show_notification": true
+}

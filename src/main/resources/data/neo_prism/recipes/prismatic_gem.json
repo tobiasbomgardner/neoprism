@@ -1,0 +1,42 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "1": {
+      "item": "neo_prism:red_gem"
+    },
+    "2": {
+      "item": "neo_prism:orange_gem"
+    },
+    "3": {
+      "item": "neo_prism:yellow_gem"
+    },
+    "4": {
+      "item": "neo_prism:green_gem"
+    },
+    "5": {
+      "item": "neo_prism:blue_gem"
+    },
+    "6": {
+      "item": "neo_prism:cyan_gem"
+    },
+    "7": {
+      "item": "neo_prism:purple_gem"
+    },
+    "8": {
+      "item": "neo_prism:pink_gem"
+    },
+    "9": {
+      "item": "neo_prism:white_gem"
+    }
+  },
+  "pattern": [
+    "123",
+    "894",
+    "765"
+  ],
+  "result": {
+    "item": "neo_prism:prismatic_gem"
+  },
+  "show_notification": true
+}

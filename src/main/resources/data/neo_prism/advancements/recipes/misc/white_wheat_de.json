@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "neo_prism:white_wheat_de"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_white_hay_bale": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "neo_prism:white_hay_bale"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_white_hay_bale",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "neo_prism:white_wheat_de"
+    ]
+  },
+  "sends_telemetry_event": false
+}

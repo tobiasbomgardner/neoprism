@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "neo_prism:block/white_hay_bale_top",
+    "side": "neo_prism:block/white_hay_bale_side"
+  }
+}

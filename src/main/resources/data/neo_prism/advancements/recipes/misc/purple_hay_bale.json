@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_purple_wheat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "neo_prism:purple_wheat"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "neo_prism:purple_hay_bale"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_purple_wheat",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "neo_prism:purple_hay_bale"
+    ]
+  },
+  "sends_telemetry_event": false
+}

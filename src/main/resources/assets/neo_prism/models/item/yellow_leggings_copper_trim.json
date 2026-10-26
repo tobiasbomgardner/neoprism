@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "neo_prism:item/yellow_leggings",
+    "layer1": "minecraft:trims/itemsleggings_trim_copper"
+  }
+}

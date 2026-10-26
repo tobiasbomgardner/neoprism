@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "neo_prism:yellow_shard_de"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_yellow_gem": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "neo_prism:yellow_gem"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_yellow_gem",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "neo_prism:yellow_shard_de"
+    ]
+  },
+  "sends_telemetry_event": false
+}

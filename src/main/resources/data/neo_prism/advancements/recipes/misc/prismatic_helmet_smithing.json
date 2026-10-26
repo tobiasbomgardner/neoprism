@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_prismatic_gem": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "neo_prism:prismatic_gem"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:prismatic_helmet_smithing"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_prismatic_gem",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "neo_prism:prismatic_helmet_smithing"
+    ]
+  },
+  "sends_telemetry_event": false
+}

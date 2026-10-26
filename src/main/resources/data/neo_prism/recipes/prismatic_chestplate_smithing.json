@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "neo_prism:prismatic_gem"
+  },
+  "base": {
+    "item": "minecraft:netherite_chestplate"
+  },
+  "result": {
+    "item": "neo_prism:prismatic_chestplate"
+  },
+  "template": {
+    "item": "neo_prism:prismatic_upgrade_template"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "neo_prism:item/orange_chestplate",
+    "layer1": "minecraft:trims/itemschestplate_trim_diamond"
+  }
+}

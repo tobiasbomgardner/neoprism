@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "minecraft:wheat"
+    },
+    "1": {
+      "item": "minecraft:yellow_dye"
+    }
+  },
+  "pattern": [
+    "#1"
+  ],
+  "result": {
+    "item": "neo_prism:yellow_wheat"
+  },
+  "show_notification": true
+}

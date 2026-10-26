@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "neo_prism:yellow_shard"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    "###",
+    " S ",
+    " S "
+  ],
+  "result": {
+    "item": "neo_prism:yellow_pickaxe"
+  },
+  "show_notification": true
+}

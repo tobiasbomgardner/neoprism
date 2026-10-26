@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "neo_prism:block/cyan_ssd_ore"
+  }
+}
