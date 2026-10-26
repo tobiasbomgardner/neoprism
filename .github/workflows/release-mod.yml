@@ -1,9 +1,6 @@
 name: Build and Release Mod
 
-on:
-  push:
-    tags:
-      - "v*"
+on: workflow_dispatch
 
 permissions:
   contents: write
