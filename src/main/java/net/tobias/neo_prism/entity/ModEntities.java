@@ -13,7 +13,7 @@ public class ModEntities {
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES =
             DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, Neo_Prism.MOD_ID);
 
-    public static final RegistryObject<EntityType<? extends ShardLizardScoutEntity>> SHARD_LIZARD_SCOUT =
+    public static final RegistryObject<EntityType<ShardLizardScoutEntity>> SHARD_LIZARD_SCOUT =
             ENTITY_TYPES.register("shard_lizard_scout", () -> EntityType.Builder.of(ShardLizardScoutEntity::new, MobCategory.MONSTER)
                     .sized(2.0f, 1.0f).build("shard_lizard_scout"));
 
