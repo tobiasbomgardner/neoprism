@@ -207,6 +207,25 @@
 
   "block.neo_prism.prism_block": "Prism Block",
 
+  "block.neo_prism.repstone": "Repstone",
+  "block.neo_prism.repstone_stairs": "Repstone Stairs",
+  "block.neo_prism.repstone_slab": "Repstone Slab",
+  "block.neo_prism.repstone_button": "Repstone Button",
+  "block.neo_prism.repstone_pressure_plate": "Repstone Pressure Plate",
+  "block.neo_prism.repstone_wall": "Repstone Wall",
+  "block.neo_prism.repstone_door": "Repstone Door",
+  "block.neo_prism.repstone_trapdoor": "Repstone Trapdoor",
+  "block.neo_prism.cobbled_repstone": "Cobbled Repstone",
+  "block.neo_prism.cobbled_repstone_stairs": "Cobbled Repstone Stairs",
+  "block.neo_prism.cobbled_repstone_slab": "Cobbled Repstone Slab",
+  "block.neo_prism.cobbled_repstone_wall": "Cobbled Repstone Wall",
+  "block.neo_prism.repstone_bricks": "Repstone Bricks",
+  "block.neo_prism.repstone_bricks_stairs": "Repstone Brick Stairs",
+  "block.neo_prism.repstone_bricks_slab": "Repstone Brick Slab",
+  "block.neo_prism.repstone_bricks_wall": "Repstone Bricks Wall",
+  "block.neo_prism.cracked_repstone_bricks": "Cracked Repstone Bricks",
+  "block.neo_prism.chiseled_repstone_bricks": "Chiseled Repstone Bricks",
+
   "creativetabs.neo_prism_complete": "Neo Prism",
   "creativetabs.neo_prism_wip": "Neo Prism WIP",
 

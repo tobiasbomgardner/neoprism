@@ -8,12 +8,15 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.armortrim.TrimMaterial;
 import net.minecraft.world.item.armortrim.TrimMaterials;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.tobias.neo_prism.Neo_Prism;
+import net.tobias.neo_prism.block.ModBlocks;
 import net.tobias.neo_prism.item.ModItems;
 import net.tobias.neo_prism.item.ModSpawnEggs;
 
@@ -46,6 +49,23 @@ public class ModItemModelProvider extends ItemModelProvider {
         trimmedArmorItem(ModItems.ALL.get("ARMOR_ITEM_NAME"));
         /*Example use for simpleItem:
         simpleItem(ModItems.ALL.get("ITEM_NAME"));*/
+        simpleBlockItem(ModBlocks.ALL.get("repstone_door"));
+
+        buttonItem(ModBlocks.ALL.get("repstone_button"), ModBlocks.ALL.get("repstone"));
+
+        wallItem(ModBlocks.ALL.get("repstone_wall"), ModBlocks.ALL.get("repstone"));
+        wallItem(ModBlocks.ALL.get("cobbled_repstone_wall"), ModBlocks.ALL.get("cobbled_repstone"));
+        wallItem(ModBlocks.ALL.get("repstone_brick_wall"), ModBlocks.ALL.get("repstone_bricks"));
+
+        evenSimplerBlockItem(ModBlocks.ALL.get("repstone_stairs"));
+        evenSimplerBlockItem(ModBlocks.ALL.get("cobbled_repstone_stairs"));
+        evenSimplerBlockItem(ModBlocks.ALL.get("repstone_brick_stairs"));
+        evenSimplerBlockItem(ModBlocks.ALL.get("repstone_slab"));
+        evenSimplerBlockItem(ModBlocks.ALL.get("cobbled_repstone_slab"));
+        evenSimplerBlockItem(ModBlocks.ALL.get("repstone_brick_slab"));
+        evenSimplerBlockItem(ModBlocks.ALL.get("repstone_pressure_plate"));
+
+        trapdoorItem(ModBlocks.ALL.get("repstone_trapdoor"));
     }
 
     private void trimmedArmorItem(RegistryObject<Item> itemRegistryObject) {
@@ -91,5 +111,31 @@ public class ModItemModelProvider extends ItemModelProvider {
         return withExistingParent(item.getId().getPath(),
                 new ResourceLocation("item/generated")).texture("layer0",
                 new ResourceLocation(Neo_Prism.MOD_ID, "item/" + item.getId().getPath()));
+    }
+    public ItemModelBuilder simpleBlockItem(RegistryObject<Block> item) {
+        return withExistingParent(item.getId().getPath(),
+                new ResourceLocation("item/generated")).texture("layer0",
+                new ResourceLocation(Neo_Prism.MOD_ID, "item/" + item.getId().getPath()));
+    }
+    public void evenSimplerBlockItem(RegistryObject<Block> block) {
+        this.withExistingParent(ForgeRegistries.BLOCKS.getKey(block.get()).getPath(),
+                modLoc("block/" + ForgeRegistries.BLOCKS.getKey(block.get())));
+    }
+
+    public void trapdoorItem(RegistryObject<Block> block) {
+        this.withExistingParent(ForgeRegistries.BLOCKS.getKey(block.get()).getPath(),
+                modLoc("block/" + ForgeRegistries.BLOCKS.getKey(block.get()).getPath() + "_bottom"));
+    }
+    public void fenceItem(RegistryObject<Block> block, RegistryObject<Block> baseBlock) {
+        this.withExistingParent(ForgeRegistries.BLOCKS.getKey(block.get()).getPath(), mcLoc("block/fence_inventory"))
+                .texture("texture", new ResourceLocation(Neo_Prism.MOD_ID, "block/" + ForgeRegistries.BLOCKS.getKey(baseBlock.get()).getPath()));
+    }
+    public void buttonItem(RegistryObject<Block> block, RegistryObject<Block> baseBlock) {
+        this.withExistingParent(ForgeRegistries.BLOCKS.getKey(block.get()).getPath(), mcLoc("block/button_inventory"))
+                .texture("texture", new ResourceLocation(Neo_Prism.MOD_ID, "block/" + ForgeRegistries.BLOCKS.getKey(baseBlock.get()).getPath()));
+    }
+    public void wallItem(RegistryObject<Block> block, RegistryObject<Block> baseBlock) {
+        this.withExistingParent(ForgeRegistries.BLOCKS.getKey(block.get()).getPath(), mcLoc("block/wall_inventory"))
+                .texture("wall", new ResourceLocation(Neo_Prism.MOD_ID, "block/" + ForgeRegistries.BLOCKS.getKey(baseBlock.get()).getPath()));
     }
 }
