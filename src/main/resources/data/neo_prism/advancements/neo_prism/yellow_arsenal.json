@@ -1,0 +1,74 @@
+{
+  "display": {
+    "icon": {
+      "item": "neo_prism:yellow_sword"
+    },
+    "title": {"translate":"advancements.neo_prism.yellow_arsenal.title"},
+    "description": {"translate":"advancements.neo_prism.yellow_arsenal.desc"},
+    "announce_to_chat": true,
+    "frame": "challenge"
+  },
+  "parent": "neo_prism:neo_prism/craft_yellow_shard",
+  "criteria": {
+    "yellow_sword": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "neo_prism:yellow_sword"
+            ]
+          }
+        ]
+      }
+    },
+    "yellow_pickaxe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "neo_prism:yellow_pickaxe"
+            ]
+          }
+        ]
+      }
+    },
+    "yellow_axe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "neo_prism:yellow_axe"
+            ]
+          }
+        ]
+      }
+    },
+    "yellow_shovel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "neo_prism:yellow_shovel"
+            ]
+          }
+        ]
+      }
+    },
+    "yellow_hoe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "neo_prism:yellow_hoe"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

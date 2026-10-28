@@ -1,0 +1,74 @@
+{
+  "display": {
+    "icon": {
+      "item": "neo_prism:purple_sword"
+    },
+    "title": {"translate":"advancements.neo_prism.purple_arsenal.title"},
+    "description": {"translate":"advancements.neo_prism.purple_arsenal.desc"},
+    "announce_to_chat": true,
+    "frame": "challenge"
+  },
+  "parent": "neo_prism:neo_prism/craft_purple_shard",
+  "criteria": {
+    "purple_sword": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "neo_prism:purple_sword"
+            ]
+          }
+        ]
+      }
+    },
+    "purple_pickaxe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "neo_prism:purple_pickaxe"
+            ]
+          }
+        ]
+      }
+    },
+    "purple_axe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "neo_prism:purple_axe"
+            ]
+          }
+        ]
+      }
+    },
+    "purple_shovel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "neo_prism:purple_shovel"
+            ]
+          }
+        ]
+      }
+    },
+    "purple_hoe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "neo_prism:purple_hoe"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

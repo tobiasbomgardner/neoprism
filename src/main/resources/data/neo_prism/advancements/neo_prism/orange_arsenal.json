@@ -1,0 +1,74 @@
+{
+  "display": {
+    "icon": {
+      "item": "neo_prism:orange_sword"
+    },
+    "title": {"translate":"advancements.neo_prism.orange_arsenal.title"},
+    "description": {"translate":"advancements.neo_prism.orange_arsenal.desc"},
+    "announce_to_chat": true,
+    "frame": "challenge"
+  },
+  "parent": "neo_prism:neo_prism/craft_orange_shard",
+  "criteria": {
+    "orange_sword": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "neo_prism:orange_sword"
+            ]
+          }
+        ]
+      }
+    },
+    "orange_pickaxe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "neo_prism:orange_pickaxe"
+            ]
+          }
+        ]
+      }
+    },
+    "orange_axe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "neo_prism:orange_axe"
+            ]
+          }
+        ]
+      }
+    },
+    "orange_shovel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "neo_prism:orange_shovel"
+            ]
+          }
+        ]
+      }
+    },
+    "orange_hoe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "neo_prism:orange_hoe"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

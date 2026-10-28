@@ -1,0 +1,74 @@
+{
+  "display": {
+    "icon": {
+      "item": "neo_prism:pink_sword"
+    },
+    "title": {"translate":"advancements.neo_prism.pink_arsenal.title"},
+    "description": {"translate":"advancements.neo_prism.pink_arsenal.desc"},
+    "announce_to_chat": true,
+    "frame": "challenge"
+  },
+  "parent": "neo_prism:neo_prism/craft_pink_shard",
+  "criteria": {
+    "pink_sword": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "neo_prism:pink_sword"
+            ]
+          }
+        ]
+      }
+    },
+    "pink_pickaxe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "neo_prism:pink_pickaxe"
+            ]
+          }
+        ]
+      }
+    },
+    "pink_axe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "neo_prism:pink_axe"
+            ]
+          }
+        ]
+      }
+    },
+    "pink_shovel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "neo_prism:pink_shovel"
+            ]
+          }
+        ]
+      }
+    },
+    "pink_hoe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "neo_prism:pink_hoe"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

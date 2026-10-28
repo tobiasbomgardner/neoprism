@@ -1,0 +1,74 @@
+{
+  "display": {
+    "icon": {
+      "item": "neo_prism:green_sword"
+    },
+    "title": {"translate":"advancements.neo_prism.green_arsenal.title"},
+    "description": {"translate":"advancements.neo_prism.green_arsenal.desc"},
+    "announce_to_chat": true,
+    "frame": "challenge"
+  },
+  "parent": "neo_prism:neo_prism/craft_green_shard",
+  "criteria": {
+    "green_sword": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "neo_prism:green_sword"
+            ]
+          }
+        ]
+      }
+    },
+    "green_pickaxe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "neo_prism:green_pickaxe"
+            ]
+          }
+        ]
+      }
+    },
+    "green_axe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "neo_prism:green_axe"
+            ]
+          }
+        ]
+      }
+    },
+    "green_shovel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "neo_prism:green_shovel"
+            ]
+          }
+        ]
+      }
+    },
+    "green_hoe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "neo_prism:green_hoe"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

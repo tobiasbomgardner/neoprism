@@ -1,0 +1,17 @@
+{
+  "display": {
+    "icon": {
+      "item": "neo_prism:prismatic_gem"
+    },
+    "title": {"translate":"advancements.neo_prism.root.title"},
+    "description": {"translate":"advancements.neo_prism.root.desc"},
+    "announce_to_chat": true,
+    "background": "neo_prism:textures/block/purple_gem_block.png",
+    "frame": "task"
+  },
+  "criteria": {
+    "tick": {
+      "trigger": "minecraft:tick"
+    }
+  }
+}

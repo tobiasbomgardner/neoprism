@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "neo_prism:red_shard"
+    },
+    "title": {"translate":"advancements.neo_prism.craft_red_shard.title"},
+    "description": {"translate":"advancements.neo_prism.craft_red_shard.desc"},
+    "announce_to_chat": true,
+    "frame": "task"
+  },
+  "parent": "neo_prism:neo_prism/mine_red_ore",
+  "criteria": {
+    "has_red_shard": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "neo_prism:red_shard"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

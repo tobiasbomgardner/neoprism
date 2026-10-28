@@ -1,0 +1,74 @@
+{
+  "display": {
+    "icon": {
+      "item": "neo_prism:cyan_sword"
+    },
+    "title": {"translate":"advancements.neo_prism.cyan_arsenal.title"},
+    "description": {"translate":"advancements.neo_prism.cyan_arsenal.desc"},
+    "announce_to_chat": true,
+    "frame": "challenge"
+  },
+  "parent": "neo_prism:neo_prism/craft_cyan_shard",
+  "criteria": {
+    "cyan_sword": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "neo_prism:cyan_sword"
+            ]
+          }
+        ]
+      }
+    },
+    "cyan_pickaxe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "neo_prism:cyan_pickaxe"
+            ]
+          }
+        ]
+      }
+    },
+    "cyan_axe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "neo_prism:cyan_axe"
+            ]
+          }
+        ]
+      }
+    },
+    "cyan_shovel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "neo_prism:cyan_shovel"
+            ]
+          }
+        ]
+      }
+    },
+    "cyan_hoe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "neo_prism:cyan_hoe"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

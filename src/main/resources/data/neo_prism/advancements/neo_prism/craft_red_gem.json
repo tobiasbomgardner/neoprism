@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "neo_prism:red_gem"
+    },
+    "title": {"translate":"advancements.neo_prism.craft_red_gem.title"},
+    "description": {"translate":"advancements.neo_prism.craft_red_gem.desc"},
+    "announce_to_chat": true,
+    "frame": "task"
+  },
+  "parent": "neo_prism:neo_prism/craft_red_shard",
+  "criteria": {
+    "has_red_gem": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "neo_prism:red_gem"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

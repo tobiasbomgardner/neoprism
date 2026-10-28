@@ -1,0 +1,74 @@
+{
+  "display": {
+    "icon": {
+      "item": "neo_prism:blue_sword"
+    },
+    "title": {"translate":"advancements.neo_prism.blue_arsenal.title"},
+    "description": {"translate":"advancements.neo_prism.blue_arsenal.desc"},
+    "announce_to_chat": true,
+    "frame": "challenge"
+  },
+  "parent": "neo_prism:neo_prism/craft_blue_shard",
+  "criteria": {
+    "blue_sword": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "neo_prism:blue_sword"
+            ]
+          }
+        ]
+      }
+    },
+    "blue_pickaxe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "neo_prism:blue_pickaxe"
+            ]
+          }
+        ]
+      }
+    },
+    "blue_axe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "neo_prism:blue_axe"
+            ]
+          }
+        ]
+      }
+    },
+    "blue_shovel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "neo_prism:blue_shovel"
+            ]
+          }
+        ]
+      }
+    },
+    "blue_hoe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "neo_prism:blue_hoe"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

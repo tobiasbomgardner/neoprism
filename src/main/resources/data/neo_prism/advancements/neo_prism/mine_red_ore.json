@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "neo_prism:red_shattered_shard_ore"
+    },
+    "title": {"translate":"advancements.neo_prism.mine_red_ore.title"},
+    "description": {"translate":"advancements.neo_prism.mine_red_ore.desc"},
+    "announce_to_chat": true,
+    "frame": "task"
+  },
+  "parent": "neo_prism:neo_prism/root",
+  "criteria": {
+    "has_red_shattered_shard": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "neo_prism:red_shattered_shard"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

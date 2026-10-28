@@ -1,0 +1,74 @@
+{
+  "display": {
+    "icon": {
+      "item": "neo_prism:red_sword"
+    },
+    "title": {"translate":"advancements.neo_prism.red_arsenal.title"},
+    "description": {"translate":"advancements.neo_prism.red_arsenal.desc"},
+    "announce_to_chat": true,
+    "frame": "challenge"
+  },
+  "parent": "neo_prism:neo_prism/craft_red_shard",
+  "criteria": {
+    "red_sword": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "neo_prism:red_sword"
+            ]
+          }
+        ]
+      }
+    },
+    "red_pickaxe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "neo_prism:red_pickaxe"
+            ]
+          }
+        ]
+      }
+    },
+    "red_axe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "neo_prism:red_axe"
+            ]
+          }
+        ]
+      }
+    },
+    "red_shovel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "neo_prism:red_shovel"
+            ]
+          }
+        ]
+      }
+    },
+    "red_hoe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "neo_prism:red_hoe"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

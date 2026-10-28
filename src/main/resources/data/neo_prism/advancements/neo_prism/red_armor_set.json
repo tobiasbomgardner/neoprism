@@ -1,0 +1,94 @@
+{
+  "display": {
+    "icon": {
+      "item": "neo_prism:red_chestplate"
+    },
+    "title": {"translate":"advancements.neo_prism.red_armor_set.title"},
+    "description": {"translate":"advancements.neo_prism.red_armor_set.desc"},
+    "announce_to_chat": true,
+    "frame": "challenge"
+  },
+  "parent": "neo_prism:neo_prism/red_arsenal",
+  "criteria": {
+    "red_helmet": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "equipment": {
+                "head": {
+                  "items": [
+                    "neo_prism:red_helmet"
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "red_chestplate": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "equipment": {
+                "chest": {
+                  "items": [
+                    "neo_prism:red_chestplate"
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "red_leggings": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "equipment": {
+                "legs": {
+                  "items": [
+                    "neo_prism:red_leggings"
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "red_boots": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "equipment": {
+                "feet": {
+                  "items": [
+                    "neo_prism:red_boots"
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}
