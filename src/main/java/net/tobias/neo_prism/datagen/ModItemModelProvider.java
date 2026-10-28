@@ -118,8 +118,9 @@ public class ModItemModelProvider extends ItemModelProvider {
                 new ResourceLocation(Neo_Prism.MOD_ID, "item/" + item.getId().getPath()));
     }
     public void evenSimplerBlockItem(RegistryObject<Block> block) {
+        String location = ForgeRegistries.BLOCKS.getKey(block.get()).toString().split(":")[1];
         this.withExistingParent(ForgeRegistries.BLOCKS.getKey(block.get()).getPath(),
-                modLoc("block/" + ForgeRegistries.BLOCKS.getKey(block.get())));
+                modLoc("block/" + location));
     }
 
     public void trapdoorItem(RegistryObject<Block> block) {
