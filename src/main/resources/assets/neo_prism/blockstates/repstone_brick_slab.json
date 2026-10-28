@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "neo_prism:block/repstone_brick_slab"
+    },
+    "type=double": {
+      "model": "neo_prism:block/repstone_bricks"
+    },
+    "type=top": {
+      "model": "neo_prism:block/repstone_brick_slab_top"
+    }
+  }
+}

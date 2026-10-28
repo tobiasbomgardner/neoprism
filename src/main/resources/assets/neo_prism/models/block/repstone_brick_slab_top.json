@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab_top",
+  "textures": {
+    "bottom": "neo_prism:block/repstone",
+    "side": "neo_prism:block/repstone",
+    "top": "neo_prism:block/repstone"
+  }
+}

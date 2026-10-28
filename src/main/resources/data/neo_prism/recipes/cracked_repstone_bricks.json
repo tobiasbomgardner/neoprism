@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "category": "blocks",
+  "cookingtime": 300,
+  "experience": 0.2,
+  "ingredient": {
+    "item": "neo_prism:repstone_bricks"
+  },
+  "result": "neo_prism:cracked_repstone_bricks"
+}

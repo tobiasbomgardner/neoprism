@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "powered=false": {
+      "model": "neo_prism:block/repstone_pressure_plate"
+    },
+    "powered=true": {
+      "model": "neo_prism:block/repstone_pressure_plate_down"
+    }
+  }
+}

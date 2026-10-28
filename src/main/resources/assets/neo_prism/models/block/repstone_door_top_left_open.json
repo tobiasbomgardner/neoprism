@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/door_top_left_open",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "bottom": "neo_prism:block/repstone_door_bottem",
+    "top": "neo_prism:block/repstone_door_top"
+  }
+}

@@ -26,6 +26,23 @@
     "neo_prism:pink_shattered_shard_ore",
     "neo_prism:pink_shattered_shard_deepslate_ore",
     "neo_prism:white_shattered_shard_ore",
-    "neo_prism:white_shattered_shard_deepslate_ore"
+    "neo_prism:white_shattered_shard_deepslate_ore",
+    "neo_prism:repstone",
+    "neo_prism:repstone_stairs",
+    "neo_prism:repstone_slab",
+    "neo_prism:repstone_wall",
+    "neo_prism:repstone_pressure_plate",
+    "neo_prism:repstone_door",
+    "neo_prism:repstone_trapdoor",
+    "neo_prism:cobbled_repstone",
+    "neo_prism:cobbled_repstone_stairs",
+    "neo_prism:cobbled_repstone_slab",
+    "neo_prism:cobbled_repstone_wall",
+    "neo_prism:repstone_bricks",
+    "neo_prism:cracked_repstone_bricks",
+    "neo_prism:chiseled_repstone_bricks",
+    "neo_prism:repstone_brick_stairs",
+    "neo_prism:repstone_brick_slab",
+    "neo_prism:repstone_brick_wall"
   ]
 }

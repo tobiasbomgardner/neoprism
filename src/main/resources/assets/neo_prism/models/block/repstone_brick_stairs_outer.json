@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "neo_prism:block/repstone_bricks",
+    "side": "neo_prism:block/repstone_bricks",
+    "top": "neo_prism:block/repstone_bricks"
+  }
+}
