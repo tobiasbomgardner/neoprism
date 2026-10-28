@@ -23,34 +23,5 @@ public class ModLootTableProvider extends BlockLootSubProvider {
     }
 
     @Override
-    protected void generate() {
-        this.dropSelf(ModBlocks.ALL.get("repstone_stairs").get());
-        this.dropSelf(ModBlocks.ALL.get("repstone_button").get());
-        this.dropSelf(ModBlocks.ALL.get("repstone_pressure_plate").get());
-        this.dropSelf(ModBlocks.ALL.get("repstone_trapdoor").get());
-        this.dropSelf(ModBlocks.ALL.get("repstone_wall").get());
-
-        this.dropSelf(ModBlocks.ALL.get("cobbled_repstone").get());
-        this.dropSelf(ModBlocks.ALL.get("cobbled_repstone_stairs").get());
-        this.dropSelf(ModBlocks.ALL.get("cobbled_repstone_button").get());
-        this.dropSelf(ModBlocks.ALL.get("cobbled_repstone_pressure_plate").get());
-        this.dropSelf(ModBlocks.ALL.get("cobbled_repstone_trapdoor").get());
-        this.dropSelf(ModBlocks.ALL.get("cobbled_repstone_wall").get());
-
-        this.dropSelf(ModBlocks.ALL.get("repstone_bricks").get());
-        this.dropSelf(ModBlocks.ALL.get("repstone_brick_stairs").get());
-        this.dropSelf(ModBlocks.ALL.get("repstone_brick_wall").get());
-
-        this.dropSelf(ModBlocks.ALL.get("cracked_repstone_bricks").get());
-        this.dropSelf(ModBlocks.ALL.get("chiseled_repstone_bricks").get());
-
-        this.add(ModBlocks.ALL.get("repstone_slab").get(),
-                block -> createSlabItemTable(ModBlocks.ALL.get("repstone_slab").get()));
-        this.add(ModBlocks.ALL.get("cobbled_repstone_slab").get(),
-                block -> createSlabItemTable(ModBlocks.ALL.get("cobbled_repstone_slab").get()));
-        this.add(ModBlocks.ALL.get("repstone_brick_slab").get(),
-                block -> createSlabItemTable(ModBlocks.ALL.get("repstone_brick_slab").get()));
-
-        this.add(ModBlocks.ALL.get("repstone_door").get(), block -> createDoorTable(ModBlocks.ALL.get("repstone_door").get()));
-    }
+    protected void generate() {}
 }
