@@ -109,6 +109,7 @@ public class ModBlocks {
         } else {
             obj = registerBlock(id, () -> new RotatedPillarBlock(BlockBehaviour.Properties.copy(baseBlock.get()).requiresCorrectToolForDrops()));
         }
+        ALL.put(id, obj);
         SORTED_ORDER_COMPLETE.add(id);
     }
     private static void registerRotatedPillarBlockWIP(String id, Supplier<? extends Block> baseBlock, boolean isBurnable) {
