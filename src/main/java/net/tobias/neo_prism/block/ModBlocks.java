@@ -29,8 +29,8 @@ public class ModBlocks {
     private static final List<String> PARTS_WIP = null;
     private static final List<String> NON_COLOR_COMPLETE = null;
     private static final List<String> NON_COLOR_WIP = List.of(
-            "repstone_stairs","repstone_slab","repstone_button","repstone_pressure_plate",
-            "repstone_wall","repstone_door","repstone_trapdoor","cobbled_repstone","cobbled_repstone_stairs",
+            "repstone_stairs","repstone_slab","repstone_wall","repstone_pressure_plate",
+            "repstone_button","repstone_door","repstone_trapdoor","cobbled_repstone","cobbled_repstone_stairs",
             "cobbled_repstone_slab","cobbled_repstone_wall","repstone_bricks","repstone_brick_stairs","repstone_brick_slab",
             "repstone_brick_wall","chiseled_repstone_bricks","cracked_repstone_bricks"
     );
@@ -82,125 +82,117 @@ public class ModBlocks {
     public static final List<String> SORTED_ORDER_COMPLETE = new ArrayList<>();
     public static final List<String> SORTED_ORDER_WIP = new ArrayList<>();
 
-    private static RegistryObject<Block> registerSans_XP_COMPLETE(String id, Supplier<? extends Block> baseBlock) {
+    private static void registerSans_XP_COMPLETE(String id, Supplier<? extends Block> baseBlock) {
         RegistryObject<Block> obj = registerBlock(id, () -> new Block(BlockBehaviour.Properties.copy(baseBlock.get()).requiresCorrectToolForDrops()));
         ALL.put(id, obj);
         SORTED_ORDER_COMPLETE.add(id);
-        return obj;
     }
-    private static RegistryObject<Block> registerSans_XP_WIP(String id, Supplier<? extends Block> baseBlock) {
+    private static void registerSans_XP_WIP(String id, Supplier<? extends Block> baseBlock) {
         RegistryObject<Block> obj = registerBlock(id, () -> new Block(BlockBehaviour.Properties.copy(baseBlock.get()).requiresCorrectToolForDrops()));
         ALL.put(id, obj);
         SORTED_ORDER_WIP.add(id);
-        return obj;
     }
-    private static RegistryObject<Block> registerPro_XP_COMPLETE(String id, Supplier<? extends Block> baseBlock, int minInclusive, int maxInclusive) {
+    private static void registerPro_XP_COMPLETE(String id, Supplier<? extends Block> baseBlock, int minInclusive, int maxInclusive) {
         RegistryObject<Block> obj = registerBlock(id, () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(baseBlock.get()).requiresCorrectToolForDrops(), UniformInt.of(minInclusive, maxInclusive)));
         ALL.put(id, obj);
         SORTED_ORDER_COMPLETE.add(id);
-        return obj;
     }
-    private static RegistryObject<Block> registerPro_XP_WIP(String id, Supplier<? extends Block> baseBlock, int minInclusive, int maxInclusive) {
+    private static void registerPro_XP_WIP(String id, Supplier<? extends Block> baseBlock, int minInclusive, int maxInclusive) {
         RegistryObject<Block> obj = registerBlock(id, () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(baseBlock.get()).requiresCorrectToolForDrops(), UniformInt.of(minInclusive, maxInclusive)));
         ALL.put(id, obj);
         SORTED_ORDER_WIP.add(id);
-        return obj;
     }
-    private static RegistryObject<Block> registerStairsCOMPLETE(String id, Supplier<? extends Block> baseBlock, Supplier<? extends Block> ingredientBlock) {
+    private static void registerRotatedPillarBlockCOMPLETE(String id, Supplier<? extends Block> baseBlock) {
+        RegistryObject<Block> obj = registerBlock(id, () -> new RotatedPillarBlock(BlockBehaviour.Properties.copy(baseBlock.get()).requiresCorrectToolForDrops()));
+        ALL.put(id, obj);
+        SORTED_ORDER_COMPLETE.add(id);
+    }
+    private static void registerRotatedPillarBlockWIP(String id, Supplier<? extends Block> baseBlock) {
+        RegistryObject<Block> obj = registerBlock(id, () -> new RotatedPillarBlock(BlockBehaviour.Properties.copy(baseBlock.get()).requiresCorrectToolForDrops()));
+        ALL.put(id, obj);
+        SORTED_ORDER_WIP.add(id);
+    }
+    private static void registerStairsCOMPLETE(String id, Supplier<? extends Block> baseBlock, Supplier<? extends Block> ingredientBlock) {
         RegistryObject<Block> obj = registerBlock(id, () -> new StairBlock(() -> ingredientBlock.get().defaultBlockState(),
                 BlockBehaviour.Properties.copy(baseBlock.get()).requiresCorrectToolForDrops()));
         ALL.put(id, obj);
         SORTED_ORDER_COMPLETE.add(id);
-        return obj;
     }
-    private static RegistryObject<Block> registerStairsWIP(String id, Supplier<? extends Block> baseBlock, Supplier<? extends Block> ingredientBlock) {
+    private static void registerStairsWIP(String id, Supplier<? extends Block> baseBlock, Supplier<? extends Block> ingredientBlock) {
         RegistryObject<Block> obj = registerBlock(id, () -> new StairBlock(() -> ingredientBlock.get().defaultBlockState(),
                 BlockBehaviour.Properties.copy(baseBlock.get()).requiresCorrectToolForDrops()));
         ALL.put(id, obj);
         SORTED_ORDER_WIP.add(id);
-        return obj;
     }
-    private static RegistryObject<Block> registerSlabCOMPLETE(String id, Supplier<? extends Block> baseBlock) {
+    private static void registerSlabCOMPLETE(String id, Supplier<? extends Block> baseBlock) {
         RegistryObject<Block> obj = registerBlock(id, () -> new SlabBlock(BlockBehaviour.Properties.copy(baseBlock.get()).requiresCorrectToolForDrops()));
         ALL.put(id, obj);
         SORTED_ORDER_COMPLETE.add(id);
-        return obj;
     }
-    private static RegistryObject<Block> registerSlabWIP(String id, Supplier<? extends Block> baseBlock) {
+    private static void registerSlabWIP(String id, Supplier<? extends Block> baseBlock) {
         RegistryObject<Block> obj = registerBlock(id, () -> new SlabBlock(BlockBehaviour.Properties.copy(baseBlock.get()).requiresCorrectToolForDrops()));
         ALL.put(id, obj);
         SORTED_ORDER_WIP.add(id);
-        return obj;
     }
-    private static RegistryObject<Block> registerButtonCOMPLETE(String id, Supplier<? extends Block> baseBlock, BlockSetType blockSetType, int ticksToStayPressed, boolean arrowsCanPress) {
+    private static void registerButtonCOMPLETE(String id, Supplier<? extends Block> baseBlock, BlockSetType blockSetType, int ticksToStayPressed, boolean arrowsCanPress) {
         RegistryObject<Block> obj = registerBlock(id, () -> new ButtonBlock(
                 BlockBehaviour.Properties.copy(baseBlock.get()).requiresCorrectToolForDrops(), blockSetType,
                 ticksToStayPressed, arrowsCanPress));
         ALL.put(id, obj);
         SORTED_ORDER_COMPLETE.add(id);
-        return obj;
     }
-    private static RegistryObject<Block> registerButtonWIP(String id, Supplier<? extends Block> baseBlock, BlockSetType blockSetType, int ticksToStayPressed, boolean arrowsCanPress) {
+    private static void registerButtonWIP(String id, Supplier<? extends Block> baseBlock, BlockSetType blockSetType, int ticksToStayPressed, boolean arrowsCanPress) {
         RegistryObject<Block> obj = registerBlock(id, () -> new ButtonBlock(
                 BlockBehaviour.Properties.copy(baseBlock.get()).requiresCorrectToolForDrops(), blockSetType,
                 ticksToStayPressed, arrowsCanPress));
         ALL.put(id, obj);
         SORTED_ORDER_WIP.add(id);
-        return obj;
     }
-    private static RegistryObject<Block> registerPressurePlateCOMPLETE(String id, PressurePlateBlock.Sensitivity sensitivity, Supplier<? extends Block> baseBlock, BlockSetType blockSetType) {
+    private static void registerPressurePlateCOMPLETE(String id, PressurePlateBlock.Sensitivity sensitivity, Supplier<? extends Block> baseBlock, BlockSetType blockSetType) {
         RegistryObject<Block> obj = registerBlock(id, () -> new PressurePlateBlock(sensitivity,
                 BlockBehaviour.Properties.copy(baseBlock.get()).requiresCorrectToolForDrops(), blockSetType));
         ALL.put(id, obj);
         SORTED_ORDER_COMPLETE.add(id);
-        return obj;
     }
-    private static RegistryObject<Block> registerPressurePlateWIP(String id, PressurePlateBlock.Sensitivity sensitivity, Supplier<? extends Block> baseBlock, BlockSetType blockSetType) {
+    private static void registerPressurePlateWIP(String id, PressurePlateBlock.Sensitivity sensitivity, Supplier<? extends Block> baseBlock, BlockSetType blockSetType) {
         RegistryObject<Block> obj = registerBlock(id, () -> new PressurePlateBlock(sensitivity,
                 BlockBehaviour.Properties.copy(baseBlock.get()).requiresCorrectToolForDrops(), blockSetType));
         ALL.put(id, obj);
         SORTED_ORDER_WIP.add(id);
-        return obj;
     }
-    private static RegistryObject<Block> registerWallCOMPLETE(String id, Supplier<? extends Block> baseBlock) {
+    private static void registerWallCOMPLETE(String id, Supplier<? extends Block> baseBlock) {
         RegistryObject<Block> obj = registerBlock(id, () -> new WallBlock(BlockBehaviour.Properties.copy(baseBlock.get()).requiresCorrectToolForDrops()));
         ALL.put(id, obj);
         SORTED_ORDER_COMPLETE.add(id);
-        return obj;
     }
-    private static RegistryObject<Block> registerWallWIP(String id, Supplier<? extends Block> baseBlock) {
+    private static void registerWallWIP(String id, Supplier<? extends Block> baseBlock) {
         RegistryObject<Block> obj = registerBlock(id, () -> new WallBlock(BlockBehaviour.Properties.copy(baseBlock.get()).requiresCorrectToolForDrops()));
         ALL.put(id, obj);
         SORTED_ORDER_WIP.add(id);
-        return obj;
     }
-    private static RegistryObject<Block> registerDoorCOMPLETE(String id, Supplier<? extends Block> baseBlock, BlockSetType blockSetType) {
+    private static void registerDoorCOMPLETE(String id, Supplier<? extends Block> baseBlock, BlockSetType blockSetType) {
         RegistryObject<Block> obj = registerBlock(id, () -> new DoorBlock(BlockBehaviour.Properties.copy(baseBlock.get()).requiresCorrectToolForDrops().noOcclusion(),
                 blockSetType));
         ALL.put(id, obj);
         SORTED_ORDER_COMPLETE.add(id);
-        return obj;
     }
-    private static RegistryObject<Block> registerDoorWIP(String id, Supplier<? extends Block> baseBlock, BlockSetType blockSetType) {
+    private static void registerDoorWIP(String id, Supplier<? extends Block> baseBlock, BlockSetType blockSetType) {
         RegistryObject<Block> obj = registerBlock(id, () -> new DoorBlock(BlockBehaviour.Properties.copy(baseBlock.get()).requiresCorrectToolForDrops().noOcclusion(),
                 blockSetType));
         ALL.put(id, obj);
         SORTED_ORDER_WIP.add(id);
-        return obj;
     }
-    private static RegistryObject<Block> registerTrapDoorCOMPLETE(String id, Supplier<? extends Block> baseBlock, BlockSetType blockSetType) {
+    private static void registerTrapDoorCOMPLETE(String id, Supplier<? extends Block> baseBlock, BlockSetType blockSetType) {
         RegistryObject<Block> obj = registerBlock(id, () -> new TrapDoorBlock(BlockBehaviour.Properties.copy(baseBlock.get()).requiresCorrectToolForDrops().noOcclusion(),
                 blockSetType));
         ALL.put(id, obj);
         SORTED_ORDER_COMPLETE.add(id);
-        return obj;
     }
-    private static RegistryObject<Block> registerTrapDoorWIP(String id, Supplier<? extends Block> baseBlock, BlockSetType blockSetType) {
+    private static void registerTrapDoorWIP(String id, Supplier<? extends Block> baseBlock, BlockSetType blockSetType) {
         RegistryObject<Block> obj = registerBlock(id, () -> new TrapDoorBlock(BlockBehaviour.Properties.copy(baseBlock.get()).requiresCorrectToolForDrops().noOcclusion(),
                 blockSetType));
         ALL.put(id, obj);
         SORTED_ORDER_WIP.add(id);
-        return obj;
     }
 
     static {
@@ -222,7 +214,11 @@ public class ModBlocks {
                         int xpMax = Integer.parseInt(splitValues[1].trim());
                         registerPro_XP_COMPLETE(prefix + "_" + part, () -> baseBlock, xpMin, xpMax);
                     } else {
-                        registerSans_XP_COMPLETE(prefix + "_" + part, () -> baseBlock);
+                        if (!part.equals("hay_bale")) {
+                            registerSans_XP_COMPLETE(prefix + "_" + part, () -> baseBlock);
+                        } else {
+                            registerRotatedPillarBlockCOMPLETE(prefix + "_" + part, () -> baseBlock);
+                        }
                     }
                 }
             }
@@ -244,7 +240,11 @@ public class ModBlocks {
                         int xpMax = Integer.parseInt(splitValues[1].trim());
                         registerPro_XP_WIP(prefix + "_" + part, () -> baseBlock, xpMin, xpMax);
                     } else {
-                        registerSans_XP_WIP(prefix + "_" + part, () -> baseBlock);
+                        if (!part.equals("hay_bale")) {
+                            registerSans_XP_WIP(prefix + "_" + part, () -> baseBlock);
+                        } else {
+                            registerRotatedPillarBlockWIP(prefix + "_" + part, () -> baseBlock);
+                        }
                     }
                 }
             }
