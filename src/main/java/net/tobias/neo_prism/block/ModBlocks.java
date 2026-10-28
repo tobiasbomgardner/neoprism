@@ -30,8 +30,8 @@ public class ModBlocks {
     private static final List<String> NON_COLOR_COMPLETE = null;
     private static final List<String> NON_COLOR_WIP = List.of(
             "repstone_stairs","repstone_slab","repstone_button","repstone_pressure_plate",
-            "repstone_wall","repstone_door","repstone_trapdoor","cobbled_repstone_stairs",
-            "cobbled_repstone_slab","cobbled_repstone_wall","repstone_brick_stairs","repstone_brick_slab",
+            "repstone_wall","repstone_door","repstone_trapdoor","cobbled_repstone","cobbled_repstone_stairs",
+            "cobbled_repstone_slab","cobbled_repstone_wall","repstone_bricks","repstone_brick_stairs","repstone_brick_slab",
             "repstone_brick_wall","chiseled_repstone_bricks","cracked_repstone_bricks"
     );
     private static final Map<String, Block> BLOCK_MAP = new HashMap<>();
@@ -253,10 +253,9 @@ public class ModBlocks {
 
         RegistryObject<Block> REPSTONE = registerBlock("repstone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
         ALL.put("repstone", REPSTONE);
+        SORTED_ORDER_WIP.add("repstone");
         RegistryObject<Block> COBBLED_REPSTONE = registerBlock("cobbled_repstone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBBLESTONE)));
-        ALL.put("cobbled_repstone", COBBLED_REPSTONE);
         RegistryObject<Block> REPSTONE_BRICKS = registerBlock("repstone_bricks", () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE_BRICKS)));
-        ALL.put("repstone_bricks", REPSTONE_BRICKS);
         if (NON_COLOR_COMPLETE != null) {
             for (String id : NON_COLOR_COMPLETE) {
                 Block baseBlock = BLOCK_MAP.get(id);
@@ -269,6 +268,16 @@ public class ModBlocks {
                 } else {
                     boolean isFullBlock = true;
                     if (parts.length == 2) {
+                        if (id.equals("cobbled_repstone")) {
+                            ALL.put(id, COBBLED_REPSTONE);
+                            SORTED_ORDER_WIP.add(id);
+                            isFullBlock = false;
+                        }
+                        if (id.equals("repstone_bricks")) {
+                            ALL.put(id, REPSTONE_BRICKS);
+                            SORTED_ORDER_WIP.add(id);
+                            isFullBlock = false;
+                        }
                         if (parts[1].equals("slab")) {
                             registerSlabCOMPLETE(id, () -> baseBlock);
                             isFullBlock = false;
@@ -352,6 +361,16 @@ public class ModBlocks {
                 } else {
                     boolean isFullBlock = true;
                     if (parts.length == 2) {
+                        if (id.equals("cobbled_repstone")) {
+                            ALL.put(id, COBBLED_REPSTONE);
+                            SORTED_ORDER_WIP.add(id);
+                            isFullBlock = false;
+                        }
+                        if (id.equals("repstone_bricks")) {
+                            ALL.put(id, REPSTONE_BRICKS);
+                            SORTED_ORDER_WIP.add(id);
+                            isFullBlock = false;
+                        }
                         if (parts[1].equals("slab")) {
                             registerSlabWIP(id, () -> baseBlock);
                             isFullBlock = false;

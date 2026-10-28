@@ -220,9 +220,9 @@
   "block.neo_prism.cobbled_repstone_slab": "Cobbled Repstone Slab",
   "block.neo_prism.cobbled_repstone_wall": "Cobbled Repstone Wall",
   "block.neo_prism.repstone_bricks": "Repstone Bricks",
-  "block.neo_prism.repstone_bricks_stairs": "Repstone Brick Stairs",
-  "block.neo_prism.repstone_bricks_slab": "Repstone Brick Slab",
-  "block.neo_prism.repstone_bricks_wall": "Repstone Bricks Wall",
+  "block.neo_prism.repstone_brick_stairs": "Repstone Brick Stairs",
+  "block.neo_prism.repstone_brick_slab": "Repstone Brick Slab",
+  "block.neo_prism.repstone_brick_wall": "Repstone Bricks Wall",
   "block.neo_prism.cracked_repstone_bricks": "Cracked Repstone Bricks",
   "block.neo_prism.chiseled_repstone_bricks": "Chiseled Repstone Bricks",
 
