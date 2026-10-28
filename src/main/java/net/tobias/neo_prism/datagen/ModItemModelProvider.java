@@ -49,23 +49,6 @@ public class ModItemModelProvider extends ItemModelProvider {
         trimmedArmorItem(ModItems.ALL.get("ARMOR_ITEM_NAME"));
         /*Example use for simpleItem:
         simpleItem(ModItems.ALL.get("ITEM_NAME"));*/
-        simpleBlockItem(ModBlocks.ALL.get("repstone_door"));
-
-        buttonItem(ModBlocks.ALL.get("repstone_button"), ModBlocks.ALL.get("repstone"));
-
-        wallItem(ModBlocks.ALL.get("repstone_wall"), ModBlocks.ALL.get("repstone"));
-        wallItem(ModBlocks.ALL.get("cobbled_repstone_wall"), ModBlocks.ALL.get("cobbled_repstone"));
-        wallItem(ModBlocks.ALL.get("repstone_brick_wall"), ModBlocks.ALL.get("repstone_bricks"));
-
-        evenSimplerBlockItem(ModBlocks.ALL.get("repstone_stairs"));
-        evenSimplerBlockItem(ModBlocks.ALL.get("cobbled_repstone_stairs"));
-        evenSimplerBlockItem(ModBlocks.ALL.get("repstone_brick_stairs"));
-        evenSimplerBlockItem(ModBlocks.ALL.get("repstone_slab"));
-        evenSimplerBlockItem(ModBlocks.ALL.get("cobbled_repstone_slab"));
-        evenSimplerBlockItem(ModBlocks.ALL.get("repstone_brick_slab"));
-        evenSimplerBlockItem(ModBlocks.ALL.get("repstone_pressure_plate"));
-
-        trapdoorItem(ModBlocks.ALL.get("repstone_trapdoor"));
     }
 
     private void trimmedArmorItem(RegistryObject<Item> itemRegistryObject) {

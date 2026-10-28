@@ -43,29 +43,5 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                 ModBlocks.ALL.get("BLOCK_NAME").get()
         );
         */
-        this.tag(BlockTags.WALLS).add(ModBlocks.ALL.get("repstone_wall").get());
-        this.tag(BlockTags.WALLS).add(ModBlocks.ALL.get("cobbled_repstone_wall").get());
-        this.tag(BlockTags.WALLS).add(ModBlocks.ALL.get("repstone_brick_wall").get());
-
-        this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.ALL.get("repstone").get());
-        this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.ALL.get("repstone_stairs").get());
-        this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.ALL.get("repstone_slab").get());
-        this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.ALL.get("repstone_wall").get());
-        this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.ALL.get("repstone_pressure_plate").get());
-        this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.ALL.get("repstone_door").get());
-        this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.ALL.get("repstone_trapdoor").get());
-        this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.ALL.get("cobbled_repstone").get());
-        this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.ALL.get("cobbled_repstone_stairs").get());
-        this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.ALL.get("cobbled_repstone_slab").get());
-        this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.ALL.get("cobbled_repstone_wall").get());
-        this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.ALL.get("repstone_bricks").get());
-        this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.ALL.get("cracked_repstone_bricks").get());
-        this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.ALL.get("chiseled_repstone_bricks").get());
-        this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.ALL.get("repstone_brick_stairs").get());
-        this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.ALL.get("repstone_brick_slab").get());
-        this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.ALL.get("repstone_brick_wall").get());
-
-        this.tag(BlockTags.BASE_STONE_OVERWORLD).add(ModBlocks.ALL.get("repstone").get());
-        this.tag(BlockTags.STONE_ORE_REPLACEABLES).add(ModBlocks.ALL.get("repstone").get());
     }
 }
