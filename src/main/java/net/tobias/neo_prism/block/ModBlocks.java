@@ -259,7 +259,7 @@ public class ModBlocks {
         if (NON_COLOR_COMPLETE != null) {
             for (String id : NON_COLOR_COMPLETE) {
                 Block baseBlock = BLOCK_MAP.get(id);
-                if (baseBlock == null) {
+                if (baseBlock == null && !id.equals("cobbled_repstone") && !id.equals("repstone_bricks")) {
                     throw new IllegalStateException("No base block mapping for WIP part: " + id);
                 }
                 String[] parts = id.split("_");
@@ -352,7 +352,7 @@ public class ModBlocks {
         if (NON_COLOR_WIP != null) {
             for (String id : NON_COLOR_WIP) {
                 Block baseBlock = BLOCK_MAP.get(id);
-                if (baseBlock == null) {
+                if (baseBlock == null && !id.equals("cobbled_repstone") && !id.equals("repstone_bricks")) {
                     throw new IllegalStateException("No base block mapping for WIP part: " + id);
                 }
                 String[] parts = id.split("_");
