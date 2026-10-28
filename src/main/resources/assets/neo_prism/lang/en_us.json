@@ -233,5 +233,9 @@
   "item.neo_prism.raw_lizard_meat": "Raw Lizard Meat",
   "item.neo_prism.cooked_lizard_meat": "Cooked Lizard Meat",
 
-  "item.neo_prism.shard_lizard_scout_spawn_egg": "Shard Lizard Scout Spawn Egg"
+  "item.neo_prism.shard_lizard_scout_spawn_egg": "Shard Lizard Scout Spawn Egg",
+
+  "tooltip.neo_prism.durability_tooltip": "Durability: %s / %s",
+
+  "entity.neo_prism.shard_lizard_scout": "Shard Lizard Scout"
 }

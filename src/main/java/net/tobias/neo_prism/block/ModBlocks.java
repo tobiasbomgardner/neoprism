@@ -102,13 +102,22 @@ public class ModBlocks {
         ALL.put(id, obj);
         SORTED_ORDER_WIP.add(id);
     }
-    private static void registerRotatedPillarBlockCOMPLETE(String id, Supplier<? extends Block> baseBlock) {
-        RegistryObject<Block> obj = registerBlock(id, () -> new RotatedPillarBlock(BlockBehaviour.Properties.copy(baseBlock.get()).requiresCorrectToolForDrops()));
-        ALL.put(id, obj);
+    private static void registerRotatedPillarBlockCOMPLETE(String id, Supplier<? extends Block> baseBlock, boolean isBurnable) {
+        RegistryObject<Block> obj;
+        if (isBurnable) {
+            obj = registerBlock(id, () -> new BurnableRotatedPillarBlock(BlockBehaviour.Properties.copy(baseBlock.get()).requiresCorrectToolForDrops()));
+        } else {
+            obj = registerBlock(id, () -> new RotatedPillarBlock(BlockBehaviour.Properties.copy(baseBlock.get()).requiresCorrectToolForDrops()));
+        }
         SORTED_ORDER_COMPLETE.add(id);
     }
-    private static void registerRotatedPillarBlockWIP(String id, Supplier<? extends Block> baseBlock) {
-        RegistryObject<Block> obj = registerBlock(id, () -> new RotatedPillarBlock(BlockBehaviour.Properties.copy(baseBlock.get()).requiresCorrectToolForDrops()));
+    private static void registerRotatedPillarBlockWIP(String id, Supplier<? extends Block> baseBlock, boolean isBurnable) {
+        RegistryObject<Block> obj;
+        if (isBurnable) {
+            obj = registerBlock(id, () -> new BurnableRotatedPillarBlock(BlockBehaviour.Properties.copy(baseBlock.get()).requiresCorrectToolForDrops()));
+        } else {
+            obj = registerBlock(id, () -> new RotatedPillarBlock(BlockBehaviour.Properties.copy(baseBlock.get()).requiresCorrectToolForDrops()));
+        }
         ALL.put(id, obj);
         SORTED_ORDER_WIP.add(id);
     }
@@ -217,7 +226,7 @@ public class ModBlocks {
                         if (!part.equals("hay_bale")) {
                             registerSans_XP_COMPLETE(prefix + "_" + part, () -> baseBlock);
                         } else {
-                            registerRotatedPillarBlockCOMPLETE(prefix + "_" + part, () -> baseBlock);
+                            registerRotatedPillarBlockCOMPLETE(prefix + "_" + part, () -> baseBlock, true);
                         }
                     }
                 }
@@ -243,7 +252,7 @@ public class ModBlocks {
                         if (!part.equals("hay_bale")) {
                             registerSans_XP_WIP(prefix + "_" + part, () -> baseBlock);
                         } else {
-                            registerRotatedPillarBlockWIP(prefix + "_" + part, () -> baseBlock);
+                            registerRotatedPillarBlockWIP(prefix + "_" + part, () -> baseBlock, true);
                         }
                     }
                 }
