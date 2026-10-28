@@ -32,6 +32,7 @@
     "neo_prism:repstone_slab",
     "neo_prism:repstone_wall",
     "neo_prism:repstone_pressure_plate",
+    "neo_prism:repstone_button",
     "neo_prism:repstone_door",
     "neo_prism:repstone_trapdoor",
     "neo_prism:cobbled_repstone",
