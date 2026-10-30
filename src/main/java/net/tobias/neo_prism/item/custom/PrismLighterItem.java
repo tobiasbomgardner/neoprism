@@ -1,4 +1,4 @@
-package net.tobias.neo_prism.item;
+package net.tobias.neo_prism.item.custom;
 
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;

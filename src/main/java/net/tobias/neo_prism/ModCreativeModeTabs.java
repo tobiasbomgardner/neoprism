@@ -20,7 +20,7 @@ public class ModCreativeModeTabs {
                     .title(Component.translatable("creativetabs.neo_prism_complete"))
                     .displayItems((pParameters, pOutput) -> {
                         ModBlocks.SORTED_ORDER_COMPLETE.forEach(k -> pOutput.accept(ModBlocks.get(k).get()));
-                        ModItems.SORTED_ORDER_COMPETE.forEach(k -> pOutput.accept(ModItems.get(k).get()));
+                        ModItems.SORTED_ORDER_COMPLETE.forEach(k -> pOutput.accept(ModItems.get(k).get()));
                         ModSpawnEggs.SORTED_ORDER_COMPETE.forEach(k -> pOutput.accept(ModSpawnEggs.get(k).get()));
                     })
                     .build());

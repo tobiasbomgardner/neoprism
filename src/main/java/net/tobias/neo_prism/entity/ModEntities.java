@@ -7,15 +7,28 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.tobias.neo_prism.Neo_Prism;
-import net.tobias.neo_prism.entity.custom.ShardLizardScoutEntity;
+import net.tobias.neo_prism.entity.entities.ShardLizardScout;
+import net.tobias.neo_prism.entity.entities.projectiles.Dart;
+import net.tobias.neo_prism.entity.entities.projectiles.SpectralDart;
 
 public class ModEntities {
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES =
             DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, Neo_Prism.MOD_ID);
 
-    public static final RegistryObject<EntityType<ShardLizardScoutEntity>> SHARD_LIZARD_SCOUT =
-            ENTITY_TYPES.register("shard_lizard_scout", () -> EntityType.Builder.of(ShardLizardScoutEntity::new, MobCategory.MONSTER)
+    public static final RegistryObject<EntityType<ShardLizardScout>> SHARD_LIZARD_SCOUT =
+            ENTITY_TYPES.register("shard_lizard_scout", () -> EntityType.Builder.of(ShardLizardScout::new, MobCategory.MONSTER)
                     .sized(2.0f, 1.0f).build("shard_lizard_scout"));
+
+    public static final RegistryObject<EntityType<Dart>> DART =
+            ENTITY_TYPES.register("dart", () -> EntityType.Builder.<Dart>of(Dart::new, MobCategory.MISC)
+                    .sized(0.5F, 0.5F)
+                    .clientTrackingRange(4)
+                    .updateInterval(20)
+                    .build("dart"));
+
+    public static final RegistryObject<EntityType<SpectralDart>> SPECTRAL_DART =
+            ENTITY_TYPES.register("spectral_dart", () -> EntityType.Builder.<SpectralDart>of(SpectralDart::new, MobCategory.MISC)
+                    .sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20).build("spectral_dart"));
 
     public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);

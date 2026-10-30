@@ -2,21 +2,20 @@ package net.tobias.neo_prism;
 
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.IExtensionPoint;
-import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.tobias.neo_prism.entity.ModEntities;
-import net.tobias.neo_prism.entity.client.ShardLizardScoutRenderer;
+import net.tobias.neo_prism.entity.client.renders.ShardLizardScoutRenderer;
+import net.tobias.neo_prism.entity.client.renders.SpectralDartRenderer;
+import net.tobias.neo_prism.entity.client.renders.TippedDartRenderer;
 import net.tobias.neo_prism.item.ModItems;
 import net.tobias.neo_prism.block.ModBlocks;
 import net.tobias.neo_prism.item.ModSpawnEggs;
@@ -62,6 +61,8 @@ public class Neo_Prism {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
             EntityRenderers.register(ModEntities.SHARD_LIZARD_SCOUT.get(), ShardLizardScoutRenderer::new);
+            EntityRenderers.register(ModEntities.DART.get(), TippedDartRenderer::new);
+            EntityRenderers.register(ModEntities.SPECTRAL_DART.get(), SpectralDartRenderer::new);
         }
     }
 }

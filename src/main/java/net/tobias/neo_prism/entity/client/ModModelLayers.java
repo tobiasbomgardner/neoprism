@@ -7,4 +7,10 @@ import net.tobias.neo_prism.Neo_Prism;
 public class ModModelLayers {
     public static final ModelLayerLocation SHARD_LIZARD_SCOUT_LAYER = new ModelLayerLocation(
             new ResourceLocation(Neo_Prism.MOD_ID, "shard_lizard_scout_layer"), "main");
+    public static final ModelLayerLocation DART_LAYER = new ModelLayerLocation(
+            new ResourceLocation(Neo_Prism.MOD_ID, "dart_layer"), "main");
+    public static final ModelLayerLocation SPECTRAL_DART_LAYER = new ModelLayerLocation(
+            new ResourceLocation(Neo_Prism.MOD_ID, "spectral_dart_layer"), "main");
+    public static final ModelLayerLocation TIPPED_DART_LAYER = new ModelLayerLocation(
+            new ResourceLocation(Neo_Prism.MOD_ID, "tipped_dart_layer"), "main");
 }

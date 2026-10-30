@@ -4,17 +4,17 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
-import net.tobias.neo_prism.entity.custom.ShardLizardScoutEntity;
+import net.tobias.neo_prism.entity.entities.ShardLizardScout;
 
 public class ShardLizardScoutAttackGoal extends MeleeAttackGoal {
-    private final ShardLizardScoutEntity entity;
+    private final ShardLizardScout entity;
     private int attackDelay = 10;
     private int ticksUntilNextAttack = 10;
     private boolean shouldCountTillNextAttack = false;
 
     public ShardLizardScoutAttackGoal(PathfinderMob mob, double speedModifier, boolean followingTargetEvenIfNotSeen) {
         super(mob, speedModifier, followingTargetEvenIfNotSeen);
-        entity = ((ShardLizardScoutEntity) mob);
+        entity = ((ShardLizardScout) mob);
     }
 
     @Override

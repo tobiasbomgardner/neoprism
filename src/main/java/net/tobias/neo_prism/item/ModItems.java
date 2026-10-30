@@ -8,6 +8,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.tobias.neo_prism.Neo_Prism;
 import net.tobias.neo_prism.PrismColor;
+import net.tobias.neo_prism.item.custom.*;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,9 +32,9 @@ public class ModItems {
     private static final List<String> PARTS_WIP = null;
     private static final List<String> PRISMATIC_PARTS_WIP = null;
 
-    private static final List<String> LIZARD_ITEMS_COMPLETE = null;
-    private static final List<String> LIZARD_ITEMS_WIP = List.of(
-            "lizard_scale", "raw_lizard_meat", "cooked_lizard_meat"
+    private static final List<String> NONCOLOR_ITEMS_COMPLETE = null;
+    private static final List<String> NONCOLOR_ITEMS_WIP = List.of(
+            "lizard_scale", "raw_lizard_meat", "cooked_lizard_meat","dart","stun_dart","dart_gun"
     );
 
 
@@ -43,6 +45,7 @@ public class ModItems {
     private static final Map<String, ArmorItem.Type> ARMOR_TYPES = new HashMap<>();
     protected static final Map<String, RegistryObject<Item>> ARMOR_ITEMS = new HashMap<>();
     protected static final Map<String, RegistryObject<Item>> MODDED_TIER_MATERIALS = new HashMap<>();
+    private static final Map<String, Integer> MAX_STACK_SIZE = new HashMap<>();
     private static void setUpMaps() {
         FOOD_TYPES.put("bread", ModFoods.PRISM_COLOR_BREAD);
         FOOD_TYPES.put("raw_lizard_meat", ModFoods.RAW_LIZARD_MEAT);
@@ -105,17 +108,39 @@ public class ModItems {
         ARMOR_MATERIALS.put("prismatic_chestplate", ModArmorMaterials.PRISMATIC);
         ARMOR_MATERIALS.put("prismatic_leggings", ModArmorMaterials.PRISMATIC);
         ARMOR_MATERIALS.put("prismatic_boots", ModArmorMaterials.PRISMATIC);
+
+        MAX_STACK_SIZE.put("bread", 64);
+        MAX_STACK_SIZE.put("raw_lizard_meat", 64);
+        MAX_STACK_SIZE.put("cooked_lizard_meat", 64);
+        MAX_STACK_SIZE.put("lizard_scale", 64);
+        MAX_STACK_SIZE.put("gem", 64);
+        MAX_STACK_SIZE.put("shattered_shard", 64);
+        MAX_STACK_SIZE.put("shard", 64);
+        MAX_STACK_SIZE.put("wheat", 64);
+        MAX_STACK_SIZE.put("upgrade_template", 64);
+        MAX_STACK_SIZE.put("dart", 64);
+        MAX_STACK_SIZE.put("stun_dart", 64);
+        MAX_STACK_SIZE.put("dart_gun", 1);
+        MAX_STACK_SIZE.put("helmet", 1);
+        MAX_STACK_SIZE.put("chestplate", 1);
+        MAX_STACK_SIZE.put("leggings", 1);
+        MAX_STACK_SIZE.put("boots", 1);
+        MAX_STACK_SIZE.put("sword", 1);
+        MAX_STACK_SIZE.put("pickaxe", 1);
+        MAX_STACK_SIZE.put("axe", 1);
+        MAX_STACK_SIZE.put("shovel", 1);
+        MAX_STACK_SIZE.put("hoe", 1);
     }
 
 
     public static final Map<String, RegistryObject<Item>> ALL = new HashMap<>();
-    public static final List<String> SORTED_ORDER_COMPETE = new ArrayList<>();
+    public static final List<String> SORTED_ORDER_COMPLETE = new ArrayList<>();
     public static final List<String> SORTED_ORDER_WIP = new ArrayList<>();
 
-    private static void registerCOMPLETE(String id) {
-        RegistryObject<Item> obj = ITEMS.register(id, () -> new Item(new Item.Properties()));
+    private static void registerCOMPLETE(String id, int maxStackSize) {
+        RegistryObject<Item> obj = ITEMS.register(id, () -> new Item(new Item.Properties().stacksTo(maxStackSize)));
         ALL.put(id, obj);
-        SORTED_ORDER_COMPETE.add(id);
+        SORTED_ORDER_COMPLETE.add(id);
         String[] itemType = id.split("_");
         if (itemType[1].equals("shard") || id.equals("prismatic_gem")) {
             ARMOR_ITEMS.put(id, obj);
@@ -124,25 +149,27 @@ public class ModItems {
             }
         }
     }
-    private static void registerWIP(String id) {
-        RegistryObject<Item> obj = ITEMS.register(id, () -> new Item(new Item.Properties()));
+    private static void registerWIP(String id, int maxStackSize) {
+        RegistryObject<Item> obj = ITEMS.register(id, () -> new Item(new Item.Properties().stacksTo(maxStackSize)));
         ALL.put(id, obj);
         SORTED_ORDER_WIP.add(id);
         String[] itemType = id.split("_");
-        if (itemType[1].equals("shard") || id.equals("prismatic_gem")) {
-            ARMOR_ITEMS.put(id, obj);
-            if (id.equals("prismatic_gem")) {
-                MODDED_TIER_MATERIALS.put(id, obj);
+        if (itemType.length == 2) {
+            if (itemType[1].equals("shard") || id.equals("prismatic_gem")) {
+                ARMOR_ITEMS.put(id, obj);
+                if (id.equals("prismatic_gem")) {
+                    MODDED_TIER_MATERIALS.put(id, obj);
+                }
             }
         }
     }
-    private static void registerFoodCOMPLETE(String id, FoodProperties foodType) {
-        RegistryObject<Item> obj = ITEMS.register(id, () -> new Item(new Item.Properties().food(foodType)));
+    private static void registerFoodCOMPLETE(String id, FoodProperties foodType, int maxStackSize) {
+        RegistryObject<Item> obj = ITEMS.register(id, () -> new Item(new Item.Properties().food(foodType).stacksTo(maxStackSize)));
         ALL.put(id, obj);
-        SORTED_ORDER_COMPETE.add(id);
+        SORTED_ORDER_COMPLETE.add(id);
     }
-    private static void registerFoodWIP(String id, FoodProperties foodType) {
-        RegistryObject<Item> obj = ITEMS.register(id, () -> new Item(new Item.Properties().food(foodType)));
+    private static void registerFoodWIP(String id, FoodProperties foodType, int maxStackSize) {
+        RegistryObject<Item> obj = ITEMS.register(id, () -> new Item(new Item.Properties().food(foodType).stacksTo(maxStackSize)));
         ALL.put(id, obj);
         SORTED_ORDER_WIP.add(id);
     }
@@ -157,7 +184,7 @@ public class ModItems {
                         attackSpeedModifier, new Item.Properties()));
             }
             ALL.put(id, obj);
-            SORTED_ORDER_COMPETE.add(id);
+            SORTED_ORDER_COMPLETE.add(id);
         } else if (minecraftTier != null & moddedTier == null) {
             if (isFireResistant) {
                 obj = ITEMS.register(id, () -> new SwordItem(minecraftTier, attackDamageModifier,
@@ -167,7 +194,7 @@ public class ModItems {
                         attackSpeedModifier, new Item.Properties()));
             }
             ALL.put(id, obj);
-            SORTED_ORDER_COMPETE.add(id);
+            SORTED_ORDER_COMPLETE.add(id);
         }
     }
     private static void registerSwordWIP(String id, Tier minecraftTier, Tier moddedTier, int attackDamageModifier, float attackSpeedModifier, boolean isFireResistant) {
@@ -181,7 +208,7 @@ public class ModItems {
                         attackSpeedModifier, new Item.Properties()));
             }
             ALL.put(id, obj);
-            SORTED_ORDER_COMPETE.add(id);
+            SORTED_ORDER_COMPLETE.add(id);
         } else if (minecraftTier != null & moddedTier == null) {
             if (isFireResistant) {
                 obj = ITEMS.register(id, () -> new SwordItem(minecraftTier, attackDamageModifier,
@@ -191,7 +218,7 @@ public class ModItems {
                         attackSpeedModifier, new Item.Properties()));
             }
             ALL.put(id, obj);
-            SORTED_ORDER_COMPETE.add(id);
+            SORTED_ORDER_COMPLETE.add(id);
         }
     }
     private static void registerPickaxeCOMPLETE(String id, Tier minecraftTier, Tier moddedTier, int attackDamageModifier, float attackSpeedModifier, boolean isFireResistant) {
@@ -205,7 +232,7 @@ public class ModItems {
                         attackSpeedModifier, new Item.Properties()));
             }
             ALL.put(id, obj);
-            SORTED_ORDER_COMPETE.add(id);
+            SORTED_ORDER_COMPLETE.add(id);
         } else if (minecraftTier != null & moddedTier == null) {
             if (isFireResistant) {
                 obj = ITEMS.register(id, () -> new PickaxeItem(minecraftTier, attackDamageModifier,
@@ -215,7 +242,7 @@ public class ModItems {
                         attackSpeedModifier, new Item.Properties()));
             }
             ALL.put(id, obj);
-            SORTED_ORDER_COMPETE.add(id);
+            SORTED_ORDER_COMPLETE.add(id);
         }
     }
     private static void registerPickaxeWIP(String id, Tier minecraftTier, Tier moddedTier, int attackDamageModifier, float attackSpeedModifier, boolean isFireResistant) {
@@ -229,7 +256,7 @@ public class ModItems {
                         attackSpeedModifier, new Item.Properties()));
             }
             ALL.put(id, obj);
-            SORTED_ORDER_COMPETE.add(id);
+            SORTED_ORDER_COMPLETE.add(id);
         } else if (minecraftTier != null & moddedTier == null) {
             if (isFireResistant) {
                 obj = ITEMS.register(id, () -> new PickaxeItem(minecraftTier, attackDamageModifier,
@@ -239,7 +266,7 @@ public class ModItems {
                         attackSpeedModifier, new Item.Properties()));
             }
             ALL.put(id, obj);
-            SORTED_ORDER_COMPETE.add(id);
+            SORTED_ORDER_COMPLETE.add(id);
         }
     }
     private static void registerAxeCOMPLETE(String id, Tier minecraftTier, Tier moddedTier, float attackDamageModifier, float attackSpeedModifier, boolean isFireResistant) {
@@ -253,7 +280,7 @@ public class ModItems {
                         attackSpeedModifier, new Item.Properties()));
             }
             ALL.put(id, obj);
-            SORTED_ORDER_COMPETE.add(id);
+            SORTED_ORDER_COMPLETE.add(id);
         } else if (minecraftTier != null & moddedTier == null) {
             if (isFireResistant) {
                 obj = ITEMS.register(id, () -> new AxeItem(minecraftTier, attackDamageModifier,
@@ -263,7 +290,7 @@ public class ModItems {
                         attackSpeedModifier, new Item.Properties()));
             }
             ALL.put(id, obj);
-            SORTED_ORDER_COMPETE.add(id);
+            SORTED_ORDER_COMPLETE.add(id);
         }
     }
     private static void registerAxeWIP(String id, Tier minecraftTier, Tier moddedTier, float attackDamageModifier, float attackSpeedModifier, boolean isFireResistant) {
@@ -277,7 +304,7 @@ public class ModItems {
                         attackSpeedModifier, new Item.Properties()));
             }
             ALL.put(id, obj);
-            SORTED_ORDER_COMPETE.add(id);
+            SORTED_ORDER_COMPLETE.add(id);
         } else if (minecraftTier != null & moddedTier == null) {
             if (isFireResistant) {
                 obj = ITEMS.register(id, () -> new AxeItem(minecraftTier, attackDamageModifier,
@@ -287,7 +314,7 @@ public class ModItems {
                         attackSpeedModifier, new Item.Properties()));
             }
             ALL.put(id, obj);
-            SORTED_ORDER_COMPETE.add(id);
+            SORTED_ORDER_COMPLETE.add(id);
         }
     }
     private static void registerShovelCOMPLETE(String id, Tier minecraftTier, Tier moddedTier, float attackDamageModifier, float attackSpeedModifier, boolean isFireResistant) {
@@ -301,7 +328,7 @@ public class ModItems {
                         attackSpeedModifier, new Item.Properties()));
             }
             ALL.put(id, obj);
-            SORTED_ORDER_COMPETE.add(id);
+            SORTED_ORDER_COMPLETE.add(id);
         } else if (minecraftTier != null & moddedTier == null) {
             if (isFireResistant) {
                 obj = ITEMS.register(id, () -> new ShovelItem(minecraftTier, attackDamageModifier,
@@ -311,7 +338,7 @@ public class ModItems {
                         attackSpeedModifier, new Item.Properties()));
             }
             ALL.put(id, obj);
-            SORTED_ORDER_COMPETE.add(id);
+            SORTED_ORDER_COMPLETE.add(id);
         }
     }
     private static void registerShovelWIP(String id, Tier minecraftTier, Tier moddedTier, float attackDamageModifier, float attackSpeedModifier, boolean isFireResistant) {
@@ -325,7 +352,7 @@ public class ModItems {
                         attackSpeedModifier, new Item.Properties()));
             }
             ALL.put(id, obj);
-            SORTED_ORDER_COMPETE.add(id);
+            SORTED_ORDER_COMPLETE.add(id);
         } else if (minecraftTier != null & moddedTier == null) {
             if (isFireResistant) {
                 obj = ITEMS.register(id, () -> new ShovelItem(minecraftTier, attackDamageModifier,
@@ -335,7 +362,7 @@ public class ModItems {
                         attackSpeedModifier, new Item.Properties()));
             }
             ALL.put(id, obj);
-            SORTED_ORDER_COMPETE.add(id);
+            SORTED_ORDER_COMPLETE.add(id);
         }
     }
     private static void registerHoeCOMPLETE(String id, Tier minecraftTier, Tier moddedTier, int attackDamageModifier, float attackSpeedModifier, boolean isFireResistant) {
@@ -349,7 +376,7 @@ public class ModItems {
                         attackSpeedModifier, new Item.Properties()));
             }
             ALL.put(id, obj);
-            SORTED_ORDER_COMPETE.add(id);
+            SORTED_ORDER_COMPLETE.add(id);
         } else if (minecraftTier != null & moddedTier == null) {
             if (isFireResistant) {
                 obj = ITEMS.register(id, () -> new HoeItem(minecraftTier, attackDamageModifier,
@@ -359,7 +386,7 @@ public class ModItems {
                         attackSpeedModifier, new Item.Properties()));
             }
             ALL.put(id, obj);
-            SORTED_ORDER_COMPETE.add(id);
+            SORTED_ORDER_COMPLETE.add(id);
         }
     }
     private static void registerHoeWIP(String id, Tier minecraftTier, Tier moddedTier, int attackDamageModifier, float attackSpeedModifier, boolean isFireResistant) {
@@ -373,7 +400,7 @@ public class ModItems {
                         attackSpeedModifier, new Item.Properties()));
             }
             ALL.put(id, obj);
-            SORTED_ORDER_COMPETE.add(id);
+            SORTED_ORDER_COMPLETE.add(id);
         } else if (minecraftTier != null & moddedTier == null) {
             if (isFireResistant) {
                 obj = ITEMS.register(id, () -> new HoeItem(minecraftTier, attackDamageModifier,
@@ -383,13 +410,13 @@ public class ModItems {
                         attackSpeedModifier, new Item.Properties()));
             }
             ALL.put(id, obj);
-            SORTED_ORDER_COMPETE.add(id);
+            SORTED_ORDER_COMPLETE.add(id);
         }
     }
     private static void registerArmorCOMPLETE(String id, ModArmorMaterials armorMaterial, ArmorItem.Type armorType) {
         RegistryObject<Item> obj = ITEMS.register(id, () -> new ArmorItem(armorMaterial, armorType, new Item.Properties()));
         ALL.put(id, obj);
-        SORTED_ORDER_COMPETE.add(id);
+        SORTED_ORDER_COMPLETE.add(id);
     }
     private static void registerArmorWIP(String id, ModArmorMaterials armorMaterial, ArmorItem.Type armorType) {
         RegistryObject<Item> obj = ITEMS.register(id, () -> new ArmorItem(armorMaterial, armorType, new Item.Properties()));
@@ -404,9 +431,10 @@ public class ModItems {
                 String prefix = c.name().toLowerCase();
                 for (String part : PARTS_COMPLETE) {
                     String id = prefix + "_" + part;
+                    int maxStackSize = MAX_STACK_SIZE.get(part);
                     FoodProperties foodType = FOOD_TYPES.get(part);
                     if (foodType != null) {
-                        registerFoodCOMPLETE(id, foodType);
+                        registerFoodCOMPLETE(id, foodType, maxStackSize);
                     } else {
                         Tier tierType = MINECRAFT_TIERS.get(part);
                         if (tierType != null) {
@@ -457,7 +485,7 @@ public class ModItems {
                                 if (armorMaterial != null && armorType != null) {
                                     registerArmorCOMPLETE(id, armorMaterial, armorType);
                                 } else {
-                                    registerCOMPLETE(id);
+                                    registerCOMPLETE(id, maxStackSize);
                                 }
                             }
                         }
@@ -468,6 +496,7 @@ public class ModItems {
         if (PRISMATIC_PARTS_COMPLETE != null) {
             for (String part : PRISMATIC_PARTS_COMPLETE) {
                 String id = "prismatic_" + part;
+                int maxStackSize = MAX_STACK_SIZE.get(part);
                 Tier tierType = MODDED_TIERS.get(part);
                 if (tierType != null) {
                     switch (part) {
@@ -495,18 +524,19 @@ public class ModItems {
                     if (armorMaterial != null && armorType != null) {
                         registerArmorCOMPLETE(id, armorMaterial, armorType);
                     } else {
-                        registerCOMPLETE(id);
+                        registerCOMPLETE(id, maxStackSize);
                     }
                 }
             }
         }
-        if (LIZARD_ITEMS_COMPLETE != null) {
-            for (String id : LIZARD_ITEMS_COMPLETE) {
+        if (NONCOLOR_ITEMS_COMPLETE != null) {
+            for (String id : NONCOLOR_ITEMS_COMPLETE) {
+                int maxStackSize = MAX_STACK_SIZE.get(id);
                 FoodProperties foodType = FOOD_TYPES.get(id);
                 if (foodType != null) {
-                    registerFoodCOMPLETE(id, foodType);
+                    registerFoodCOMPLETE(id, foodType, maxStackSize);
                 } else {
-                    registerCOMPLETE(id);
+                    registerCOMPLETE(id, maxStackSize);
                 }
             }
         }
@@ -518,9 +548,10 @@ public class ModItems {
                 String prefix = c.name().toLowerCase();
                 for (String part : PARTS_WIP) {
                     String id = prefix + "_" + part;
+                    int maxStackSize = MAX_STACK_SIZE.get(part);
                     FoodProperties foodType = FOOD_TYPES.get(part);
                     if (foodType != null) {
-                        registerFoodWIP(id, foodType);
+                        registerFoodWIP(id, foodType, maxStackSize);
                     } else {
                         Tier tierType = MINECRAFT_TIERS.get(part);
                         if (tierType != null) {
@@ -571,7 +602,7 @@ public class ModItems {
                                 if (armorMaterial != null && armorType != null) {
                                     registerArmorWIP(id, armorMaterial, armorType);
                                 } else {
-                                    registerWIP(id);
+                                    registerWIP(id, maxStackSize);
                                 }
                             }
                         }
@@ -582,6 +613,7 @@ public class ModItems {
         if (PRISMATIC_PARTS_WIP != null) {
             for (String part : PRISMATIC_PARTS_WIP) {
                 String id = "prismatic_" + part;
+                int maxStackSize = MAX_STACK_SIZE.get(part);
                 Tier tierType = MODDED_TIERS.get(part);
                 if (tierType != null) {
                     switch (part) {
@@ -609,21 +641,26 @@ public class ModItems {
                     if (armorMaterial != null && armorType != null) {
                         registerArmorWIP(id, armorMaterial, armorType);
                     } else {
-                        registerWIP(id);
+                        registerWIP(id, maxStackSize);
                     }
                 }
             }
         }
-        if (LIZARD_ITEMS_WIP != null) {
-            for (String id : LIZARD_ITEMS_WIP) {
+        if (NONCOLOR_ITEMS_WIP != null) {
+            for (String id : NONCOLOR_ITEMS_WIP) {
+                int maxStackSize = MAX_STACK_SIZE.get(id);
                 FoodProperties foodType = FOOD_TYPES.get(id);
                 if (foodType != null) {
-                    registerFoodWIP(id, foodType);
+                    registerFoodWIP(id, foodType, maxStackSize);
                 } else {
-                    registerWIP(id);
+                    registerWIP(id, maxStackSize);
                 }
             }
         }
+        registerDartGun();
+        registerDart();
+        registerSpectralDart();
+        registerTippedDart();
         registerPrismLighter();
     }
 
@@ -651,6 +688,26 @@ public class ModItems {
         RegistryObject<Item> obj = ITEMS.register("prism_lighter", () -> new PrismLighterItem(new Item.Properties().durability(100)));
         ALL.put("prism_lighter", obj);
         SORTED_ORDER_WIP.add("prism_lighter");
+    }
+    private static void registerDartGun() {
+        RegistryObject<Item> obj = ITEMS.register("dart_gun", () -> new DartGunItem(new Item.Properties().durability(356)));
+        ALL.put("dart_gun", obj);
+        SORTED_ORDER_WIP.add("dart_gun");
+    }
+    private static void registerDart() {
+        RegistryObject<Item> obj = ITEMS.register("dart", () -> new DartItem(new Item.Properties()));
+        ALL.put("dart", obj);
+        SORTED_ORDER_WIP.add("dart");
+    }
+    private static void registerSpectralDart() {
+        RegistryObject<Item> obj = ITEMS.register("spectral_dart", () -> new SpectralDartItem(new Item.Properties()));
+        ALL.put("spectral_dart", obj);
+        SORTED_ORDER_WIP.add("spectral_dart");
+    }
+    private static void registerTippedDart() {
+        RegistryObject<Item> obj = ITEMS.register("tipped_dart", () -> new TippedDartItem(new Item.Properties()));
+        ALL.put("tipped_dart", obj);
+        SORTED_ORDER_WIP.add("tipped_dart");
     }
 
 }

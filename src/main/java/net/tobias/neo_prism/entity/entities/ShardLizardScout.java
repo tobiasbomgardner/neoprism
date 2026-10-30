@@ -1,4 +1,4 @@
-package net.tobias.neo_prism.entity.custom;
+package net.tobias.neo_prism.entity.entities;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -20,7 +20,6 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.monster.ZombieVillager;
 import net.minecraft.world.entity.npc.InventoryCarrier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -33,18 +32,18 @@ import net.tobias.neo_prism.item.ModItems;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ShardLizardScoutEntity extends Monster implements InventoryCarrier {
+public class ShardLizardScout extends Monster implements InventoryCarrier {
     private static final EntityDataAccessor<Integer> VARIANT =
-            SynchedEntityData.defineId(ShardLizardScoutEntity.class, EntityDataSerializers.INT);
+            SynchedEntityData.defineId(ShardLizardScout.class, EntityDataSerializers.INT);
     private static final int VARIANT_COUNT = 9;
     private final SimpleContainer inventory = new SimpleContainer(3);
-    private static final Logger LOGGER = LoggerFactory.getLogger(ShardLizardScoutEntity.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ShardLizardScout.class);
     private static final EntityDataAccessor<Boolean> CUSTOM_DYING =
-            SynchedEntityData.defineId(ShardLizardScoutEntity.class, EntityDataSerializers.BOOLEAN);
+            SynchedEntityData.defineId(ShardLizardScout.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> SHEDING_SCALE =
-            SynchedEntityData.defineId(ShardLizardScoutEntity.class, EntityDataSerializers.BOOLEAN);
+            SynchedEntityData.defineId(ShardLizardScout.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> IS_ATTACKING =
-            SynchedEntityData.defineId(ShardLizardScoutEntity.class, EntityDataSerializers.BOOLEAN);
+            SynchedEntityData.defineId(ShardLizardScout.class, EntityDataSerializers.BOOLEAN);
     private static final int CUSTOM_DEATH_ANIMATION_TICKS = 40;
     private static final int SHED_SCALE_ANIMATION_TICKS = 60;
 
@@ -58,7 +57,7 @@ public class ShardLizardScoutEntity extends Monster implements InventoryCarrier 
     private boolean shouldDropLizardScale = false;
     public int attackAnimationTicks = 0;
 
-    public ShardLizardScoutEntity(EntityType<? extends Monster> pEntityType, Level pLevel) {
+    public ShardLizardScout(EntityType<? extends Monster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
         this.setCanPickUpLoot(true);
         this.xpReward = 10;

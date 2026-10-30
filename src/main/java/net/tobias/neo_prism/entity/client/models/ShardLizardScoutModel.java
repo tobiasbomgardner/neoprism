@@ -1,18 +1,16 @@
-package net.tobias.neo_prism.entity.client;
+package net.tobias.neo_prism.entity.client.models;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
 import net.tobias.neo_prism.entity.animations.ModAnimationsDefinitions;
-import net.tobias.neo_prism.entity.custom.ShardLizardScoutEntity;
+import net.tobias.neo_prism.entity.entities.ShardLizardScout;
 
-public class ShardLizardScoutModel<T extends ShardLizardScoutEntity> extends HierarchicalModel<T> {
+public class ShardLizardScoutModel<T extends ShardLizardScout> extends HierarchicalModel<T> {
 	private final ModelPart shard_lizard_scout;
 	private final ModelPart head;
 
