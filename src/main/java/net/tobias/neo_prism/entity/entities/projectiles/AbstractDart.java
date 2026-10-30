@@ -596,7 +596,7 @@ public abstract class AbstractDart extends Projectile {
         CREATIVE_ONLY;
 
         public static AbstractDart.Pickup byOrdinal(int ordinal) {
-            if (ordinal < 0 || ordinal > values().length) {
+            if (ordinal < 0 || ordinal >= values().length) {
                 ordinal = 0;
             }
 

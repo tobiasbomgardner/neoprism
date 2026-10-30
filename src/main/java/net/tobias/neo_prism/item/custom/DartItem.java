@@ -8,6 +8,7 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.tobias.neo_prism.entity.entities.projectiles.AbstractDart;
+import net.tobias.neo_prism.entity.entities.projectiles.Dart;
 
 public class DartItem extends Item {
     public DartItem(Properties pProperties) {
@@ -15,7 +16,7 @@ public class DartItem extends Item {
     }
 
     public AbstractDart createDart(Level level, ItemStack item, LivingEntity shooter) {
-        net.tobias.neo_prism.entity.entities.projectiles.Dart dart = new net.tobias.neo_prism.entity.entities.projectiles.Dart(level, shooter);
+        Dart dart = new Dart(level, shooter);
         dart.setEffectsFromItem(item);
         return dart;
     }

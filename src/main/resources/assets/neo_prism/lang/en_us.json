@@ -141,9 +141,6 @@
   "item.neo_prism.cooked_lizard_meat": "Cooked Lizard Meat",
   "item.neo_prism.shard_lizard_scout_spawn_egg": "Shard Lizard Scout Spawn Egg",
   "item.neo_prism.prism_lighter": "Prism Lighter",
-  "item.neo_prism.dart": "Dart",
-  "item.neo_prism.stun_dart": "Stun Dart",
-  "item.neo_prism.dart_gun": "Dart Gun",
 
   "block.neo_prism.red_hay_bale": "Red Hay Bale",
   "block.neo_prism.red_gem_block": "Block of Red Gems",
@@ -301,5 +298,7 @@
   "advancements.neo_prism.pink_arsenal.title": "The Pink Arsenal!",
   "advancements.neo_prism.pink_arsenal.desc": "Craft all the pink tools and weapons",
   "advancements.neo_prism.white_arsenal.title": "The White Arsenal!",
-  "advancements.neo_prism.white_arsenal.desc": "Craft all the white tools and weapons"
+  "advancements.neo_prism.white_arsenal.desc": "Craft all the white tools and weapons",
+
+  "effect.neo_prism.stun": "Stun"
 }

@@ -12,10 +12,9 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.tobias.neo_prism.effects.ModEffects;
 import net.tobias.neo_prism.entity.ModEntities;
-import net.tobias.neo_prism.entity.client.renders.ShardLizardScoutRenderer;
-import net.tobias.neo_prism.entity.client.renders.SpectralDartRenderer;
-import net.tobias.neo_prism.entity.client.renders.TippedDartRenderer;
+import net.tobias.neo_prism.entity.client.renders.*;
 import net.tobias.neo_prism.item.ModItems;
 import net.tobias.neo_prism.block.ModBlocks;
 import net.tobias.neo_prism.item.ModSpawnEggs;
@@ -40,6 +39,7 @@ public class Neo_Prism {
 
         ModSounds.register(modEventBus);
         ModEntities.register(modEventBus);
+        ModEffects.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
 
@@ -61,8 +61,9 @@ public class Neo_Prism {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
             EntityRenderers.register(ModEntities.SHARD_LIZARD_SCOUT.get(), ShardLizardScoutRenderer::new);
-            EntityRenderers.register(ModEntities.DART.get(), TippedDartRenderer::new);
+            EntityRenderers.register(ModEntities.DART.get(), DartRenderer::new);
             EntityRenderers.register(ModEntities.SPECTRAL_DART.get(), SpectralDartRenderer::new);
+            EntityRenderers.register(ModEntities.STUN_DART.get(), StunDartRenderer::new);
         }
     }
 }

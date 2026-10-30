@@ -1,75 +1,22 @@
 package net.tobias.neo_prism.entity.client.renders;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.util.Mth;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.tobias.neo_prism.entity.entities.projectiles.AbstractDart;
-import org.joml.Matrix3f;
-import org.joml.Matrix4f;
+import net.tobias.neo_prism.Neo_Prism;
+import net.tobias.neo_prism.entity.entities.projectiles.Dart;
 
 @OnlyIn(Dist.CLIENT)
-public abstract class DartRenderer<T extends AbstractDart> extends EntityRenderer<T> {
+public class DartRenderer extends DartRender<Dart> {
+    public static final ResourceLocation DART_LOCATION = ResourceLocation.fromNamespaceAndPath(Neo_Prism.MOD_ID, "textures/entity/projectiles/dart.png");
+
     public DartRenderer(EntityRendererProvider.Context context) {
         super(context);
     }
 
-    public void render(T entity, float entityYaw, float partialTicks, PoseStack matrixStack, MultiBufferSource buffer, int packedLight) {
-        matrixStack.pushPose();
-        matrixStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTicks, entity.yRotO, entity.getYRot()) - 90.0F));
-        matrixStack.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTicks, entity.xRotO, entity.getXRot())));
-        int i = 0;
-        float f = 0.0F;
-        float f1 = 0.5F;
-        float f2 = 0.0F;
-        float f3 = 0.15625F;
-        float f4 = 0.0F;
-        float f5 = 0.15625F;
-        float f6 = 0.15625F;
-        float f7 = 0.3125F;
-        float f8 = 0.05625F;
-        float f9 = (float) entity.shakeTime - partialTicks;
-        if (f9 > 0.0F) {
-            float f10 = -Mth.sin(f9 * 3.0F) * f9;
-            matrixStack.mulPose(Axis.ZP.rotationDegrees(f10));
-        }
-
-        matrixStack.mulPose(Axis.XP.rotationDegrees(45.0F));
-        matrixStack.scale(0.05625F, 0.05625F, 0.05625F);
-        matrixStack.translate(-4.0F, 0.0F, 0.0F);
-        VertexConsumer vertexconsumer = buffer.getBuffer(RenderType.entityCutout(this.getTextureLocation(entity)));
-        PoseStack.Pose posestack$pose = matrixStack.last();
-        Matrix4f matrix4f = posestack$pose.pose();
-        Matrix3f matrix3f = posestack$pose.normal();
-        this.vertex(matrix4f, matrix3f, vertexconsumer, -7, -2, -2, 0.0F, 0.15625F, -1, 0, 0, packedLight);
-        this.vertex(matrix4f, matrix3f, vertexconsumer, -7, -2, 2, 0.15625F, 0.15625F, -1, 0, 0, packedLight);
-        this.vertex(matrix4f, matrix3f, vertexconsumer, -7, 2, 2, 0.15625F, 0.3125F, -1, 0, 0, packedLight);
-        this.vertex(matrix4f, matrix3f, vertexconsumer, -7, 2, -2, 0.0F, 0.3125F, -1, 0, 0, packedLight);
-        this.vertex(matrix4f, matrix3f, vertexconsumer, -7, 2, -2, 0.0F, 0.15625F, 1, 0, 0, packedLight);
-        this.vertex(matrix4f, matrix3f, vertexconsumer, -7, 2, 2, 0.15625F, 0.15625F, 1, 0, 0, packedLight);
-        this.vertex(matrix4f, matrix3f, vertexconsumer, -7, -2, 2, 0.15625F, 0.3125F, 1, 0, 0, packedLight);
-        this.vertex(matrix4f, matrix3f, vertexconsumer, -7, -2, -2, 0.0F, 0.3125F, 1, 0, 0, packedLight);
-
-        for(int j = 0; j < 4; ++j) {
-            matrixStack.mulPose(Axis.XP.rotationDegrees(90.0F));
-            this.vertex(matrix4f, matrix3f, vertexconsumer, -8, -2, 0, 0.0F, 0.0F, 0, 1, 0, packedLight);
-            this.vertex(matrix4f, matrix3f, vertexconsumer, 8, -2, 0, 0.5F, 0.0F, 0, 1, 0, packedLight);
-            this.vertex(matrix4f, matrix3f, vertexconsumer, 8, 2, 0, 0.5F, 0.15625F, 0, 1, 0, packedLight);
-            this.vertex(matrix4f, matrix3f, vertexconsumer, -8, 2, 0, 0.0F, 0.15625F, 0, 1, 0, packedLight);
-        }
-
-        matrixStack.popPose();
-        super.render(entity, entityYaw, partialTicks, matrixStack, buffer, packedLight);
-    }
-
-    public void vertex(Matrix4f matrix, Matrix3f normal, VertexConsumer consumer, int x, int y, int z, float u, float v, int normalX, int normalZ, int normalY, int packedLight) {
-        consumer.vertex(matrix, (float) x, (float) y, (float) z).color(255, 255, 255, 255).uv(u, v).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(normal, (float) normalX, (float) normalY, (float) normalZ).endVertex();
+    @Override
+    public ResourceLocation getTextureLocation(Dart entity) {
+        return DART_LOCATION;
     }
 }

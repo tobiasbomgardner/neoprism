@@ -9,6 +9,7 @@ import net.tobias.neo_prism.entity.client.ModModelLayers;
 import net.tobias.neo_prism.entity.client.models.DartModel;
 import net.tobias.neo_prism.entity.client.models.ShardLizardScoutModel;
 import net.tobias.neo_prism.entity.client.models.SpectralDartModel;
+import net.tobias.neo_prism.entity.client.models.StunDartModel;
 
 @Mod.EventBusSubscriber(modid = Neo_Prism.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ModEventBusClientEvents {
@@ -17,5 +18,6 @@ public class ModEventBusClientEvents {
         event.registerLayerDefinition(ModModelLayers.SHARD_LIZARD_SCOUT_LAYER, ShardLizardScoutModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.DART_LAYER, DartModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.SPECTRAL_DART_LAYER, SpectralDartModel::createBodyLayer);
+        event.registerLayerDefinition(ModModelLayers.STUN_DART_LAYER, StunDartModel::createBodyLayer);
     }
 }

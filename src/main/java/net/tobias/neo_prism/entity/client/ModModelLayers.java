@@ -11,6 +11,6 @@ public class ModModelLayers {
             new ResourceLocation(Neo_Prism.MOD_ID, "dart_layer"), "main");
     public static final ModelLayerLocation SPECTRAL_DART_LAYER = new ModelLayerLocation(
             new ResourceLocation(Neo_Prism.MOD_ID, "spectral_dart_layer"), "main");
-    public static final ModelLayerLocation TIPPED_DART_LAYER = new ModelLayerLocation(
-            new ResourceLocation(Neo_Prism.MOD_ID, "tipped_dart_layer"), "main");
+    public static final ModelLayerLocation STUN_DART_LAYER = new ModelLayerLocation(
+            new ResourceLocation(Neo_Prism.MOD_ID, "stun_dart_layer"), "main");
 }

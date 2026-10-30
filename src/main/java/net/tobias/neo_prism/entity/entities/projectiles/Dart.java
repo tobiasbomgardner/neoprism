@@ -45,22 +45,7 @@ public class Dart extends AbstractDart {
     }
 
     public void setEffectsFromItem(ItemStack item) {
-        if (item.is(ModItems.ALL.get("tipped_dart").get())) {
-            this.potion = PotionUtils.getPotion(item);
-            Collection<MobEffectInstance> collection = PotionUtils.getCustomEffects(item);
-            if (!collection.isEmpty()) {
-                for (MobEffectInstance effect : collection) {
-                    this.effects.add(new MobEffectInstance(effect));
-                }
-            }
-
-            int i = getCustomColor(item);
-            if (i == -1) {
-                this.updateColor();
-            } else {
-                this.setFixedColor(i);
-            }
-        } else if (item.is(ModItems.ALL.get("dart").get())) {
+        if (item.is(ModItems.getItem("dart"))) {
             this.potion = Potions.EMPTY;
             this.effects.clear();
             this.entityData.set(ID_EFFECT_COLOR, -1);
@@ -193,18 +178,7 @@ public class Dart extends AbstractDart {
     }
 
     protected ItemStack getPickupItem() {
-        if (this.effects.isEmpty() && this.potion == Potions.EMPTY) {
-            return new ItemStack(ModItems.ALL.get("dart").get());
-        } else {
-            ItemStack itemstack = new ItemStack(ModItems.ALL.get("tipped_dart").get());
-            PotionUtils.setPotion(itemstack, this.potion);
-            PotionUtils.setCustomEffects(itemstack, this.effects);
-            if (this.fixedColor) {
-                itemstack.getOrCreateTag().putInt("CustomPotionColor", this.getColor());
-            }
-
-            return itemstack;
-        }
+        return new ItemStack(ModItems.getItem("dart"));
     }
 
     /**

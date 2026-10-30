@@ -10,6 +10,7 @@ import net.tobias.neo_prism.Neo_Prism;
 import net.tobias.neo_prism.entity.entities.ShardLizardScout;
 import net.tobias.neo_prism.entity.entities.projectiles.Dart;
 import net.tobias.neo_prism.entity.entities.projectiles.SpectralDart;
+import net.tobias.neo_prism.entity.entities.projectiles.StunDart;
 
 public class ModEntities {
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES =
@@ -20,14 +21,17 @@ public class ModEntities {
                     .sized(2.0f, 1.0f).build("shard_lizard_scout"));
 
     public static final RegistryObject<EntityType<Dart>> DART =
-            ENTITY_TYPES.register("dart", () -> EntityType.Builder.<Dart>of(Dart::new, MobCategory.MISC)
+            ENTITY_TYPES.register("dart", () -> EntityType.Builder.<Dart>of((type, level) -> new Dart(type, level), MobCategory.MISC)
                     .sized(0.5F, 0.5F).clientTrackingRange(4)
                     .updateInterval(20).build("dart"));
-
     public static final RegistryObject<EntityType<SpectralDart>> SPECTRAL_DART =
-            ENTITY_TYPES.register("spectral_dart", () -> EntityType.Builder.<SpectralDart>of(SpectralDart::new, MobCategory.MISC)
+            ENTITY_TYPES.register("spectral_dart", () -> EntityType.Builder.<SpectralDart>of((type, level) -> new SpectralDart(type, level), MobCategory.MISC)
                     .sized(0.5F, 0.5F).clientTrackingRange(4).
                     updateInterval(20).build("spectral_dart"));
+    public static final RegistryObject<EntityType<StunDart>> STUN_DART =
+            ENTITY_TYPES.register("stun_dart", () -> EntityType.Builder.<StunDart>of((type, level) -> new StunDart(type, level), MobCategory.MISC)
+                    .sized(0.5F, 0.5F).clientTrackingRange(4).
+                    updateInterval(20).build("stun_dart"));
 
     public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);

@@ -42,14 +42,14 @@ public class DartGunItem extends ProjectileWeaponItem implements Vanishable {
 
             if (!itemstack.isEmpty() || flag) {
                 if (itemstack.isEmpty()) {
-                    itemstack = new ItemStack(ModItems.ALL.get("dart").get());
+                    itemstack = new ItemStack(ModItems.getItem("dart"));
                 }
 
                 float f = getPowerForTime(i);
                 if (!((double)f < 0.1D)) {
                     boolean flag1 = player.getAbilities().instabuild || (itemstack.getItem() instanceof ArrowItem && ((DartItem)itemstack.getItem()).isInfinite(itemstack, stack, player));
                     if (!level.isClientSide) {
-                        DartItem dartItem = (DartItem)(itemstack.getItem() instanceof DartItem ? itemstack.getItem() : ModItems.ALL.get("dart").get());
+                        DartItem dartItem = (DartItem)(itemstack.getItem() instanceof DartItem ? itemstack.getItem() : ModItems.getItem("dart"));
                         AbstractDart abstractDart = dartItem.createDart(level, itemstack, player);
                         abstractDart = customDart(abstractDart);
                         abstractDart.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, f * 3.0F, 1.0F);
@@ -74,7 +74,7 @@ public class DartGunItem extends ProjectileWeaponItem implements Vanishable {
                         stack.hurtAndBreak(1, player, (player1) -> {
                             player1.broadcastBreakEvent(player.getUsedItemHand());
                         });
-                        if (flag1 || player.getAbilities().instabuild && (itemstack.is(ModItems.ALL.get("spectral_dart").get()) || itemstack.is(ModItems.ALL.get("tipped_dart").get()))) {
+                        if (flag1 || player.getAbilities().instabuild && (itemstack.is(ModItems.getItem("spectral_dart")) || itemstack.is(ModItems.getItem("tipped_dart")))) {
                             abstractDart.pickup = AbstractDart.Pickup.CREATIVE_ONLY;
                         }
 

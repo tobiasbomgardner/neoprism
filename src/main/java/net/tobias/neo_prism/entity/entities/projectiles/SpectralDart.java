@@ -44,7 +44,7 @@ public class SpectralDart extends AbstractDart {
     }
 
     protected ItemStack getPickupItem() {
-        return new ItemStack(ModItems.ALL.get("spectral_dart").get());
+        return new ItemStack(ModItems.getItem("spectral_dart"));
     }
 
     protected void doPostHurtEffects(LivingEntity living) {
