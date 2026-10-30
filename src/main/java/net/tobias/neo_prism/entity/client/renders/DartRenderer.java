@@ -7,15 +7,11 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.tobias.neo_prism.entity.client.models.DartModel;
 import net.tobias.neo_prism.entity.entities.projectiles.AbstractDart;
-import net.tobias.neo_prism.entity.entities.projectiles.Dart;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 

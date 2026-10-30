@@ -34,7 +34,7 @@ public class ModItems {
 
     private static final List<String> NONCOLOR_ITEMS_COMPLETE = null;
     private static final List<String> NONCOLOR_ITEMS_WIP = List.of(
-            "lizard_scale", "raw_lizard_meat", "cooked_lizard_meat","dart","stun_dart","dart_gun"
+            "lizard_scale", "raw_lizard_meat", "cooked_lizard_meat"
     );
 
 
@@ -660,7 +660,6 @@ public class ModItems {
         registerDartGun();
         registerDart();
         registerSpectralDart();
-        registerTippedDart();
         registerPrismLighter();
     }
 
@@ -703,11 +702,6 @@ public class ModItems {
         RegistryObject<Item> obj = ITEMS.register("spectral_dart", () -> new SpectralDartItem(new Item.Properties()));
         ALL.put("spectral_dart", obj);
         SORTED_ORDER_WIP.add("spectral_dart");
-    }
-    private static void registerTippedDart() {
-        RegistryObject<Item> obj = ITEMS.register("tipped_dart", () -> new TippedDartItem(new Item.Properties()));
-        ALL.put("tipped_dart", obj);
-        SORTED_ORDER_WIP.add("tipped_dart");
     }
 
 }

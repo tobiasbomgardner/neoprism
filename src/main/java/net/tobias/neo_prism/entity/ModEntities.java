@@ -21,14 +21,13 @@ public class ModEntities {
 
     public static final RegistryObject<EntityType<Dart>> DART =
             ENTITY_TYPES.register("dart", () -> EntityType.Builder.<Dart>of(Dart::new, MobCategory.MISC)
-                    .sized(0.5F, 0.5F)
-                    .clientTrackingRange(4)
-                    .updateInterval(20)
-                    .build("dart"));
+                    .sized(0.5F, 0.5F).clientTrackingRange(4)
+                    .updateInterval(20).build("dart"));
 
     public static final RegistryObject<EntityType<SpectralDart>> SPECTRAL_DART =
             ENTITY_TYPES.register("spectral_dart", () -> EntityType.Builder.<SpectralDart>of(SpectralDart::new, MobCategory.MISC)
-                    .sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20).build("spectral_dart"));
+                    .sized(0.5F, 0.5F).clientTrackingRange(4).
+                    updateInterval(20).build("spectral_dart"));
 
     public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);
