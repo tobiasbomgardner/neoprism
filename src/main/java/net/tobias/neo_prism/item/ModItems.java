@@ -137,11 +137,6 @@ public class ModItems {
     public static final List<String> SORTED_ORDER_COMPLETE = new ArrayList<>();
     public static final List<String> SORTED_ORDER_WIP = new ArrayList<>();
 
-    public static Item getItem(String id) {
-        RegistryObject<Item> item = ALL.get(id);
-        return item != null ? item.get() : Items.AIR;
-    }
-
     private static void registerCOMPLETE(String id, int maxStackSize) {
         RegistryObject<Item> obj = ITEMS.register(id, () -> new Item(new Item.Properties().stacksTo(maxStackSize)));
         ALL.put(id, obj);
@@ -662,10 +657,6 @@ public class ModItems {
                 }
             }
         }
-        registerDartGun();
-        registerDart();
-        registerSpectralDart();
-        registerStunDart();
         registerPrismLighter();
     }
 
@@ -694,25 +685,4 @@ public class ModItems {
         ALL.put("prism_lighter", obj);
         SORTED_ORDER_WIP.add("prism_lighter");
     }
-    private static void registerDartGun() {
-        RegistryObject<Item> obj = ITEMS.register("dart_gun", () -> new DartGunItem(new Item.Properties().durability(356)));
-        ALL.put("dart_gun", obj);
-        SORTED_ORDER_WIP.add("dart_gun");
-    }
-    private static void registerDart() {
-        RegistryObject<Item> obj = ITEMS.register("dart", () -> new DartItem(new Item.Properties()));
-        ALL.put("dart", obj);
-        SORTED_ORDER_WIP.add("dart");
-    }
-    private static void registerSpectralDart() {
-        RegistryObject<Item> obj = ITEMS.register("spectral_dart", () -> new SpectralDartItem(new Item.Properties()));
-        ALL.put("spectral_dart", obj);
-        SORTED_ORDER_WIP.add("spectral_dart");
-    }
-    private static void registerStunDart() {
-        RegistryObject<Item> obj = ITEMS.register("stun_dart", () -> new StunDartItem(new Item.Properties()));
-        ALL.put("stun_dart", obj);
-        SORTED_ORDER_WIP.add("stun_dart");
-    }
-
 }

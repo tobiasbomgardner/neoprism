@@ -8,10 +8,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 public class StunEffect extends MobEffect {
     public StunEffect() {
         super(MobEffectCategory.HARMFUL, 16747520);
-        this.addAttributeModifier(Attributes.MOVEMENT_SPEED, "57F1BADC-F545-4D89-B218-751C2FF8053D", (double) -0.5F, AttributeModifier.Operation.ADDITION);
-    }
-
-    public boolean getDuration(int duration, int amplifier) {
-        return duration > 0;
+        addAttributeModifier(Attributes.MOVEMENT_SPEED, "57F1BADC-F545-4D89-B218-751C2FF8053D", -1.0D, AttributeModifier.Operation.MULTIPLY_TOTAL);
+        addAttributeModifier(Attributes.JUMP_STRENGTH, "3A2B2CDE-7B7B-4B52-BF2E-4D7B1D7E5D8B", -1.0D, AttributeModifier.Operation.MULTIPLY_TOTAL);
+        addAttributeModifier(Attributes.ATTACK_DAMAGE, "3F4D7FB3-BF1D-47B0-B2E3-5CC35D5BEE7A", -1.0D, AttributeModifier.Operation.MULTIPLY_TOTAL);
     }
 }

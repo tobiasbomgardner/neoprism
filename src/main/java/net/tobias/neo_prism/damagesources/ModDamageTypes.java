@@ -7,9 +7,9 @@ import net.minecraft.world.damagesource.DamageType;
 import net.tobias.neo_prism.Neo_Prism;
 
 public class ModDamageTypes {
-    public static final ResourceKey<DamageType> DART;
+    //public static final ResourceKey<DamageType> DART;
 
     static {
-        DART = ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(Neo_Prism.MOD_ID, "dart"));
+        //DART = ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(Neo_Prism.MOD_ID, "dart"));
     }
 }

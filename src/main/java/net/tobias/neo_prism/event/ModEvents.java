@@ -1,23 +1,83 @@
 package net.tobias.neo_prism.event;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.trading.MerchantOffer;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.event.village.WandererTradesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.tobias.neo_prism.Neo_Prism;
 import net.tobias.neo_prism.block.ModBlocks;
+import net.tobias.neo_prism.effects.ModEffects;
 import net.tobias.neo_prism.item.ModItems;
 
 import java.util.List;
 
 @Mod.EventBusSubscriber(modid = Neo_Prism.MOD_ID)
 public class ModEvents {
+
+    @SubscribeEvent
+    public static void preventStunMovement(TickEvent.PlayerTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) {
+            return;
+        }
+
+        Player player = event.player;
+        if (player.hasEffect(ModEffects.STUN.get())) {
+            if (player.onGround()) {
+                player.setDeltaMovement(0.0D, 0.0D, 0.0D);
+            } else {
+                player.setDeltaMovement(0.0D, Math.min(player.getDeltaMovement().y, -0.08D), 0.0D);
+            }
+            player.setSpeed(0.0F);
+        }
+    }
+
+    @SubscribeEvent
+    public static void preventStunAttack(AttackEntityEvent event) {
+        if (event.getEntity().hasEffect(ModEffects.STUN.get())) {
+            event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
+    public static void preventStunLivingAttack(LivingAttackEvent event) {
+        if (event.getEntity().hasEffect(ModEffects.STUN.get())) {
+            event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
+    public static void preventStunUseItem(PlayerInteractEvent.RightClickItem event) {
+        if (event.getEntity().hasEffect(ModEffects.STUN.get())) {
+            event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
+    public static void preventStunUseBlock(PlayerInteractEvent.RightClickBlock event) {
+        if (event.getEntity().hasEffect(ModEffects.STUN.get())) {
+            event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
+    public static void preventStunUseStart(LivingEntityUseItemEvent.Start event) {
+        if (event.getEntity().hasEffect(ModEffects.STUN.get())) {
+            event.setCanceled(true);
+        }
+    }
 
     @SubscribeEvent
     public static void addCustomTrades(VillagerTradesEvent event) {
