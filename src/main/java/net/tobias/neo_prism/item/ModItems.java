@@ -35,7 +35,7 @@ public class ModItems {
     private static final List<String> NONCOLOR_ITEMS_COMPLETE = null;
     private static final List<String> NONCOLOR_ITEMS_WIP = List.of(
             "raw_lizard_meat","cooked_lizard_meat","lizard_scale","lizard_scale_helmet",
-            "lizard_scale_chestplate","lizard_scale_leggings","lizard_scale_boots","lizard_teeth"
+            "lizard_scale_chestplate","lizard_scale_leggings","lizard_scale_boots","lizard_teeth","lizard_claw"
     );
 
 
@@ -122,6 +122,7 @@ public class ModItems {
         MAX_STACK_SIZE.put("raw_lizard_meat", 64);
         MAX_STACK_SIZE.put("cooked_lizard_meat", 64);
         MAX_STACK_SIZE.put("lizard_scale", 64);
+        MAX_STACK_SIZE.put("lizard_claw", 64);
         MAX_STACK_SIZE.put("lizard_teeth", 64);
         MAX_STACK_SIZE.put("gem", 64);
         MAX_STACK_SIZE.put("shattered_shard", 64);
