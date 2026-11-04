@@ -37,6 +37,9 @@ public enum ModArmorMaterials implements ArmorMaterial {
     WHITE("white", 33, new int[]{ 3, 8, 6, 3 }, 25,
             SoundEvents.ARMOR_EQUIP_DIAMOND, 2f, 0f,
             () -> Ingredient.of(ModItems.ARMOR_ITEMS.get("white_shard").get())),
+    LIZARD_SCALE("lizard_scale", 30, new int[]{ 3, 8, 6, 3 }, 20,
+            SoundEvents.ARMOR_EQUIP_DIAMOND, 1f, 0f,
+            () -> Ingredient.of(ModItems.ARMOR_ITEMS.get("lizard_scale").get())),
     PRISMATIC("prismatic", 57, new int[]{ 5, 10, 8, 4 }, 25,
             SoundEvents.ARMOR_EQUIP_NETHERITE, 3.5f, 1f,
             () -> Ingredient.of(ModItems.ARMOR_ITEMS.get("prismatic_gem").get()));

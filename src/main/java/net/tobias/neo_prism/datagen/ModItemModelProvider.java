@@ -46,9 +46,9 @@ public class ModItemModelProvider extends ItemModelProvider {
     @Override
     protected void registerModels() {
         /*Example use for trimmedArmorItem:
-        trimmedArmorItem(ModItems.ALL.get("ARMOR_ITEM_NAME"));
+        trimmedArmorItem(ModItems.ALL.get("ARMOR_ITEM_NAMESPACE"));
         /*Example use for simpleItem:
-        simpleItem(ModItems.ALL.get("ITEM_NAME"));*/
+        simpleItem(ModItems.ALL.get("ITEM_NAMESPACE"));*/
     }
 
     private void trimmedArmorItem(RegistryObject<Item> itemRegistryObject) {

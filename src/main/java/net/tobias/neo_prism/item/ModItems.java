@@ -34,7 +34,8 @@ public class ModItems {
 
     private static final List<String> NONCOLOR_ITEMS_COMPLETE = null;
     private static final List<String> NONCOLOR_ITEMS_WIP = List.of(
-            "raw_lizard_meat","cooked_lizard_meat","lizard_scale","lizard_teeth"
+            "raw_lizard_meat","cooked_lizard_meat","lizard_scale","lizard_scale_helmet",
+            "lizard_scale_chestplate","lizard_scale_leggings","lizard_scale_boots","lizard_teeth"
     );
 
 
@@ -67,6 +68,10 @@ public class ModItems {
         ARMOR_TYPES.put("chestplate", ArmorItem.Type.CHESTPLATE);
         ARMOR_TYPES.put("leggings", ArmorItem.Type.LEGGINGS);
         ARMOR_TYPES.put("boots", ArmorItem.Type.BOOTS);
+        ARMOR_TYPES.put("lizard_scale_helmet", ArmorItem.Type.HELMET);
+        ARMOR_TYPES.put("lizard_scale_chestplate", ArmorItem.Type.CHESTPLATE);
+        ARMOR_TYPES.put("lizard_scale_leggings", ArmorItem.Type.LEGGINGS);
+        ARMOR_TYPES.put("lizard_scale_boots", ArmorItem.Type.BOOTS);
 
         ARMOR_MATERIALS.put("red_helmet", ModArmorMaterials.RED);
         ARMOR_MATERIALS.put("red_chestplate", ModArmorMaterials.RED);
@@ -108,6 +113,10 @@ public class ModItems {
         ARMOR_MATERIALS.put("prismatic_chestplate", ModArmorMaterials.PRISMATIC);
         ARMOR_MATERIALS.put("prismatic_leggings", ModArmorMaterials.PRISMATIC);
         ARMOR_MATERIALS.put("prismatic_boots", ModArmorMaterials.PRISMATIC);
+        ARMOR_MATERIALS.put("lizard_scale_helmet", ModArmorMaterials.LIZARD_SCALE);
+        ARMOR_MATERIALS.put("lizard_scale_chestplate", ModArmorMaterials.LIZARD_SCALE);
+        ARMOR_MATERIALS.put("lizard_scale_leggings", ModArmorMaterials.LIZARD_SCALE);
+        ARMOR_MATERIALS.put("lizard_scale_boots", ModArmorMaterials.LIZARD_SCALE);
 
         MAX_STACK_SIZE.put("bread", 64);
         MAX_STACK_SIZE.put("raw_lizard_meat", 64);
@@ -131,6 +140,10 @@ public class ModItems {
         MAX_STACK_SIZE.put("axe", 1);
         MAX_STACK_SIZE.put("shovel", 1);
         MAX_STACK_SIZE.put("hoe", 1);
+        MAX_STACK_SIZE.put("lizard_scale_helmet", 1);
+        MAX_STACK_SIZE.put("lizard_scale_chestplate", 1);
+        MAX_STACK_SIZE.put("lizard_scale_leggings", 1);
+        MAX_STACK_SIZE.put("lizard_scale_boots", 1);
     }
 
 
@@ -537,7 +550,13 @@ public class ModItems {
                 if (foodType != null) {
                     registerFoodCOMPLETE(id, foodType, maxStackSize);
                 } else {
-                    registerCOMPLETE(id, maxStackSize);
+                    ModArmorMaterials armorMaterial = ARMOR_MATERIALS.get(id);
+                    ArmorItem.Type armorType = ARMOR_TYPES.get(id);
+                    if (armorMaterial != null && armorType != null) {
+                        registerArmorCOMPLETE(id, armorMaterial, armorType);
+                    } else {
+                        registerCOMPLETE(id, maxStackSize);
+                    }
                 }
             }
         }
@@ -654,7 +673,13 @@ public class ModItems {
                 if (foodType != null) {
                     registerFoodWIP(id, foodType, maxStackSize);
                 } else {
-                    registerWIP(id, maxStackSize);
+                    ModArmorMaterials armorMaterial = ARMOR_MATERIALS.get(id);
+                    ArmorItem.Type armorType = ARMOR_TYPES.get(id);
+                    if (armorMaterial != null && armorType != null) {
+                        registerArmorWIP(id, armorMaterial, armorType);
+                    } else {
+                        registerWIP(id, maxStackSize);
+                    }
                 }
             }
         }
