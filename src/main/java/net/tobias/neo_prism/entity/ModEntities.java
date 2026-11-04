@@ -7,6 +7,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.tobias.neo_prism.Neo_Prism;
+import net.tobias.neo_prism.entity.entities.ShardLizardCharger;
 import net.tobias.neo_prism.entity.entities.ShardLizardScout;
 
 public class ModEntities {
@@ -16,6 +17,9 @@ public class ModEntities {
     public static final RegistryObject<EntityType<ShardLizardScout>> SHARD_LIZARD_SCOUT =
             ENTITY_TYPES.register("shard_lizard_scout", () -> EntityType.Builder.of(ShardLizardScout::new, MobCategory.MONSTER)
                     .sized(2.0f, 1.0f).build("shard_lizard_scout"));
+    public static final RegistryObject<EntityType<ShardLizardCharger>> SHARD_LIZARD_CHARGER =
+            ENTITY_TYPES.register("shard_lizard_charger", () -> EntityType.Builder.of(ShardLizardCharger::new, MobCategory.MONSTER)
+                    .sized(2.0f, 1.0f).build("shard_lizard_charger"));
 
     public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);

@@ -6,13 +6,13 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.tobias.neo_prism.entity.entities.ShardLizardScout;
 
-public class ShardLizardScoutAttackGoal extends MeleeAttackGoal {
+public class ShardLizardScoutBiteAttackGoal extends MeleeAttackGoal {
     private final ShardLizardScout entity;
-    private int attackDelay = 10;
+    private int attackDelay = 25;
     private int ticksUntilNextAttack = 10;
     private boolean shouldCountTillNextAttack = false;
 
-    public ShardLizardScoutAttackGoal(PathfinderMob mob, double speedModifier, boolean followingTargetEvenIfNotSeen) {
+    public ShardLizardScoutBiteAttackGoal(PathfinderMob mob, double speedModifier, boolean followingTargetEvenIfNotSeen) {
         super(mob, speedModifier, followingTargetEvenIfNotSeen);
         entity = ((ShardLizardScout) mob);
     }
@@ -20,7 +20,7 @@ public class ShardLizardScoutAttackGoal extends MeleeAttackGoal {
     @Override
     public void start() {
         super.start();
-        attackDelay = 10;
+        attackDelay = 25;
         ticksUntilNextAttack = 10;
     }
 

@@ -14,6 +14,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.tobias.neo_prism.effects.ModEffects;
 import net.tobias.neo_prism.entity.ModEntities;
+import net.tobias.neo_prism.entity.animations.ShardLizardChargerAnimations;
 import net.tobias.neo_prism.entity.client.renders.*;
 import net.tobias.neo_prism.item.ModItems;
 import net.tobias.neo_prism.block.ModBlocks;
@@ -61,6 +62,7 @@ public class Neo_Prism {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
             EntityRenderers.register(ModEntities.SHARD_LIZARD_SCOUT.get(), ShardLizardScoutRenderer::new);
+            EntityRenderers.register(ModEntities.SHARD_LIZARD_CHARGER.get(), ShardLizardChargerRenderer::new);
         }
     }
 }

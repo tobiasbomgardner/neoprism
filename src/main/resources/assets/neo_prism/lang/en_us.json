@@ -137,9 +137,11 @@
   "item.neo_prism.prismatic_shovel": "Prismatic Shovel",
   "item.neo_prism.prismatic_sword": "Prismatic Sword",
   "item.neo_prism.lizard_scale": "Lizard Scale",
+  "item.neo_prism.lizard_teeth": "Lizard Teeth",
   "item.neo_prism.raw_lizard_meat": "Raw Lizard Meat",
   "item.neo_prism.cooked_lizard_meat": "Cooked Lizard Meat",
   "item.neo_prism.shard_lizard_scout_spawn_egg": "Shard Lizard Scout Spawn Egg",
+  "item.neo_prism.shard_lizard_charger_spawn_egg": "Shard Lizard Charger Spawn Egg",
   "item.neo_prism.prism_lighter": "Prism Lighter",
 
   "block.neo_prism.red_hay_bale": "Red Hay Bale",
@@ -199,6 +201,7 @@
   "block.neo_prism.chiseled_repstone_bricks": "Chiseled Repstone Bricks",
 
   "entity.neo_prism.shard_lizard_scout": "Shard Lizard Scout",
+  "entity.neo_prism.shard_lizard_charger": "Shard Lizard Charger",
 
   "creativetabs.neo_prism_complete": "Neo Prism",
   "creativetabs.neo_prism_wip": "Neo Prism WIP",

@@ -27,7 +27,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
 import net.tobias.neo_prism.Neo_Prism;
-import net.tobias.neo_prism.entity.ai.shard_lizards.goals.ShardLizardScoutAttackGoal;
+import net.tobias.neo_prism.entity.ai.shard_lizards.goals.ShardLizardScoutBiteAttackGoal;
 import net.tobias.neo_prism.item.ModItems;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,14 +51,13 @@ public class ShardLizardScout extends Monster implements InventoryCarrier {
     public final AnimationState deathAnimationState = new AnimationState();
     public final AnimationState shedScaleAnimationState = new AnimationState();
     public final AnimationState attackAnimationState = new AnimationState();
-    private int idleAnimationTicks = 0;
     private int customDeathAnimationTicks = 0;
     private int shedScaleAnimationTicks = 0;
     private boolean shouldDropLizardScale = false;
     public int attackAnimationTicks = 0;
 
-    public ShardLizardScout(EntityType<? extends Monster> pEntityType, Level pLevel) {
-        super(pEntityType, pLevel);
+    public ShardLizardScout(EntityType<? extends Monster> entityType, Level level) {
+        super(entityType, level);
         this.setCanPickUpLoot(true);
         this.xpReward = 10;
     }
@@ -121,7 +120,7 @@ public class ShardLizardScout extends Monster implements InventoryCarrier {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new ShardLizardScoutAttackGoal(this, 1.5f, true));
+        this.goalSelector.addGoal(1, new ShardLizardScoutBiteAttackGoal(this, 1.5f, true));
         this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.1D));
         this.goalSelector.addGoal(3, new RandomLookAroundGoal(this));
 
@@ -262,22 +261,23 @@ public class ShardLizardScout extends Monster implements InventoryCarrier {
 
         this.shedScaleAnimationState.stop();
 
-        if (this.idleAnimationTicks <= 0) {
-            this.idleAnimationTicks = this.random.nextInt(40) + 80;
+        if (this.isAttacking()) {
+            this.idleAnimationState.stop();
+            if (!this.attackAnimationState.isStarted()) {
+                this.attackAnimationState.start(this.tickCount);
+            }
+            return;
+        }
+
+        this.attackAnimationState.stop();
+
+        if (this.getDeltaMovement().horizontalDistanceSqr() > 0.0001D) {
+            this.idleAnimationState.stop();
+            return;
+        }
+
+        if (!this.idleAnimationState.isStarted()) {
             this.idleAnimationState.start(this.tickCount);
-        } else {
-            --this.idleAnimationTicks;
-        }
-
-        if (this.isAttacking() && attackAnimationTicks <= 0) {
-            attackAnimationTicks = 20;
-            attackAnimationState.start(this.tickCount);
-        } else {
-            --this.attackAnimationTicks;
-        }
-
-        if (!this.isAttacking()) {
-            attackAnimationState.stop();
         }
     }
 
@@ -289,6 +289,8 @@ public class ShardLizardScout extends Monster implements InventoryCarrier {
             this.setNoAi(true);
             this.setNoGravity(true);
             this.setDeltaMovement(Vec3.ZERO);
+            this.setHealth(0.0F);
+            return;
         }
         super.die(pDamageSource);
     }
@@ -300,6 +302,7 @@ public class ShardLizardScout extends Monster implements InventoryCarrier {
             ++this.customDeathAnimationTicks;
 
             if (this.customDeathAnimationTicks >= CUSTOM_DEATH_ANIMATION_TICKS && !this.level().isClientSide()) {
+                this.dropAllDeathLoot(this.damageSources().generic());
                 this.remove(RemovalReason.KILLED);
             }
             return;

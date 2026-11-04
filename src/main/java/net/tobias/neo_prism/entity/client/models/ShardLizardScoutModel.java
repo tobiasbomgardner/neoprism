@@ -7,13 +7,12 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
-import net.tobias.neo_prism.entity.animations.ModAnimationsDefinitions;
+import net.tobias.neo_prism.entity.animations.ShardLizardScoutAnimations;
 import net.tobias.neo_prism.entity.entities.ShardLizardScout;
 
 public class ShardLizardScoutModel<T extends ShardLizardScout> extends HierarchicalModel<T> {
 	private final ModelPart shard_lizard_scout;
 	private final ModelPart head;
-
 
 	public ShardLizardScoutModel(ModelPart root) {
 		shard_lizard_scout = root.getChild("shard_lizard_scout");
@@ -348,22 +347,28 @@ public class ShardLizardScoutModel<T extends ShardLizardScout> extends Hierarchi
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 
 		if (entity.isCustomDying()) {
-			this.animate(entity.deathAnimationState, ModAnimationsDefinitions.shard_lizard_scout_death, ageInTicks, 1f);
+			this.animate(entity.deathAnimationState, ShardLizardScoutAnimations.shard_lizard_scout_death, ageInTicks, 1f);
 			return;
 		}
 
 		if (entity.isShedingScale()) {
-			this.animate(entity.shedScaleAnimationState, ModAnimationsDefinitions.shard_lizard_scout_shed_scale, ageInTicks, 1f);
+			this.animate(entity.shedScaleAnimationState, ShardLizardScoutAnimations.shard_lizard_scout_shed_scale, ageInTicks, 1f);
 			return;
 		}
 		if (entity.isAttacking()) {
-			this.animate(entity.attackAnimationState, ModAnimationsDefinitions.shard_lizard_scout_bite_attack, ageInTicks, 1f);
+			this.animate(entity.attackAnimationState, ShardLizardScoutAnimations.shard_lizard_scout_bite_attack, ageInTicks, 1f);
 			return;
 		}
 
 		this.applyHeadRotation(netHeadYaw, headPitch, ageInTicks);
-		this.animateWalk(ModAnimationsDefinitions.shard_lizard_scout_walking, limbSwing, limbSwingAmount, 5f, 2.5f);
-		this.animate(entity.idleAnimationState, ModAnimationsDefinitions.shard_lizard_scout_idle, ageInTicks, 2f);
+		boolean isMoving = limbSwingAmount > 0.01F || entity.getDeltaMovement().horizontalDistanceSqr() > 0.0001D;
+		if (isMoving) {
+			this.animateWalk(ShardLizardScoutAnimations.shard_lizard_scout_walking, limbSwing, limbSwingAmount, 5f, 2.5f);
+			entity.idleAnimationState.stop();
+			return;
+		}
+
+		this.animate(entity.idleAnimationState, ShardLizardScoutAnimations.shard_lizard_scout_idle, ageInTicks, 2f);
 	}
 
 	private void applyHeadRotation(float netheadYaw, float headPitch, float ageInTicks) {
