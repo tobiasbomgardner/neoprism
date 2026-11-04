@@ -61,9 +61,6 @@ public class Neo_Prism {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
             EntityRenderers.register(ModEntities.SHARD_LIZARD_SCOUT.get(), ShardLizardScoutRenderer::new);
-            EntityRenderers.register(ModEntities.DART.get(), DartRenderer::new);
-            EntityRenderers.register(ModEntities.SPECTRAL_DART.get(), SpectralDartRenderer::new);
-            EntityRenderers.register(ModEntities.STUN_DART.get(), StunDartRenderer::new);
         }
     }
 }
