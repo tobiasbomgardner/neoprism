@@ -17,14 +17,18 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.InventoryCarrier;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
+import net.tobias.neo_prism.item.ModArmorMaterials;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.tobias.neo_prism.Neo_Prism;
 import net.tobias.neo_prism.entity.ai.shard_lizards.goals.ShardLizardScoutBiteAttackGoal;
@@ -124,7 +128,72 @@ public class ShardLizardScout extends Monster implements InventoryCarrier {
         this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.1D));
         this.goalSelector.addGoal(3, new RandomLookAroundGoal(this));
 
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
+        this.targetSelector.addGoal(0, new HurtByTargetGoal(this));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 32, true, false,
+                target -> target instanceof Player player
+                        && (this.getTarget() == player
+                        || this.getLastHurtByMob() == player
+                        || !isWearingLizardScaleFullSet(player))));
+    }
+
+    @Override
+    public boolean canAttack(LivingEntity target) {
+        if (target instanceof Player player) {
+            if (this.getTarget() == target || this.getLastHurtByMob() == player) {
+                return true;
+            }
+            if (isWearingLizardScaleFullSet(player)) {
+                return false;
+            }
+        }
+        return super.canAttack(target);
+    }
+
+    @Override
+    public boolean hurt(DamageSource source, float amount) {
+        boolean hurt = super.hurt(source, amount);
+        if (!this.level().isClientSide && source.getEntity() instanceof Player player) {
+            alertNearbyLizardEntities(player);
+        }
+        return hurt;
+    }
+
+    private void alertNearbyLizardEntities(Player player) {
+        AABB alertBox = new AABB(this.getX() - 20.0D, this.getY() - 10.0D, this.getZ() - 20.0D,
+                this.getX() + 20.0D, this.getY() + 10.0D, this.getZ() + 20.0D);
+
+        for (ShardLizardScout scout : this.level().getEntitiesOfClass(ShardLizardScout.class, alertBox,
+                other -> other != this)) {
+            scout.setTarget(player);
+            scout.setLastHurtByMob(player);
+        }
+
+        for (ShardLizardCharger charger : this.level().getEntitiesOfClass(ShardLizardCharger.class, alertBox,
+                other -> !other.is(this))) {
+            charger.setTarget(player);
+            charger.setLastHurtByMob(player);
+        }
+    }
+
+    private static boolean isWearingLizardScaleFullSet(Player player) {
+        ItemStack helmet = player.getInventory().getArmor(3);
+        ItemStack chestplate = player.getInventory().getArmor(2);
+        ItemStack leggings = player.getInventory().getArmor(1);
+        ItemStack boots = player.getInventory().getArmor(0);
+
+        if (helmet.isEmpty() || chestplate.isEmpty() || leggings.isEmpty() || boots.isEmpty()) {
+            return false;
+        }
+
+        return armorIsLizardScale(helmet) && armorIsLizardScale(chestplate)
+                && armorIsLizardScale(leggings) && armorIsLizardScale(boots);
+    }
+
+    private static boolean armorIsLizardScale(ItemStack stack) {
+        if (!(stack.getItem() instanceof ArmorItem armorItem)) {
+            return false;
+        }
+        return armorItem.getMaterial() == ModArmorMaterials.LIZARD_SCALE;
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -183,6 +252,12 @@ public class ShardLizardScout extends Monster implements InventoryCarrier {
 
     public void tick() {
         super.tick();
+
+        LivingEntity target = this.getTarget();
+        if (target instanceof Player player && isWearingLizardScaleFullSet(player)
+                && this.getTarget() != player && this.getLastHurtByMob() != player) {
+            this.setTarget(null);
+        }
 
         if (this.level().isClientSide) {
             setUpAnimationStates();
