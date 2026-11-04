@@ -19,7 +19,7 @@ public class ModEntities {
                     .sized(2.0f, 1.0f).build("shard_lizard_scout"));
     public static final RegistryObject<EntityType<ShardLizardCharger>> SHARD_LIZARD_CHARGER =
             ENTITY_TYPES.register("shard_lizard_charger", () -> EntityType.Builder.of(ShardLizardCharger::new, MobCategory.MONSTER)
-                    .sized(2.0f, 1.0f).build("shard_lizard_charger"));
+                    .sized(2.0f, 1.2f).build("shard_lizard_charger"));
 
     public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);
