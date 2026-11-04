@@ -27,15 +27,15 @@ public class ShardLizardScoutRenderer extends MobRenderer<ShardLizardScout, Shar
     };
 
     public static final ResourceLocation[] EMISSIVE = new ResourceLocation[] {
-            rl("textures/entity/shard_lizards/scout/red_emissive.png"),
-            rl("textures/entity/shard_lizards/scout/orange_emissive.png"),
-            rl("textures/entity/shard_lizards/scout/yellow_emissive.png"),
-            rl("textures/entity/shard_lizards/scout/green_emissive.png"),
-            rl("textures/entity/shard_lizards/scout/blue_emissive.png"),
-            rl("textures/entity/shard_lizards/scout/cyan_emissive.png"),
-            rl("textures/entity/shard_lizards/scout/purple_emissive.png"),
-            rl("textures/entity/shard_lizards/scout/pink_emissive.png"),
-            rl("textures/entity/shard_lizards/scout/white_emissive.png")
+            rl("textures/entity/shard_lizards/emissive/red_emissive.png"),
+            rl("textures/entity/shard_lizards/emissive/orange_emissive.png"),
+            rl("textures/entity/shard_lizards/emissive/yellow_emissive.png"),
+            rl("textures/entity/shard_lizards/emissive/green_emissive.png"),
+            rl("textures/entity/shard_lizards/emissive/blue_emissive.png"),
+            rl("textures/entity/shard_lizards/emissive/cyan_emissive.png"),
+            rl("textures/entity/shard_lizards/emissive/purple_emissive.png"),
+            rl("textures/entity/shard_lizards/emissive/pink_emissive.png"),
+            rl("textures/entity/shard_lizards/emissive/white_emissive.png")
     };
 
     public ShardLizardScoutRenderer(EntityRendererProvider.Context pContext) {

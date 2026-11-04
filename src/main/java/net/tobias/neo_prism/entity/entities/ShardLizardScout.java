@@ -331,17 +331,17 @@ public class ShardLizardScout extends Monster implements InventoryCarrier {
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return SoundEvents.SILVERFISH_AMBIENT;
+        return SoundEvents.CAMEL_AMBIENT;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return SoundEvents.BLAZE_DEATH;
+        return SoundEvents.TURTLE_DEATH;
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource pDamageSource) {
-        return SoundEvents.CAMEL_HURT;
+        return SoundEvents.TURTLE_HURT;
     }
 
     @Override
