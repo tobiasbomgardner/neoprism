@@ -63,6 +63,7 @@ public class Neo_Prism {
         public static void onClientSetup(FMLClientSetupEvent event) {
             EntityRenderers.register(ModEntities.SHARD_LIZARD_SCOUT.get(), ShardLizardScoutRenderer::new);
             EntityRenderers.register(ModEntities.SHARD_LIZARD_CHARGER.get(), ShardLizardChargerRenderer::new);
+            EntityRenderers.register(ModEntities.SHARD_LIZARD_SLASHER.get(), ShardLizardSlasherRenderer::new);
         }
     }
 }

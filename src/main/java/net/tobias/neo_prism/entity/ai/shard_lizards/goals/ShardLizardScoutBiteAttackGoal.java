@@ -40,7 +40,7 @@ public class ShardLizardScoutBiteAttackGoal extends MeleeAttackGoal {
 
     @Override
     protected void checkAndPerformAttack(LivingEntity enemy, double distToEnemySqr) {
-        if (isEnemyWithinAttackDistance(distToEnemySqr)) {
+        if (isEnemyWithinAttackDistance(enemy, distToEnemySqr)) {
             shouldCountTillNextAttack = true;
 
             if (isTimeToStartAttackAnimation()) {
@@ -59,8 +59,8 @@ public class ShardLizardScoutBiteAttackGoal extends MeleeAttackGoal {
         }
     }
 
-    private boolean isEnemyWithinAttackDistance(double distToEnemySqr) {
-        return distToEnemySqr <= (double) 6.0f;
+    private boolean isEnemyWithinAttackDistance(LivingEntity enemy, double distToEnemySqr) {
+        return distToEnemySqr <= this.getAttackReachSqr(enemy) + 1.0D;
     }
 
     @Override

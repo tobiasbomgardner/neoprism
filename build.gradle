@@ -76,6 +76,8 @@ minecraft {
             // You can set various levels here.
             // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
             property 'forge.logging.console.level', 'debug'
+            // Prevent macOS OpenGL/Metal crashes in Forge early display framebuffer.
+            property 'fml.earlyprogresswindow', 'false'
 
             mods {
                 "${mod_id}" {

@@ -9,11 +9,11 @@ import net.tobias.neo_prism.Neo_Prism;
 
 public class ModEffects {
     public static final DeferredRegister<MobEffect> EFFECTS;
-    public static final RegistryObject<MobEffect> STUN;
+    public static final RegistryObject<MobEffect> PARALYSIS;
 
     static {
         EFFECTS = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, Neo_Prism.MOD_ID);
-        STUN = EFFECTS.register("stun", StunEffect::new);
+        PARALYSIS = EFFECTS.register("paralysis", ParalysisEffect::new);
     }
 
     public static void register(IEventBus eventBus) {

@@ -1,18 +1,23 @@
 package net.tobias.neo_prism.event;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.event.village.WandererTradesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -26,57 +31,137 @@ import java.util.List;
 
 @Mod.EventBusSubscriber(modid = Neo_Prism.MOD_ID)
 public class ModEvents {
+    private static final String PARALYSIS_LOCK_YAW_KEY = "neo_prism_paralysis_lock_yaw";
+    private static final String PARALYSIS_LOCK_PITCH_KEY = "neo_prism_paralysis_lock_pitch";
+
 
     @SubscribeEvent
-    public static void preventStunMovement(TickEvent.PlayerTickEvent event) {
+    public static void preventParalysisMovement(LivingEvent.LivingTickEvent event) {
+        LivingEntity livingEntity = event.getEntity();
+        if (isParalyzed(livingEntity)) {
+            double y = livingEntity.getY();
+            livingEntity.setDeltaMovement(0.0d, 0.0d, 0.0d);
+            livingEntity.xxa = 0.0F;
+            livingEntity.yya = 0.0F;
+            livingEntity.zza = 0.0F;
+            livingEntity.setPos(livingEntity.xo, y, livingEntity.zo);
+            livingEntity.setSprinting(false);
+            livingEntity.setSpeed(0.0f);
+            if (livingEntity instanceof Mob mob) {
+                mob.setJumping(false);
+                mob.getNavigation().stop();
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void preventParalysisPlayerMovement(TickEvent.PlayerTickEvent event) {
         if (event.phase != TickEvent.Phase.END) {
             return;
         }
 
-        Player player = event.player;
-        if (player.hasEffect(ModEffects.STUN.get())) {
-            if (player.onGround()) {
-                player.setDeltaMovement(0.0D, 0.0D, 0.0D);
-            } else {
-                player.setDeltaMovement(0.0D, Math.min(player.getDeltaMovement().y, -0.08D), 0.0D);
-            }
-            player.setSpeed(0.0F);
+        if (isParalyzed(event.player)) {
+            lockParalyzedLookDirection(event.player);
+            double y = event.player.getY();
+            event.player.setDeltaMovement(0.0d, 0.0d, 0.0d);
+            event.player.xxa = 0.0F;
+            event.player.yya = 0.0F;
+            event.player.zza = 0.0F;
+            event.player.setPos(event.player.xo, y, event.player.zo);
+            event.player.setSprinting(false);
+            event.player.setSpeed(0.0f);
+            applyLockedPlayerRotation(event.player);
+        } else {
+            clearParalysisLookLock(event.player.getPersistentData());
         }
     }
 
     @SubscribeEvent
-    public static void preventStunAttack(AttackEntityEvent event) {
-        if (event.getEntity().hasEffect(ModEffects.STUN.get())) {
+    public static void preventParalysisAttack(AttackEntityEvent event) {
+        if (isParalyzed(event.getEntity())) {
             event.setCanceled(true);
         }
     }
 
     @SubscribeEvent
-    public static void preventStunLivingAttack(LivingAttackEvent event) {
-        if (event.getEntity().hasEffect(ModEffects.STUN.get())) {
+    public static void preventParalysisLivingAttack(LivingAttackEvent event) {
+        Entity sourceEntity = event.getSource().getEntity();
+        if (sourceEntity instanceof LivingEntity livingSource && isParalyzed(livingSource)) {
             event.setCanceled(true);
         }
     }
 
     @SubscribeEvent
-    public static void preventStunUseItem(PlayerInteractEvent.RightClickItem event) {
-        if (event.getEntity().hasEffect(ModEffects.STUN.get())) {
+    public static void preventParalysisUseItem(PlayerInteractEvent.RightClickItem event) {
+        if (isParalyzed(event.getEntity())) {
             event.setCanceled(true);
         }
     }
 
     @SubscribeEvent
-    public static void preventStunUseBlock(PlayerInteractEvent.RightClickBlock event) {
-        if (event.getEntity().hasEffect(ModEffects.STUN.get())) {
+    public static void preventParalysisUseBlock(PlayerInteractEvent.RightClickBlock event) {
+        if (isParalyzed(event.getEntity())) {
             event.setCanceled(true);
         }
     }
 
     @SubscribeEvent
-    public static void preventStunUseStart(LivingEntityUseItemEvent.Start event) {
-        if (event.getEntity().hasEffect(ModEffects.STUN.get())) {
+    public static void preventParalysisUseStart(LivingEntityUseItemEvent.Start event) {
+        if (isParalyzed(event.getEntity())) {
             event.setCanceled(true);
         }
+    }
+
+    @SubscribeEvent
+    public static void preventParalysisBreakSpeed(PlayerEvent.BreakSpeed event) {
+        if (isParalyzed(event.getEntity())) {
+            event.setNewSpeed(0.0F);
+        }
+    }
+
+    @SubscribeEvent
+    public static void preventParalysisBreakBlock(BlockEvent.BreakEvent event) {
+        if (isParalyzed(event.getPlayer())) {
+            event.setCanceled(true);
+        }
+    }
+
+    private static boolean isParalyzed(LivingEntity livingEntity) {
+        return livingEntity.hasEffect(ModEffects.PARALYSIS.get());
+    }
+
+    private static void lockParalyzedLookDirection(net.minecraft.world.entity.player.Player player) {
+        CompoundTag persistentData = player.getPersistentData();
+        if (!persistentData.contains(PARALYSIS_LOCK_YAW_KEY)) {
+            persistentData.putFloat(PARALYSIS_LOCK_YAW_KEY, player.getYRot());
+        }
+        if (!persistentData.contains(PARALYSIS_LOCK_PITCH_KEY)) {
+            persistentData.putFloat(PARALYSIS_LOCK_PITCH_KEY, player.getXRot());
+        }
+    }
+
+    private static void applyLockedPlayerRotation(net.minecraft.world.entity.player.Player player) {
+        CompoundTag persistentData = player.getPersistentData();
+        if (!persistentData.contains(PARALYSIS_LOCK_YAW_KEY) || !persistentData.contains(PARALYSIS_LOCK_PITCH_KEY)) {
+            return;
+        }
+
+        float lockedYaw = persistentData.getFloat(PARALYSIS_LOCK_YAW_KEY);
+        float lockedPitch = persistentData.getFloat(PARALYSIS_LOCK_PITCH_KEY);
+
+        player.setYRot(lockedYaw);
+        player.setXRot(lockedPitch);
+        player.setYHeadRot(lockedYaw);
+        player.setYBodyRot(lockedYaw);
+        player.yRotO = lockedYaw;
+        player.xRotO = lockedPitch;
+        player.yHeadRotO = lockedYaw;
+        player.yBodyRotO = lockedYaw;
+    }
+
+    private static void clearParalysisLookLock(CompoundTag persistentData) {
+        persistentData.remove(PARALYSIS_LOCK_YAW_KEY);
+        persistentData.remove(PARALYSIS_LOCK_PITCH_KEY);
     }
 
     @SubscribeEvent

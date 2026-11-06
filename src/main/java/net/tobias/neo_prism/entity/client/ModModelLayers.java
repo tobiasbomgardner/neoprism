@@ -9,4 +9,6 @@ public class ModModelLayers {
             new ResourceLocation(Neo_Prism.MOD_ID, "shard_lizard_scout_layer"), "main");
     public static final ModelLayerLocation SHARD_LIZARD_CHARGER_LAYER = new ModelLayerLocation(
             new ResourceLocation(Neo_Prism.MOD_ID, "shard_lizard_charger_layer"), "main");
+    public static final ModelLayerLocation SHARD_LIZARD_SLASHER_LAYER = new ModelLayerLocation(
+            new ResourceLocation(Neo_Prism.MOD_ID, "shard_lizard_slasher_layer"), "main");
 }

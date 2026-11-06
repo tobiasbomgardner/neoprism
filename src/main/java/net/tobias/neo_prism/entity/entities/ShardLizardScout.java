@@ -129,7 +129,7 @@ public class ShardLizardScout extends Monster implements InventoryCarrier {
         this.goalSelector.addGoal(3, new RandomLookAroundGoal(this));
 
         this.targetSelector.addGoal(0, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 32, true, false,
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 32, true, false,
                 target -> target instanceof Player player
                         && (this.getTarget() == player
                         || this.getLastHurtByMob() == player
@@ -146,32 +146,36 @@ public class ShardLizardScout extends Monster implements InventoryCarrier {
                 return false;
             }
         }
-        return super.canAttack(target);
+        return target != null && !target.is(this);
     }
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
         boolean hurt = super.hurt(source, amount);
-        if (!this.level().isClientSide && source.getEntity() instanceof Player player) {
-            alertNearbyLizardEntities(player);
+        if (!this.level().isClientSide) {
+            alertNearbyLizardEntities(source.getEntity() instanceof LivingEntity living ? living : null);
         }
         return hurt;
     }
 
-    private void alertNearbyLizardEntities(Player player) {
+    private void alertNearbyLizardEntities(LivingEntity attacker) {
         AABB alertBox = new AABB(this.getX() - 20.0D, this.getY() - 10.0D, this.getZ() - 20.0D,
                 this.getX() + 20.0D, this.getY() + 10.0D, this.getZ() + 20.0D);
 
+        if (attacker == null) {
+            return;
+        }
+
         for (ShardLizardScout scout : this.level().getEntitiesOfClass(ShardLizardScout.class, alertBox,
                 other -> other != this)) {
-            scout.setTarget(player);
-            scout.setLastHurtByMob(player);
+            scout.setTarget(attacker);
+            scout.setLastHurtByMob(attacker);
         }
 
         for (ShardLizardCharger charger : this.level().getEntitiesOfClass(ShardLizardCharger.class, alertBox,
                 other -> !other.is(this))) {
-            charger.setTarget(player);
-            charger.setLastHurtByMob(player);
+            charger.setTarget(attacker);
+            charger.setLastHurtByMob(attacker);
         }
     }
 

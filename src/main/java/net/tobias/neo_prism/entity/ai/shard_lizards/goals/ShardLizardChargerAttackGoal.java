@@ -15,7 +15,7 @@ import org.joml.Vector3f;
 
 import java.util.EnumSet;
 
-public class ShardLizardChargerBiteAttackGoal extends Goal {
+public class ShardLizardChargerAttackGoal extends Goal {
     private static final double BITE_RANGE = 1.0D;
     private static final double CHARGE_START_RANGE = 12.0D;
     private static final double RETREAT_RANGE = 10.0D;
@@ -38,7 +38,7 @@ public class ShardLizardChargerBiteAttackGoal extends Goal {
     private int dashTicks;
     private int postDashRecoveryTicks;
 
-    public ShardLizardChargerBiteAttackGoal(PathfinderMob mob, double speedModifier, boolean followingTargetEvenIfNotSeen) {
+    public ShardLizardChargerAttackGoal(PathfinderMob mob, double speedModifier, boolean followingTargetEvenIfNotSeen) {
         this.entity = (ShardLizardCharger) mob;
         this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
     }
@@ -111,7 +111,7 @@ public class ShardLizardChargerBiteAttackGoal extends Goal {
         double distance = this.entity.distanceTo(this.target);
         double distSq = this.entity.distanceToSqr(this.target);
 
-        if (distSq <= BITE_RANGE * BITE_RANGE) {
+        if (this.isTargetWithinStrikeRange(this.target, BITE_RANGE)) {
             this.attackCooldown = Math.max(this.attackCooldown, 0);
             if (this.attackCooldown <= 0) {
                 this.performBite();
@@ -257,7 +257,7 @@ public class ShardLizardChargerBiteAttackGoal extends Goal {
             this.entity.setDeltaMovement(0.0D, this.entity.getDeltaMovement().y * 0.1D, 0.0D);
             this.entity.cancelDash();
             this.entity.setIsAttacking(false);
-            if (this.entity.distanceToSqr(this.target) <= (BITE_RANGE + 0.5D) * (BITE_RANGE + 0.5D)) {
+            if (this.isTargetWithinStrikeRange(this.target, BITE_RANGE + 0.5D)) {
                 this.applyDashDamage(this.target);
             }
             this.attackCooldown = ATTACK_INTERVAL;
@@ -315,7 +315,7 @@ public class ShardLizardChargerBiteAttackGoal extends Goal {
             return;
         }
 
-        if (this.entity.distanceToSqr(this.target) > BITE_RANGE * BITE_RANGE) {
+        if (!this.isTargetWithinStrikeRange(this.target, BITE_RANGE)) {
             return;
         }
 
@@ -334,6 +334,10 @@ public class ShardLizardChargerBiteAttackGoal extends Goal {
 
     private void applyDashDamage(LivingEntity target) {
         target.hurt(this.entity.damageSources().mobAttack(this.entity), DASH_DAMAGE);
+    }
+
+    private boolean isTargetWithinStrikeRange(LivingEntity target, double baseRange) {
+        return this.entity.distanceToSqr(target) <= (baseRange * baseRange) + 1.0D;
     }
 
     private Vec3 findSafeDirection(Vec3 preferred) {

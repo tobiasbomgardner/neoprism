@@ -25,9 +25,14 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
 import net.tobias.neo_prism.Neo_Prism;
-import net.tobias.neo_prism.entity.ai.shard_lizards.goals.ShardLizardChargerBiteAttackGoal;
+import net.tobias.neo_prism.entity.ai.shard_lizards.goals.ShardLizardChargerAttackGoal;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ShardLizardCharger extends Monster {
+
+    private static Logger log = LoggerFactory.getLogger(ShardLizardCharger.class);
+
     private static final EntityDataAccessor<Integer> VARIANT =
             SynchedEntityData.defineId(ShardLizardScout.class, EntityDataSerializers.INT);
     private static final int VARIANT_COUNT = 9;
@@ -41,6 +46,7 @@ public class ShardLizardCharger extends Monster {
     public final AnimationState deathAnimationState = new AnimationState();
     public final AnimationState attackAnimationState = new AnimationState();
     private int customDeathAnimationTicks = 0;
+    private DamageSource lastDamageSource = null;
     public int attackAnimationTicks = 0;
     private int dashCooldown = 0;
     private int dashTicks = 0;
@@ -54,7 +60,7 @@ public class ShardLizardCharger extends Monster {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new ShardLizardChargerBiteAttackGoal(this, 1.5f, true));
+        this.goalSelector.addGoal(1, new ShardLizardChargerAttackGoal(this, 1.5f, true));
         this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.1D));
         this.goalSelector.addGoal(3, new RandomLookAroundGoal(this));
 
@@ -223,6 +229,7 @@ public class ShardLizardCharger extends Monster {
             ++this.customDeathAnimationTicks;
 
             if (this.customDeathAnimationTicks >= CUSTOM_DEATH_ANIMATION_TICKS && !this.level().isClientSide()) {
+                log.atInfo().log("About to drop loot in charger.");
                 this.dropAllDeathLoot(this.damageSources().generic());
                 this.remove(RemovalReason.KILLED);
             }

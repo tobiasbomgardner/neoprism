@@ -8,6 +8,7 @@ import net.tobias.neo_prism.Neo_Prism;
 import net.tobias.neo_prism.entity.client.ModModelLayers;
 import net.tobias.neo_prism.entity.client.models.ShardLizardChargerModel;
 import net.tobias.neo_prism.entity.client.models.ShardLizardScoutModel;
+import net.tobias.neo_prism.entity.client.models.ShardLizardSlasherModel;
 
 @Mod.EventBusSubscriber(modid = Neo_Prism.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ModEventBusClientEvents {
@@ -15,5 +16,6 @@ public class ModEventBusClientEvents {
     public static void registerLayer(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(ModModelLayers.SHARD_LIZARD_SCOUT_LAYER, ShardLizardScoutModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.SHARD_LIZARD_CHARGER_LAYER, ShardLizardChargerModel::createBodyLayer);
+        event.registerLayerDefinition(ModModelLayers.SHARD_LIZARD_SLASHER_LAYER, ShardLizardSlasherModel::createBodyLayer);
     }
 }
