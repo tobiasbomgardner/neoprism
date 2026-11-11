@@ -28,7 +28,7 @@ public class ShardLizardSlasherAttackGoal extends MeleeAttackGoal {
     public void tick() {
         super.tick();
         if (shouldCountTillNextAttack) {
-            this.ticksUntilNextAttack = Math.max(this.ticksUntilNextAttack - 1, 0);
+            ticksUntilNextAttack = Math.max(ticksUntilNextAttack - 1, 0);
         }
     }
 
@@ -52,10 +52,13 @@ public class ShardLizardSlasherAttackGoal extends MeleeAttackGoal {
                 return;
             }
 
+            if (entity.isAttacking()) {
+                entity.tryForcedComboOnParalyzedTarget();
+            }
             boolean attackFinished = entity.advanceAttackAnimation();
 
             if (!entity.hasAttackDamageApplied() && entity.attackAnimationTicks >= entity.getAttackDamageTick()) {
-                this.mob.getLookControl().setLookAt(enemy.getX(), enemy.getEyeY(), enemy.getZ());
+                mob.getLookControl().setLookAt(enemy.getX(), enemy.getEyeY(), enemy.getZ());
                 performAttack(enemy);
                 entity.setAttackDamageApplied(true);
             }
@@ -82,29 +85,38 @@ public class ShardLizardSlasherAttackGoal extends MeleeAttackGoal {
     }
 
     private boolean isEnemyWithinAttackDistance(LivingEntity enemy, double distToEnemySqr) {
-        return distToEnemySqr <= this.getAttackReachSqr(enemy) + 1.0D;
+        return distToEnemySqr <= getAttackReachSqr(enemy) + 1.0D;
     }
 
     @Override
     protected void resetAttackCooldown() {
-        this.ticksUntilNextAttack = this.adjustedTickDelay(attacksDelay * 2);
+        ticksUntilNextAttack = adjustedTickDelay(attacksDelay * 2);
     }
 
     @Override
     protected boolean isTimeToAttack() {
-        return this.ticksUntilNextAttack <= 0;
+        return ticksUntilNextAttack <= 0;
     }
 
     protected boolean isTimeToStartAttackAnimation() {
-        return this.ticksUntilNextAttack <= attacksDelay;
+        return ticksUntilNextAttack <= attacksDelay;
     }
 
     protected int getTicksUntilNextAttack() {
-        return this.ticksUntilNextAttack;
+        return ticksUntilNextAttack;
     }
 
     protected void performAttack(LivingEntity enemy) {
-        this.mob.swing(InteractionHand.MAIN_HAND);
-        enemy.hurt(this.mob.damageSources().mobAttack(this.mob), entity.getCurrentAttackDamage());
+        mob.swing(InteractionHand.MAIN_HAND);
+        hurtWithoutKnockback(enemy, entity.getCurrentAttackDamage());
+    }
+
+    private void hurtWithoutKnockback(LivingEntity target, float damage) {
+        net.minecraft.world.phys.Vec3 oldVelocity = target.getDeltaMovement();
+        boolean didDamage = target.hurt(mob.damageSources().mobAttack(mob), damage);
+        if (didDamage) {
+            target.setDeltaMovement(oldVelocity.x, oldVelocity.y, oldVelocity.z);
+            target.hurtMarked = true;
+        }
     }
 }

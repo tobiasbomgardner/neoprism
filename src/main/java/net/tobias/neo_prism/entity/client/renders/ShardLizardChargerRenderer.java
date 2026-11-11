@@ -71,7 +71,7 @@ public class ShardLizardChargerRenderer extends MobRenderer<ShardLizardCharger, 
         return entity.isCustomDying() ? 0.0f : super.getFlipDegrees(entity);
     }
 
-    public class ChargerEmissiveLayer extends RenderLayer<ShardLizardCharger, ShardLizardChargerModel<ShardLizardCharger>> {
+    public static class ChargerEmissiveLayer extends RenderLayer<ShardLizardCharger, ShardLizardChargerModel<ShardLizardCharger>> {
         public ChargerEmissiveLayer(RenderLayerParent<ShardLizardCharger, ShardLizardChargerModel<ShardLizardCharger>> parent) {
             super(parent);
         }

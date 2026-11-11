@@ -39,256 +39,256 @@ public class ShardLizardChargerAttackGoal extends Goal {
     private int postDashRecoveryTicks;
 
     public ShardLizardChargerAttackGoal(PathfinderMob mob, double speedModifier, boolean followingTargetEvenIfNotSeen) {
-        this.entity = (ShardLizardCharger) mob;
-        this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+        entity = (ShardLizardCharger) mob;
+        setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
     }
 
     @Override
     public boolean canUse() {
-        LivingEntity target = this.entity.getTarget();
-        return target != null && target.isAlive() && !this.entity.isCustomDying();
+        LivingEntity target = entity.getTarget();
+        return target != null && target.isAlive() && !entity.isCustomDying();
     }
 
     @Override
     public boolean canContinueToUse() {
-        return this.canUse();
+        return canUse();
     }
 
     @Override
     public void start() {
-        this.target = this.entity.getTarget();
-        this.attackCooldown = 0;
-        this.prepareTicks = 0;
-        this.dashTicks = 0;
-        this.postDashRecoveryTicks = 0;
-        this.chargeTarget = null;
-        this.dashTarget = null;
-        this.preparingCharge = false;
-        this.entity.setIsAttacking(false);
-        this.entity.cancelDash();
+        target = entity.getTarget();
+        attackCooldown = 0;
+        prepareTicks = 0;
+        dashTicks = 0;
+        postDashRecoveryTicks = 0;
+        chargeTarget = null;
+        dashTarget = null;
+        preparingCharge = false;
+        entity.setIsAttacking(false);
+        entity.cancelDash();
     }
 
     @Override
     public void stop() {
-        this.entity.setIsAttacking(false);
-        this.entity.cancelDash();
-        this.chargeTarget = null;
-        this.dashTarget = null;
-        this.preparingCharge = false;
-        this.prepareTicks = 0;
-        this.dashTicks = 0;
-        this.postDashRecoveryTicks = 0;
-        this.entity.getNavigation().stop();
+        entity.setIsAttacking(false);
+        entity.cancelDash();
+        chargeTarget = null;
+        dashTarget = null;
+        preparingCharge = false;
+        prepareTicks = 0;
+        dashTicks = 0;
+        postDashRecoveryTicks = 0;
+        entity.getNavigation().stop();
     }
 
     @Override
     public void tick() {
-        this.target = this.entity.getTarget();
-        if (this.target == null || !this.target.isAlive()) {
+        target = entity.getTarget();
+        if (target == null || !target.isAlive()) {
             return;
         }
 
-        if (this.attackCooldown > 0) {
-            --this.attackCooldown;
+        if (attackCooldown > 0) {
+            --attackCooldown;
         }
 
-        if (this.entity.getDashCooldown() > 0) {
-            this.entity.setDashCooldown(this.entity.getDashCooldown() - 1);
+        if (entity.getDashCooldown() > 0) {
+            entity.setDashCooldown(entity.getDashCooldown() - 1);
         }
 
-        if (this.entity.isDashing()) {
-            this.handleDash();
+        if (entity.isDashing()) {
+            handleDash();
             return;
         }
 
-        if (this.postDashRecoveryTicks > 0) {
-            --this.postDashRecoveryTicks;
-            this.entity.getNavigation().stop();
-            this.entity.setDeltaMovement(0.0D, this.entity.getDeltaMovement().y * 0.1D, 0.0D);
+        if (postDashRecoveryTicks > 0) {
+            --postDashRecoveryTicks;
+            entity.getNavigation().stop();
+            entity.setDeltaMovement(0.0D, entity.getDeltaMovement().y * 0.1D, 0.0D);
             return;
         }
 
-        double distance = this.entity.distanceTo(this.target);
-        double distSq = this.entity.distanceToSqr(this.target);
+        double distance = entity.distanceTo(target);
+        double distSq = entity.distanceToSqr(target);
 
-        if (this.isTargetWithinStrikeRange(this.target, BITE_RANGE)) {
-            this.attackCooldown = Math.max(this.attackCooldown, 0);
-            if (this.attackCooldown <= 0) {
-                this.performBite();
+        if (isTargetWithinStrikeRange(target, BITE_RANGE)) {
+            attackCooldown = Math.max(attackCooldown, 0);
+            if (attackCooldown <= 0) {
+                performBite();
             }
             return;
         }
 
-        if (this.preparingCharge) {
-            if (this.chargeTarget == null) {
-                this.preparingCharge = false;
+        if (preparingCharge) {
+            if (chargeTarget == null) {
+                preparingCharge = false;
                 return;
             }
 
-            if (this.prepareTicks < PREPARE_TICKS) {
-                this.chargeTarget = this.chooseChargeTarget();
+            if (prepareTicks < PREPARE_TICKS) {
+                chargeTarget = chooseChargeTarget();
             }
 
-            this.entity.getNavigation().stop();
-            this.entity.setDeltaMovement(0.0D, this.entity.getDeltaMovement().y * 0.1D, 0.0D);
-            this.entity.getLookControl().setLookAt(this.chargeTarget.x, this.chargeTarget.y, this.chargeTarget.z);
-            this.spawnTrail(this.chargeTarget);
-            this.prepareTicks++;
+            entity.getNavigation().stop();
+            entity.setDeltaMovement(0.0D, entity.getDeltaMovement().y * 0.1D, 0.0D);
+            entity.getLookControl().setLookAt(chargeTarget.x, chargeTarget.y, chargeTarget.z);
+            spawnTrail(chargeTarget);
+            prepareTicks++;
 
-            if (this.prepareTicks >= PREPARE_TICKS && this.prepareTicks < PREPARE_TICKS + POST_PREPARE_DELAY) {
+            if (prepareTicks >= PREPARE_TICKS && prepareTicks < PREPARE_TICKS + POST_PREPARE_DELAY) {
                 return;
             }
 
-            if (this.prepareTicks >= PREPARE_TICKS + POST_PREPARE_DELAY) {
-                this.beginDash();
+            if (prepareTicks >= PREPARE_TICKS + POST_PREPARE_DELAY) {
+                beginDash();
             }
             return;
         }
 
-        if (this.entity.getDashCooldown() > 0) {
+        if (entity.getDashCooldown() > 0) {
             if (distance <= RETREAT_RANGE) {
-                this.runAwayFromTarget();
+                runAwayFromTarget();
             } else {
-                this.entity.getNavigation().stop();
-                this.entity.setDeltaMovement(0.0D, this.entity.getDeltaMovement().y * 0.1D, 0.0D);
+                entity.getNavigation().stop();
+                entity.setDeltaMovement(0.0D, entity.getDeltaMovement().y * 0.1D, 0.0D);
             }
             return;
         }
 
-        if (this.entity.getDashCooldown() <= 0 && distance <= CHARGE_START_RANGE) {
-            this.prepareCharge();
+        if (entity.getDashCooldown() <= 0 && distance <= CHARGE_START_RANGE) {
+            prepareCharge();
             return;
         }
 
         if (distance <= RETREAT_RANGE) {
-            this.runAwayFromTarget();
+            runAwayFromTarget();
             return;
         }
 
-        this.entity.getNavigation().moveTo(this.target, 1.1D);
+        entity.getNavigation().moveTo(target, 1.1D);
     }
 
     private void decideNearRangeBehavior() {
-        if (this.target == null) {
+        if (target == null) {
             return;
         }
 
-        double distance = this.entity.distanceTo(this.target);
+        double distance = entity.distanceTo(target);
         if (distance > RETREAT_RANGE) {
-            this.prepareCharge();
+            prepareCharge();
             return;
         }
 
-        Vec3 retreatDirection = this.entity.position().subtract(this.target.position()).normalize();
-        Vec3 safeDirection = this.findSafeDirection(retreatDirection);
-        Vec3 retreatPoint = this.target.position().add(safeDirection.scale(RETREAT_RANGE));
-        this.entity.getNavigation().moveTo(retreatPoint.x, retreatPoint.y, retreatPoint.z, 1.25D);
+        Vec3 retreatDirection = entity.position().subtract(target.position()).normalize();
+        Vec3 safeDirection = findSafeDirection(retreatDirection);
+        Vec3 retreatPoint = target.position().add(safeDirection.scale(RETREAT_RANGE));
+        entity.getNavigation().moveTo(retreatPoint.x, retreatPoint.y, retreatPoint.z, 1.25D);
     }
 
     private void decideChargeBehavior() {
-        if (this.target == null) {
+        if (target == null) {
             return;
         }
 
-        double distance = this.entity.distanceTo(this.target);
+        double distance = entity.distanceTo(target);
         if (distance <= BITE_RANGE) {
-            this.performBite();
+            performBite();
             return;
         }
 
         if (distance <= RETREAT_RANGE) {
-            this.runAwayFromTarget();
+            runAwayFromTarget();
             return;
         }
 
-        this.prepareCharge();
+        prepareCharge();
     }
 
     private void prepareCharge() {
-        if (this.target == null) {
+        if (target == null) {
             return;
         }
 
-        this.chargeTarget = this.chooseChargeTarget();
-        this.preparingCharge = true;
-        this.prepareTicks = 0;
-        this.entity.getNavigation().stop();
-        this.entity.setDeltaMovement(0.0D, this.entity.getDeltaMovement().y, 0.0D);
-        this.spawnTrail(this.chargeTarget);
+        chargeTarget = chooseChargeTarget();
+        preparingCharge = true;
+        prepareTicks = 0;
+        entity.getNavigation().stop();
+        entity.setDeltaMovement(0.0D, entity.getDeltaMovement().y, 0.0D);
+        spawnTrail(chargeTarget);
     }
 
     private void beginDash() {
-        if (this.chargeTarget == null) {
+        if (chargeTarget == null) {
             return;
         }
 
-        this.dashTarget = this.chargeTarget;
-        Vec3 direction = this.dashTarget.subtract(this.entity.getBoundingBox().getCenter());
+        dashTarget = chargeTarget;
+        Vec3 direction = dashTarget.subtract(entity.getBoundingBox().getCenter());
         if (direction.lengthSqr() <= 0.01D) {
-            this.chargeTarget = null;
-            this.dashTarget = null;
-            this.preparingCharge = false;
-            this.prepareTicks = 0;
+            chargeTarget = null;
+            dashTarget = null;
+            preparingCharge = false;
+            prepareTicks = 0;
             return;
         }
 
-        this.entity.startDash(direction);
-        this.entity.setDashCooldown(DASH_COOLDOWN);
-        this.entity.setIsAttacking(true);
-        this.dashTicks = 0;
-        this.prepareTicks = 0;
-        this.preparingCharge = false;
-        this.chargeTarget = null;
+        entity.startDash(direction);
+        entity.setDashCooldown(DASH_COOLDOWN);
+        entity.setIsAttacking(true);
+        dashTicks = 0;
+        prepareTicks = 0;
+        preparingCharge = false;
+        chargeTarget = null;
     }
 
     private void handleDash() {
-        if (this.target == null || this.dashTarget == null) {
+        if (target == null || dashTarget == null) {
             return;
         }
 
-        this.dashTicks++;
+        dashTicks++;
 
-        Vec3 dashVector = this.dashTarget.subtract(this.entity.position());
+        Vec3 dashVector = dashTarget.subtract(entity.position());
         if (dashVector.lengthSqr() > 0.25D) {
-            this.entity.setDeltaMovement(dashVector.normalize().scale(2.6D));
+            entity.setDeltaMovement(dashVector.normalize().scale(2.6D));
         }
 
-        if (this.entity.distanceToSqr(this.dashTarget) <= 1.5D || this.entity.horizontalCollision || this.dashTicks >= DASH_DURATION) {
-            this.entity.setDeltaMovement(0.0D, this.entity.getDeltaMovement().y * 0.1D, 0.0D);
-            this.entity.cancelDash();
-            this.entity.setIsAttacking(false);
-            if (this.isTargetWithinStrikeRange(this.target, BITE_RANGE + 0.5D)) {
-                this.applyDashDamage(this.target);
+        if (entity.distanceToSqr(dashTarget) <= 1.5D || entity.horizontalCollision || dashTicks >= DASH_DURATION) {
+            entity.setDeltaMovement(0.0D, entity.getDeltaMovement().y * 0.1D, 0.0D);
+            entity.cancelDash();
+            entity.setIsAttacking(false);
+            if (isTargetWithinStrikeRange(target, BITE_RANGE + 0.5D)) {
+                applyDashDamage(target);
             }
-            this.attackCooldown = ATTACK_INTERVAL;
-            this.entity.setDashCooldown(DASH_COOLDOWN);
-            this.postDashRecoveryTicks = POST_DASH_RECOVERY_TICKS;
-            this.chargeTarget = null;
-            this.dashTarget = null;
-            this.preparingCharge = false;
-            this.prepareTicks = 0;
-            this.dashTicks = 0;
+            attackCooldown = ATTACK_INTERVAL;
+            entity.setDashCooldown(DASH_COOLDOWN);
+            postDashRecoveryTicks = POST_DASH_RECOVERY_TICKS;
+            chargeTarget = null;
+            dashTarget = null;
+            preparingCharge = false;
+            prepareTicks = 0;
+            dashTicks = 0;
             return;
         }
     }
 
     private void runAwayFromTarget() {
-        if (this.target == null) {
+        if (target == null) {
             return;
         }
 
-        Vec3 away = this.entity.position().subtract(this.target.position()).normalize();
-        Vec3 safeDirection = this.findSafeDirection(away);
-        Vec3 destination = this.entity.position().add(safeDirection.scale(4.0D));
-        this.entity.getNavigation().moveTo(destination.x, destination.y, destination.z, 1.3D);
+        Vec3 away = entity.position().subtract(target.position()).normalize();
+        Vec3 safeDirection = findSafeDirection(away);
+        Vec3 destination = entity.position().add(safeDirection.scale(4.0D));
+        entity.getNavigation().moveTo(destination.x, destination.y, destination.z, 1.3D);
     }
 
     private Vec3 chooseChargeTarget() {
-        if (this.target == null) {
-            return this.entity.getBoundingBox().getCenter();
+        if (target == null) {
+            return entity.getBoundingBox().getCenter();
         }
 
-        Vec3 targetFeet = new Vec3(this.target.getX(), this.target.getY(), this.target.getZ());
+        Vec3 targetFeet = new Vec3(target.getX(), target.getY(), target.getZ());
         Vec3[] candidates = new Vec3[] {
                 targetFeet,
                 new Vec3(targetFeet.x + 0.5D, targetFeet.y, targetFeet.z),
@@ -302,7 +302,7 @@ public class ShardLizardChargerAttackGoal extends Goal {
         };
 
         for (Vec3 candidate : candidates) {
-            if (this.isSafePosition(candidate)) {
+            if (isSafePosition(candidate)) {
                 return candidate;
             }
         }
@@ -311,33 +311,42 @@ public class ShardLizardChargerAttackGoal extends Goal {
     }
 
     private void performBite() {
-        if (this.target == null) {
+        if (target == null) {
             return;
         }
 
-        if (!this.isTargetWithinStrikeRange(this.target, BITE_RANGE)) {
+        if (!isTargetWithinStrikeRange(target, BITE_RANGE)) {
             return;
         }
 
-        this.entity.getLookControl().setLookAt(this.target.getX(), this.target.getEyeY(), this.target.getZ());
-        this.entity.setIsAttacking(true);
-        this.entity.swing(InteractionHand.MAIN_HAND);
-        this.applyBiteDamage(this.target);
-        this.entity.setIsAttacking(false);
-        this.attackCooldown = ATTACK_INTERVAL;
-        this.entity.setDashCooldown(35);
+        entity.getLookControl().setLookAt(target.getX(), target.getEyeY(), target.getZ());
+        entity.setIsAttacking(true);
+        entity.swing(InteractionHand.MAIN_HAND);
+        applyBiteDamage(target);
+        entity.setIsAttacking(false);
+        attackCooldown = ATTACK_INTERVAL;
+        entity.setDashCooldown(35);
     }
 
     private void applyBiteDamage(LivingEntity target) {
-        target.hurt(this.entity.damageSources().mobAttack(this.entity), BITE_DAMAGE);
+        hurtWithoutKnockback(target, BITE_DAMAGE);
     }
 
     private void applyDashDamage(LivingEntity target) {
-        target.hurt(this.entity.damageSources().mobAttack(this.entity), DASH_DAMAGE);
+        hurtWithoutKnockback(target, DASH_DAMAGE);
+    }
+
+    private void hurtWithoutKnockback(LivingEntity target, float damage) {
+        Vec3 oldVelocity = target.getDeltaMovement();
+        boolean didDamage = target.hurt(entity.damageSources().mobAttack(entity), damage);
+        if (didDamage) {
+            target.setDeltaMovement(oldVelocity.x, oldVelocity.y, oldVelocity.z);
+            target.hurtMarked = true;
+        }
     }
 
     private boolean isTargetWithinStrikeRange(LivingEntity target, double baseRange) {
-        return this.entity.distanceToSqr(target) <= (baseRange * baseRange) + 1.0D;
+        return entity.distanceToSqr(target) <= (baseRange * baseRange) + 1.0D;
     }
 
     private Vec3 findSafeDirection(Vec3 preferred) {
@@ -352,7 +361,7 @@ public class ShardLizardChargerAttackGoal extends Goal {
 
         for (Vec3 direction : directions) {
             Vec3 normalized = direction.normalize();
-            if (this.isPathSafe(this.entity.position(), normalized, 3.0D)) {
+            if (isPathSafe(entity.position(), normalized, 3.0D)) {
                 return normalized;
             }
         }
@@ -363,7 +372,7 @@ public class ShardLizardChargerAttackGoal extends Goal {
     private boolean isPathSafe(Vec3 start, Vec3 direction, double maxDistance) {
         for (double distance = 0.5D; distance <= maxDistance; distance += 0.5D) {
             Vec3 sample = start.add(direction.scale(distance));
-            if (!this.isSafePosition(sample)) {
+            if (!isSafePosition(sample)) {
                 return false;
             }
         }
@@ -373,15 +382,15 @@ public class ShardLizardChargerAttackGoal extends Goal {
     private boolean isSafePosition(Vec3 position) {
         for (double yOffset = -1.0D; yOffset <= 1.0D; yOffset += 1.0D) {
             BlockPos pos = BlockPos.containing(position.x, position.y + yOffset, position.z);
-            BlockState state = this.entity.level().getBlockState(pos);
-            FluidState fluid = this.entity.level().getFluidState(pos);
+            BlockState state = entity.level().getBlockState(pos);
+            FluidState fluid = entity.level().getFluidState(pos);
             if (!state.isAir() || !fluid.isEmpty()) {
                 return false;
             }
         }
 
         BlockPos groundPos = BlockPos.containing(position.x, position.y - 1.0D, position.z);
-        if (!this.entity.level().getBlockState(groundPos).isAir()) {
+        if (!entity.level().getBlockState(groundPos).isAir()) {
             return true;
         }
 
@@ -389,11 +398,11 @@ public class ShardLizardChargerAttackGoal extends Goal {
     }
 
     private void spawnTrail(Vec3 target) {
-        if (!(this.entity.level() instanceof ServerLevel serverLevel)) {
+        if (!(entity.level() instanceof ServerLevel serverLevel)) {
             return;
         }
 
-        Vec3 start = this.entity.getBoundingBox().getCenter();
+        Vec3 start = entity.getBoundingBox().getCenter();
         Vec3 delta = target.subtract(start);
         int steps = Math.max(1, (int) Math.ceil(delta.length() * 3.0D));
 

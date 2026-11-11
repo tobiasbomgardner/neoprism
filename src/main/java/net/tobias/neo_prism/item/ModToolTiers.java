@@ -16,4 +16,8 @@ public class ModToolTiers {
             5.0f, 20, ModTags.Blocks.NEEDS_PRISMATIC_TOOL,
             () -> Ingredient.of(ModItems.MODDED_TIER_MATERIALS.get("prismatic_gem").get())), new ResourceLocation(Neo_Prism.MOD_ID, "prismatic"),
             List.of(Tiers.NETHERITE), List.of());
+    public static final Tier LIZARD = TierSortingRegistry.registerTier(new ForgeTier(5, 1000, 3.0f,
+            10.0f, 30, ModTags.Blocks.NEEDS_LIZARD_TOOL,
+            () -> Ingredient.of(ModItems.MODDED_TIER_MATERIALS.get("lizard_tail").get())), new ResourceLocation(Neo_Prism.MOD_ID, "lizard"),
+            List.of(Tiers.DIAMOND), List.of());
 }

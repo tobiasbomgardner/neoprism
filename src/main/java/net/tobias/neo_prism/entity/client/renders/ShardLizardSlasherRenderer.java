@@ -73,7 +73,7 @@ public class ShardLizardSlasherRenderer extends MobRenderer<ShardLizardSlasher, 
         return entity.isCustomDying() ? 0.0f : super.getFlipDegrees(entity);
     }
 
-    public class SlasherEmissiveLayer extends RenderLayer<ShardLizardSlasher, ShardLizardSlasherModel<ShardLizardSlasher>> {
+    public static class SlasherEmissiveLayer extends RenderLayer<ShardLizardSlasher, ShardLizardSlasherModel<ShardLizardSlasher>> {
         public SlasherEmissiveLayer(RenderLayerParent<ShardLizardSlasher, ShardLizardSlasherModel<ShardLizardSlasher>> parent) {
             super(parent);
         }

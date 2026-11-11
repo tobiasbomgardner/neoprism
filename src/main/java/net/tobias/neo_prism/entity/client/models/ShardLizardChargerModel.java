@@ -15,7 +15,7 @@ public class ShardLizardChargerModel<T extends ShardLizardCharger> extends Hiera
 	private final ModelPart head;
 
 	public ShardLizardChargerModel(ModelPart root) {
-		shard_lizard_charger = root.getChild("shard_lizard_scout");
+		shard_lizard_charger = root.getChild("shard_lizard_charger");
 		final ModelPart body = shard_lizard_charger.getChild("body");
 		final ModelPart all_but_legs = body.getChild("all_but_legs");
 		final ModelPart body_neck = all_but_legs.getChild("body_neck");
@@ -90,9 +90,9 @@ public class ShardLizardChargerModel<T extends ShardLizardCharger> extends Hiera
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		PartDefinition shard_lizard_scout = partdefinition.addOrReplaceChild("shard_lizard_scout", CubeListBuilder.create(), PartPose.offset(0.0F, 24.1F, 0.0F));
+		PartDefinition shard_lizard_charger = partdefinition.addOrReplaceChild("shard_lizard_charger", CubeListBuilder.create(), PartPose.offset(0.0F, 24.1F, 0.0F));
 
-		PartDefinition body = shard_lizard_scout.addOrReplaceChild("body", CubeListBuilder.create(), PartPose.offset(0.0F, -6.8F, 18.5F));
+		PartDefinition body = shard_lizard_charger.addOrReplaceChild("body", CubeListBuilder.create(), PartPose.offset(0.0F, -6.8F, 18.5F));
 
 		PartDefinition all_but_legs = body.addOrReplaceChild("all_but_legs", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
 
@@ -396,27 +396,27 @@ public class ShardLizardChargerModel<T extends ShardLizardCharger> extends Hiera
 
 	@Override
 	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		this.root().getAllParts().forEach(ModelPart::resetPose);
+		root().getAllParts().forEach(ModelPart::resetPose);
 
 		if (entity.isCustomDying()) {
-			this.animate(entity.deathAnimationState, ShardLizardChargerAnimations.shard_lizard_charger_death, ageInTicks, 2f);
+			animate(entity.deathAnimationState, ShardLizardChargerAnimations.shard_lizard_charger_death, ageInTicks, 2f);
 			return;
 		}
 
 		if (entity.isAttacking()) {
-			this.animate(entity.attackAnimationState, ShardLizardChargerAnimations.shard_lizard_charger_bite_attack, ageInTicks, 2f);
+			animate(entity.attackAnimationState, ShardLizardChargerAnimations.shard_lizard_charger_bite_attack, ageInTicks, 2f);
 			return;
 		}
 
-		this.applyHeadRotation(netHeadYaw, headPitch, ageInTicks);
+		applyHeadRotation(netHeadYaw, headPitch, ageInTicks);
 		boolean isMoving = limbSwingAmount > 0.01F || entity.getDeltaMovement().horizontalDistanceSqr() > 0.0001D;
 		if (isMoving) {
-			this.animateWalk(ShardLizardChargerAnimations.shard_lizard_charger_walk, limbSwing, limbSwingAmount, 4f, 2.5f);
+			animateWalk(ShardLizardChargerAnimations.shard_lizard_charger_walk, limbSwing, limbSwingAmount, 4f, 2.5f);
 			entity.idleAnimationState.stop();
 			return;
 		}
 
-		this.animate(entity.idleAnimationState, ShardLizardChargerAnimations.shard_lizard_charger_idle, ageInTicks, 2f);
+		animate(entity.idleAnimationState, ShardLizardChargerAnimations.shard_lizard_charger_idle, ageInTicks, 2f);
 	}
 
 	@Override
@@ -427,8 +427,8 @@ public class ShardLizardChargerModel<T extends ShardLizardCharger> extends Hiera
 	private void applyHeadRotation(float netheadYaw, float headPitch, float ageInTicks) {
 		netheadYaw = Mth.clamp(netheadYaw, -30.0f, 30.0f);
 		headPitch = Mth.clamp(headPitch, -25.0f, 45.0f);
-		this.head.yRot = ((float)Math.PI / 180f);
-		this.head.xRot = ((float)Math.PI / 180f);
+		head.yRot = netheadYaw * ((float)Math.PI / 180f);
+		head.xRot = headPitch * ((float)Math.PI / 180f);
 	}
 
 	@Override

@@ -25,6 +25,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
 import net.tobias.neo_prism.Neo_Prism;
+import net.tobias.neo_prism.effects.ModEffects;
 import net.tobias.neo_prism.entity.ai.shard_lizards.goals.ShardLizardSlasherAttackGoal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,34 +59,52 @@ public class ShardLizardSlasher extends Monster {
     public final AnimationState leftSlashAnimationState = new AnimationState();
     public final AnimationState slamSlashAnimationState = new AnimationState();
     private int customDeathAnimationTicks = 0;
-    private DamageSource lastDamageSource = null;
     public int attackAnimationTicks = 0;
     private boolean attackDamageApplied = false;
 
-    public ShardLizardSlasher(EntityType<? extends Monster> pEntityType, Level pLevel) {
-        super(pEntityType, pLevel);
-        this.xpReward = 20;
+    public ShardLizardSlasher(EntityType<? extends Monster> entityType, Level level) {
+        super(entityType, level);
+        xpReward = 20;
     }
 
     public void setIsAttacking(boolean isAttacking) {
-        if (this.entityData.get(IS_ATTACKING) != isAttacking) {
-            this.entityData.set(IS_ATTACKING, isAttacking);
+        if (entityData.get(IS_ATTACKING) != isAttacking) {
+            entityData.set(IS_ATTACKING, isAttacking);
         }
-        this.attackAnimationTicks = 0;
-        this.attackDamageApplied = false;
+        attackAnimationTicks = 0;
+        attackDamageApplied = false;
         if (!isAttacking) {
-            this.setComboStep(COMBO_STEP_LEFT);
+            setComboStep(COMBO_STEP_LEFT);
         }
     }
 
     public void startAttackAnimation() {
-        this.setAttackType(this.getRandom().nextInt(4));
-        this.setComboStep(COMBO_STEP_LEFT);
-        this.setIsAttacking(true);
+        LivingEntity target = getTarget();
+        boolean isTargetParalyzed = target != null && target.hasEffect(ModEffects.PARALYSIS.get());
+        if (isTargetParalyzed) {
+            setAttackType(getRandom().nextInt(4));
+        } else {
+            setAttackType(getRandom().nextInt(3));
+        }
+        setComboStep(COMBO_STEP_LEFT);
+        setIsAttacking(true);
+    }
+
+    public boolean tryForcedComboOnParalyzedTarget() {
+        LivingEntity target = getTarget();
+        if (!isAttacking() || target == null) return false;
+        if (getAttackType() == ATTACK_COMBO) return false;
+        if (!target.hasEffect(ModEffects.PARALYSIS.get())) return false;
+
+        setAttackType(ATTACK_COMBO);
+        setComboStep(COMBO_STEP_LEFT);
+        attackAnimationTicks = 0;
+        attackDamageApplied = false;
+        return true;
     }
 
     public boolean hasAttackDamageApplied() {
-        return this.attackDamageApplied;
+        return attackDamageApplied;
     }
 
     public void setAttackDamageApplied(boolean attackDamageApplied) {
@@ -93,57 +112,57 @@ public class ShardLizardSlasher extends Monster {
     }
 
     public int getAttackDamageTick() {
-        if (this.getActiveAttackType() == ATTACK_LEFT_SLASH || this.getActiveAttackType() == ATTACK_RIGHT_SLASH || this.getActiveAttackType() == ATTACK_SLAM_SLASH) {
+        if (getActiveAttackType() == ATTACK_LEFT_SLASH || getActiveAttackType() == ATTACK_RIGHT_SLASH || getActiveAttackType() == ATTACK_SLAM_SLASH) {
             return 20;
         } else {
-            throw new IllegalStateException("Unexpected value: " + this.getActiveAttackType());
+            throw new IllegalStateException("Unexpected value: " + getActiveAttackType());
         }
     }
 
     public int getAttackAnimationDurationTicks() {
-        if (this.getActiveAttackType() == ATTACK_LEFT_SLASH || this.getActiveAttackType() == ATTACK_RIGHT_SLASH || this.getActiveAttackType() == ATTACK_SLAM_SLASH) {
+        if (getActiveAttackType() == ATTACK_LEFT_SLASH || getActiveAttackType() == ATTACK_RIGHT_SLASH || getActiveAttackType() == ATTACK_SLAM_SLASH) {
             return 45;
         } else {
-            throw new IllegalStateException("Unexpected value: " + this.getActiveAttackType());
+            throw new IllegalStateException("Unexpected value: " + getActiveAttackType());
         }
     }
 
     public float getCurrentAttackDamage() {
-        float baseDamage = switch (this.getActiveAttackType()) {
-            case ATTACK_SLAM_SLASH -> 7.0F;
-            case ATTACK_LEFT_SLASH, ATTACK_RIGHT_SLASH -> 5.0F;
-            default -> throw new IllegalStateException("Unexpected value: " + this.getActiveAttackType());
+        float baseDamage = switch (getActiveAttackType()) {
+            case ATTACK_SLAM_SLASH -> 7.0f;
+            case ATTACK_LEFT_SLASH, ATTACK_RIGHT_SLASH -> 5.0f;
+            default -> throw new IllegalStateException("Unexpected value: " + getActiveAttackType());
         };
 
-        if (this.getAttackType() == ATTACK_COMBO) {
-            return baseDamage * 3.0F;
+        if (getAttackType() == ATTACK_COMBO) {
+            return baseDamage * 3.0f;
         }
 
         return baseDamage;
     }
 
     public boolean isAttacking() {
-        return this.entityData.get(IS_ATTACKING);
+        return entityData.get(IS_ATTACKING);
     }
 
     public int getAttackType() {
-        return this.entityData.get(ATTACK_TYPE);
+        return entityData.get(ATTACK_TYPE);
     }
 
     public int getComboStep() {
-        return this.entityData.get(COMBO_STEP);
+        return entityData.get(COMBO_STEP);
     }
 
     public void setComboStep(int comboStep) {
-        this.entityData.set(COMBO_STEP, Mth.clamp(comboStep, COMBO_STEP_LEFT, COMBO_STEP_SLAM));
+        entityData.set(COMBO_STEP, Mth.clamp(comboStep, COMBO_STEP_LEFT, COMBO_STEP_SLAM));
     }
 
     public int getActiveAttackType() {
-        if (this.getAttackType() != ATTACK_COMBO) {
-            return this.getAttackType();
+        if (getAttackType() != ATTACK_COMBO) {
+            return getAttackType();
         }
 
-        return switch (this.getComboStep()) {
+        return switch (getComboStep()) {
             case COMBO_STEP_LEFT -> ATTACK_LEFT_SLASH;
             case COMBO_STEP_RIGHT -> ATTACK_RIGHT_SLASH;
             case COMBO_STEP_SLAM -> ATTACK_SLAM_SLASH;
@@ -152,76 +171,76 @@ public class ShardLizardSlasher extends Monster {
     }
 
     public boolean isComboInProgress() {
-        return this.isAttacking() && this.getAttackType() == ATTACK_COMBO;
+        return isAttacking() && getAttackType() == ATTACK_COMBO;
     }
 
     public boolean advanceAttackAnimation() {
-        ++this.attackAnimationTicks;
+        ++attackAnimationTicks;
 
-        if (this.attackAnimationTicks < this.getAttackAnimationDurationTicks()) {
+        if (attackAnimationTicks < getAttackAnimationDurationTicks()) {
             return false;
         }
 
-        if (this.getAttackType() == ATTACK_COMBO && this.getComboStep() < COMBO_STEP_SLAM) {
-            this.setComboStep(this.getComboStep() + 1);
-            this.attackAnimationTicks = 0;
-            this.attackDamageApplied = false;
+        if (getAttackType() == ATTACK_COMBO && getComboStep() < COMBO_STEP_SLAM) {
+            setComboStep(getComboStep() + 1);
+            attackAnimationTicks = 0;
+            attackDamageApplied = false;
             return false;
         }
 
-        this.setIsAttacking(false);
+        setIsAttacking(false);
         return true;
     }
 
     public void setAttackType(int attackType) {
-        this.entityData.set(ATTACK_TYPE, Mth.clamp(attackType, ATTACK_RIGHT_SLASH, ATTACK_COMBO));
+        entityData.set(ATTACK_TYPE, Mth.clamp(attackType, ATTACK_RIGHT_SLASH, ATTACK_COMBO));
     }
 
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(VARIANT, 0);
-        this.entityData.define(CUSTOM_DYING, false);
-        this.entityData.define(IS_ATTACKING, false);
-        this.entityData.define(ATTACK_TYPE, ATTACK_RIGHT_SLASH);
-        this.entityData.define(COMBO_STEP, COMBO_STEP_LEFT);
+        entityData.define(VARIANT, 0);
+        entityData.define(CUSTOM_DYING, false);
+        entityData.define(IS_ATTACKING, false);
+        entityData.define(ATTACK_TYPE, ATTACK_RIGHT_SLASH);
+        entityData.define(COMBO_STEP, COMBO_STEP_LEFT);
     }
 
     public int getVariant() {
-        return Mth.clamp(this.entityData.get(VARIANT), 0, VARIANT_COUNT - 1);
+        return Mth.clamp(entityData.get(VARIANT), 0, VARIANT_COUNT - 1);
     }
 
     public void setVariant(int variant) {
-        this.entityData.set(VARIANT, Mth.clamp(variant, 0, VARIANT_COUNT - 1));
+        entityData.set(VARIANT, Mth.clamp(variant, 0, VARIANT_COUNT - 1));
     }
 
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType,
                                         SpawnGroupData spawnGroupData, CompoundTag tag) {
         SpawnGroupData data = super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData, tag);
-        this.setVariant(this.random.nextInt(VARIANT_COUNT));
+        setVariant(random.nextInt(VARIANT_COUNT));
         return data;
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        tag.putInt("Variant", this.getVariant());
-        tag.putInt("AttackType", this.getAttackType());
-        tag.putInt("ComboStep", this.getComboStep());
+        tag.putInt("Variant", getVariant());
+        tag.putInt("AttackType", getAttackType());
+        tag.putInt("ComboStep", getComboStep());
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         if (tag.contains("Variant", Tag.TAG_INT)) {
-            this.setVariant(tag.getInt("Variant"));
+            setVariant(tag.getInt("Variant"));
         }
         if (tag.contains("AttackType", Tag.TAG_INT)) {
-            this.setAttackType(tag.getInt("AttackType"));
+            setAttackType(tag.getInt("AttackType"));
         }
         if (tag.contains("ComboStep", Tag.TAG_INT)) {
-            this.setComboStep(tag.getInt("ComboStep"));
+            setComboStep(tag.getInt("ComboStep"));
         }
     }
 
@@ -231,13 +250,13 @@ public class ShardLizardSlasher extends Monster {
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new ShardLizardSlasherAttackGoal(this, 1.5f, true));
-        this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.1D));
-        this.goalSelector.addGoal(3, new RandomLookAroundGoal(this));
+        goalSelector.addGoal(0, new FloatGoal(this));
+        goalSelector.addGoal(1, new ShardLizardSlasherAttackGoal(this, 1.5f, true));
+        goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.1D));
+        goalSelector.addGoal(3, new RandomLookAroundGoal(this));
 
-        this.targetSelector.addGoal(0, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true, false));
+        targetSelector.addGoal(0, new HurtByTargetGoal(this));
+        targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true, false));
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -247,113 +266,108 @@ public class ShardLizardSlasher extends Monster {
                 .add(Attributes.ARMOR_TOUGHNESS, 2f)
                 .add(Attributes.ATTACK_DAMAGE, 5f)
                 .add(Attributes.ATTACK_SPEED, 2f)
-                .add(Attributes.ATTACK_KNOCKBACK, 0.1f)
+                .add(Attributes.ATTACK_KNOCKBACK, 0.0f)
                 .add(Attributes.FOLLOW_RANGE, 50f)
                 .add(Attributes.JUMP_STRENGTH, 3f)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 3f)
                 .add(Attributes.MOVEMENT_SPEED, 0.3f);
     }
 
-   public void tick() {
-       super.tick();
+    @Override
+    public void tick() {
+        super.tick();
 
-//        LivingEntity target = this.getTarget();
-//        if (target instanceof Player player && isWearingLizardScaleFullSet(player)
-//                && this.getTarget() != player && this.getLastHurtByMob() != player) {
-//            this.setTarget(null);
-//        }
+        if (level().isClientSide) {
+            setUpAnimationStates();
+        }
 
-       if (this.level().isClientSide) {
-           setUpAnimationStates();
-       }
-
-       if (this.level().isClientSide || this.isCustomDying()) {
-           return;
-       }
-   }
+        if (level().isClientSide || isCustomDying()) {
+            return;
+        }
+    }
 
     private void setUpAnimationStates() {
-        if (this.isCustomDying()) {
-            this.idleAnimationState.stop();
-            this.rightSlashAnimationState.stop();
-            this.leftSlashAnimationState.stop();
-            this.slamSlashAnimationState.stop();
-            if (!this.deathAnimationState.isStarted()) {
-                this.deathAnimationState.start(this.tickCount);
+        if (isCustomDying()) {
+            idleAnimationState.stop();
+            rightSlashAnimationState.stop();
+            leftSlashAnimationState.stop();
+            slamSlashAnimationState.stop();
+            if (!deathAnimationState.isStarted()) {
+                deathAnimationState.start(tickCount);
             }
             return;
         }
 
-        this.deathAnimationState.stop();
+        deathAnimationState.stop();
 
-        if (this.isAttacking()) {
-            this.idleAnimationState.stop();
+        if (isAttacking()) {
+            idleAnimationState.stop();
 
-            switch (this.getActiveAttackType()) {
+            switch (getActiveAttackType()) {
                 case ATTACK_LEFT_SLASH:
-                    this.rightSlashAnimationState.stop();
-                    this.slamSlashAnimationState.stop();
-                    if (!this.leftSlashAnimationState.isStarted()) {
-                        this.leftSlashAnimationState.start(this.tickCount);
+                    rightSlashAnimationState.stop();
+                    slamSlashAnimationState.stop();
+                    if (!leftSlashAnimationState.isStarted()) {
+                        leftSlashAnimationState.start(tickCount);
                     }
                     break;
                 case ATTACK_SLAM_SLASH:
-                    this.rightSlashAnimationState.stop();
-                    this.leftSlashAnimationState.stop();
-                    if (!this.slamSlashAnimationState.isStarted()) {
-                        this.slamSlashAnimationState.start(this.tickCount);
+                    rightSlashAnimationState.stop();
+                    leftSlashAnimationState.stop();
+                    if (!slamSlashAnimationState.isStarted()) {
+                        slamSlashAnimationState.start(tickCount);
                     }
                     break;
                 case ATTACK_RIGHT_SLASH:
                 default:
-                    this.leftSlashAnimationState.stop();
-                    this.slamSlashAnimationState.stop();
-                    if (!this.rightSlashAnimationState.isStarted()) {
-                        this.rightSlashAnimationState.start(this.tickCount);
+                    leftSlashAnimationState.stop();
+                    slamSlashAnimationState.stop();
+                    if (!rightSlashAnimationState.isStarted()) {
+                        rightSlashAnimationState.start(tickCount);
                     }
                     break;
             }
             return;
         }
 
-        this.rightSlashAnimationState.stop();
-        this.leftSlashAnimationState.stop();
-        this.slamSlashAnimationState.stop();
-        this.attackAnimationState.stop();
+        rightSlashAnimationState.stop();
+        leftSlashAnimationState.stop();
+        slamSlashAnimationState.stop();
+        attackAnimationState.stop();
 
-        if (this.getDeltaMovement().horizontalDistanceSqr() > 0.0001D) {
-            this.idleAnimationState.stop();
+        if (getDeltaMovement().horizontalDistanceSqr() > 0.0001d) {
+            idleAnimationState.stop();
             return;
         }
 
-        if (!this.idleAnimationState.isStarted()) {
-            this.idleAnimationState.start(this.tickCount);
+        if (!idleAnimationState.isStarted()) {
+            idleAnimationState.start(tickCount);
         }
     }
 
     @Override
-    public void die(DamageSource pDamageSource) {
-        if (!this.level().isClientSide() && !this.isCustomDying()) {
-            this.entityData.set(CUSTOM_DYING, true);
-            this.customDeathAnimationTicks = 0;
-            this.setNoAi(true);
-            this.setNoGravity(true);
-            this.setDeltaMovement(Vec3.ZERO);
-            this.setHealth(0.0F);
+    public void die(DamageSource damageSource) {
+        if (!level().isClientSide() && !isCustomDying()) {
+            entityData.set(CUSTOM_DYING, true);
+            customDeathAnimationTicks = 0;
+            setNoAi(true);
+            setNoGravity(true);
+            setDeltaMovement(Vec3.ZERO);
+            setHealth(0.0f);
             return;
         }
-        super.die(pDamageSource);
+        super.die(damageSource);
     }
 
     @Override
     protected void tickDeath() {
-        if (this.isCustomDying()) {
-            ++this.deathTime;
-            ++this.customDeathAnimationTicks;
+        if (isCustomDying()) {
+            ++deathTime;
+            ++customDeathAnimationTicks;
 
-            if (this.customDeathAnimationTicks >= CUSTOM_DEATH_ANIMATION_TICKS && !this.level().isClientSide()) {
-                this.dropAllDeathLoot(this.damageSources().generic());
-                this.remove(RemovalReason.KILLED);
+            if (customDeathAnimationTicks >= CUSTOM_DEATH_ANIMATION_TICKS && !level().isClientSide()) {
+                dropAllDeathLoot(damageSources().generic());
+                remove(RemovalReason.KILLED);
             }
             return;
         }
@@ -364,12 +378,12 @@ public class ShardLizardSlasher extends Monster {
     @Override
     protected void updateWalkAnimation(float partialTick) {
         float f;
-        if (this.getPose() == Pose.STANDING) {
+        if (getPose() == Pose.STANDING) {
             f = Math.min(partialTick * 6f, 1f);
         } else {
             f = 0;
         }
-        this.walkAnimation.update(f, 0.2f);
+        walkAnimation.update(f, 0.2f);
     }
 
     @Override
@@ -383,13 +397,12 @@ public class ShardLizardSlasher extends Monster {
     }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource pDamageSource) {
+    protected SoundEvent getHurtSound(DamageSource damageSource) {
         return SoundEvents.TURTLE_HURT;
     }
 
     @Override
     public ResourceLocation getDefaultLootTable() {
-        LOGGER.atInfo().log("getDefaultLootTable() entered!");
         return new ResourceLocation(Neo_Prism.MOD_ID, "entities/shard_lizards/slasher");
     }
 

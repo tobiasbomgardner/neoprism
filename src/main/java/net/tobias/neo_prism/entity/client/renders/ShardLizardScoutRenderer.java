@@ -38,8 +38,8 @@ public class ShardLizardScoutRenderer extends MobRenderer<ShardLizardScout, Shar
             rl("textures/entity/shard_lizards/emissive/white_emissive.png")
     };
 
-    public ShardLizardScoutRenderer(EntityRendererProvider.Context pContext) {
-        super(pContext, new ShardLizardScoutModel<>(pContext.bakeLayer(ModModelLayers.SHARD_LIZARD_SCOUT_LAYER)), 1f);
+    public ShardLizardScoutRenderer(EntityRendererProvider.Context context) {
+        super(context, new ShardLizardScoutModel<>(context.bakeLayer(ModModelLayers.SHARD_LIZARD_SCOUT_LAYER)), 1f);
         this.addLayer(new ScoutEmissiveLayer(this));
     }
 
@@ -49,19 +49,19 @@ public class ShardLizardScoutRenderer extends MobRenderer<ShardLizardScout, Shar
     }
 
     @Override
-    public void render(ShardLizardScout pEntity, float pEntityYaw, float pPartialTicks, PoseStack pMatrixStack,
-                       MultiBufferSource pBuffer, int pPackedLight) {
-        pMatrixStack.scale(0.5f, 0.5f, 0.5f);
+    public void render(ShardLizardScout entity, float entityYaw, float partialTicks, PoseStack matrixStack,
+                       MultiBufferSource buffer, int packedLight) {
+        matrixStack.scale(0.5f, 0.5f, 0.5f);
 
-        super.render(pEntity, pEntityYaw, pPartialTicks, pMatrixStack, pBuffer, pPackedLight);
+        super.render(entity, entityYaw, partialTicks, matrixStack, buffer, packedLight);
     }
 
     private static ResourceLocation rl(String path) {
         return new ResourceLocation(Neo_Prism.MOD_ID, path);
     }
 
-    public static int textureIndex(ShardLizardScout e) {
-        return Mth.clamp(e.getVariant(), 0, BASE.length - 1);
+    public static int textureIndex(ShardLizardScout entity) {
+        return Mth.clamp(entity.getVariant(), 0, BASE.length - 1);
     }
 
     @Override
@@ -69,7 +69,7 @@ public class ShardLizardScoutRenderer extends MobRenderer<ShardLizardScout, Shar
         return entity.isCustomDying() ? 0.0f : super.getFlipDegrees(entity);
     }
 
-    public class ScoutEmissiveLayer extends RenderLayer<ShardLizardScout, ShardLizardScoutModel<ShardLizardScout>> {
+    public static class ScoutEmissiveLayer extends RenderLayer<ShardLizardScout, ShardLizardScoutModel<ShardLizardScout>> {
         public ScoutEmissiveLayer(RenderLayerParent<ShardLizardScout, ShardLizardScoutModel<ShardLizardScout>> parent) {
             super(parent);
         }

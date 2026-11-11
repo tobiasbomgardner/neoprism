@@ -10,6 +10,7 @@ import net.tobias.neo_prism.Neo_Prism;
 import net.tobias.neo_prism.entity.entities.ShardLizardCharger;
 import net.tobias.neo_prism.entity.entities.ShardLizardScout;
 import net.tobias.neo_prism.entity.entities.ShardLizardSlasher;
+import net.tobias.neo_prism.entity.entities.ShardLizardThrasher;
 
 public class ModEntities {
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES =
@@ -23,7 +24,10 @@ public class ModEntities {
                     .sized(2.0f, 1.2f).build("shard_lizard_charger"));
     public static final RegistryObject<EntityType<ShardLizardSlasher>> SHARD_LIZARD_SLASHER =
             ENTITY_TYPES.register("shard_lizard_slasher", () -> EntityType.Builder.of(ShardLizardSlasher::new, MobCategory.MONSTER)
-                    .sized(2.4f, 1.8f).build("shard_lizard_slasher"));
+                    .sized(2.0f, 1.2f).build("shard_lizard_slasher"));
+    public static final RegistryObject<EntityType<ShardLizardThrasher>> SHARD_LIZARD_THRASHER =
+            ENTITY_TYPES.register("shard_lizard_thrasher", () -> EntityType.Builder.of(ShardLizardThrasher::new, MobCategory.MONSTER)
+                    .sized(2.0f, 1.2f).build("shard_lizard_thrasher"));
 
     public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);

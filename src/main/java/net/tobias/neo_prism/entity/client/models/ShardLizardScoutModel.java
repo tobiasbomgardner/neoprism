@@ -344,38 +344,38 @@ public class ShardLizardScoutModel<T extends ShardLizardScout> extends Hierarchi
 
 	@Override
 	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		this.root().getAllParts().forEach(ModelPart::resetPose);
+		root().getAllParts().forEach(ModelPart::resetPose);
 
 		if (entity.isCustomDying()) {
-			this.animate(entity.deathAnimationState, ShardLizardScoutAnimations.shard_lizard_scout_death, ageInTicks, 1f);
+			animate(entity.deathAnimationState, ShardLizardScoutAnimations.shard_lizard_scout_death, ageInTicks, 1f);
 			return;
 		}
 
 		if (entity.isShedingScale()) {
-			this.animate(entity.shedScaleAnimationState, ShardLizardScoutAnimations.shard_lizard_scout_shed_scale, ageInTicks, 1f);
+			animate(entity.shedScaleAnimationState, ShardLizardScoutAnimations.shard_lizard_scout_shed_scale, ageInTicks, 1f);
 			return;
 		}
 		if (entity.isAttacking()) {
-			this.animate(entity.attackAnimationState, ShardLizardScoutAnimations.shard_lizard_scout_bite_attack, ageInTicks, 1f);
+			animate(entity.attackAnimationState, ShardLizardScoutAnimations.shard_lizard_scout_bite_attack, ageInTicks, 1f);
 			return;
 		}
 
-		this.applyHeadRotation(netHeadYaw, headPitch, ageInTicks);
+		applyHeadRotation(netHeadYaw, headPitch, ageInTicks);
 		boolean isMoving = limbSwingAmount > 0.01F || entity.getDeltaMovement().horizontalDistanceSqr() > 0.0001D;
 		if (isMoving) {
-			this.animateWalk(ShardLizardScoutAnimations.shard_lizard_scout_walking, limbSwing, limbSwingAmount, 5f, 2.5f);
+			animateWalk(ShardLizardScoutAnimations.shard_lizard_scout_walking, limbSwing, limbSwingAmount, 5f, 2.5f);
 			entity.idleAnimationState.stop();
 			return;
 		}
 
-		this.animate(entity.idleAnimationState, ShardLizardScoutAnimations.shard_lizard_scout_idle, ageInTicks, 2f);
+		animate(entity.idleAnimationState, ShardLizardScoutAnimations.shard_lizard_scout_idle, ageInTicks, 2f);
 	}
 
 	private void applyHeadRotation(float netheadYaw, float headPitch, float ageInTicks) {
 		netheadYaw = Mth.clamp(netheadYaw, -30.0f, 30.0f);
 		headPitch = Mth.clamp(headPitch, -25.0f, 45.0f);
-		this.head.yRot = ((float)Math.PI / 180f);
-		this.head.xRot = ((float)Math.PI / 180f);
+		head.yRot = netheadYaw * ((float) Math.PI / 180f);
+		head.xRot = headPitch * ((float) Math.PI / 180f);
 	}
 
 	@Override

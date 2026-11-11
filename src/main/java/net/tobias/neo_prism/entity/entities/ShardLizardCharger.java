@@ -30,9 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ShardLizardCharger extends Monster {
-
-    private static Logger log = LoggerFactory.getLogger(ShardLizardCharger.class);
-
+    private static Logger LOOGER = LoggerFactory.getLogger(ShardLizardCharger.class);
     private static final EntityDataAccessor<Integer> VARIANT =
             SynchedEntityData.defineId(ShardLizardScout.class, EntityDataSerializers.INT);
     private static final int VARIANT_COUNT = 9;
@@ -46,26 +44,24 @@ public class ShardLizardCharger extends Monster {
     public final AnimationState deathAnimationState = new AnimationState();
     public final AnimationState attackAnimationState = new AnimationState();
     private int customDeathAnimationTicks = 0;
-    private DamageSource lastDamageSource = null;
-    public int attackAnimationTicks = 0;
     private int dashCooldown = 0;
     private int dashTicks = 0;
     private boolean isDashing = false;
 
     public ShardLizardCharger(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
-        this.xpReward = 15;
+        xpReward = 15;
     }
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new ShardLizardChargerAttackGoal(this, 1.5f, true));
-        this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.1D));
-        this.goalSelector.addGoal(3, new RandomLookAroundGoal(this));
+        goalSelector.addGoal(0, new FloatGoal(this));
+        goalSelector.addGoal(1, new ShardLizardChargerAttackGoal(this, 1.5f, true));
+        goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.1D));
+        goalSelector.addGoal(3, new RandomLookAroundGoal(this));
 
-        this.targetSelector.addGoal(0, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 25, true, false, livingEntity -> true));
+        targetSelector.addGoal(0, new HurtByTargetGoal(this));
+        targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 25, true, false, livingEntity -> true));
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -75,7 +71,7 @@ public class ShardLizardCharger extends Monster {
                 .add(Attributes.ARMOR_TOUGHNESS, 2.5f)
                 .add(Attributes.ATTACK_DAMAGE, 7f)
                 .add(Attributes.ATTACK_SPEED, 2f)
-                .add(Attributes.ATTACK_KNOCKBACK, 0.1f)
+                .add(Attributes.ATTACK_KNOCKBACK, 0.0f)
                 .add(Attributes.FOLLOW_RANGE, 70f)
                 .add(Attributes.JUMP_STRENGTH, 3f)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 2f)
@@ -83,140 +79,140 @@ public class ShardLizardCharger extends Monster {
     }
 
     public void setIsAttacking(boolean isAttacking) {
-        this.entityData.set(IS_ATTACKING, isAttacking);
+        entityData.set(IS_ATTACKING, isAttacking);
     }
 
     public boolean isAttacking() {
-        return this.entityData.get(IS_ATTACKING);
+        return entityData.get(IS_ATTACKING);
     }
 
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(VARIANT, 0);
-        this.entityData.define(CUSTOM_DYING, false);
-        this.entityData.define(IS_ATTACKING, false);
+        entityData.define(VARIANT, 0);
+        entityData.define(CUSTOM_DYING, false);
+        entityData.define(IS_ATTACKING, false);
     }
 
     public int getVariant() {
-        return Mth.clamp(this.entityData.get(VARIANT), 0, VARIANT_COUNT - 1);
+        return Mth.clamp(entityData.get(VARIANT), 0, VARIANT_COUNT - 1);
     }
 
     public void setVariant(int variant) {
-        this.entityData.set(VARIANT, Mth.clamp(variant, 0, VARIANT_COUNT - 1));
+        entityData.set(VARIANT, Mth.clamp(variant, 0, VARIANT_COUNT - 1));
     }
 
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType,
                                         SpawnGroupData spawnGroupData, CompoundTag tag) {
         SpawnGroupData data = super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData, tag);
-        this.setVariant(this.random.nextInt(VARIANT_COUNT));
+        setVariant(random.nextInt(VARIANT_COUNT));
         return data;
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        tag.putInt("Variant", this.getVariant());
+        tag.putInt("Variant", getVariant());
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         if (tag.contains("Variant", Tag.TAG_INT)) {
-            this.setVariant(tag.getInt("Variant"));
+            setVariant(tag.getInt("Variant"));
         }
     }
 
     public boolean isCustomDying() {
-        return this.entityData.get(CUSTOM_DYING);
+        return entityData.get(CUSTOM_DYING);
     }
 
     private void setUpAnimationStates() {
-        if (this.isCustomDying()) {
-            this.idleAnimationState.stop();
-            if (!this.deathAnimationState.isStarted()) {
-                this.deathAnimationState.start(this.tickCount);
+        if (isCustomDying()) {
+            idleAnimationState.stop();
+            if (!deathAnimationState.isStarted()) {
+                deathAnimationState.start(tickCount);
             }
             return;
         }
 
-        this.deathAnimationState.stop();
+        deathAnimationState.stop();
 
-        if (this.isAttacking()) {
-            this.idleAnimationState.stop();
-            if (!this.attackAnimationState.isStarted()) {
-                this.attackAnimationState.start(this.tickCount);
+        if (isAttacking()) {
+            idleAnimationState.stop();
+            if (!attackAnimationState.isStarted()) {
+                attackAnimationState.start(tickCount);
             }
             return;
         }
 
-        this.attackAnimationState.stop();
+        attackAnimationState.stop();
 
-        if (this.getDeltaMovement().horizontalDistanceSqr() > 0.0001D) {
-            this.idleAnimationState.stop();
+        if (getDeltaMovement().horizontalDistanceSqr() > 0.0001D) {
+            idleAnimationState.stop();
             return;
         }
 
-        if (!this.idleAnimationState.isStarted()) {
-            this.idleAnimationState.start(this.tickCount);
+        if (!idleAnimationState.isStarted()) {
+            idleAnimationState.start(tickCount);
         }
     }
 
     public void tick() {
         super.tick();
 
-        if (this.dashCooldown > 0) {
-            --this.dashCooldown;
+        if (dashCooldown > 0) {
+            --dashCooldown;
         }
 
-        if (this.isDashing) {
-            ++this.dashTicks;
+        if (isDashing) {
+            ++dashTicks;
         } else {
-            this.dashTicks = 0;
+            dashTicks = 0;
         }
 
-        if (this.level().isClientSide) {
+        if (level().isClientSide) {
             setUpAnimationStates();
         }
     }
 
     public boolean isDashing() {
-        return this.isDashing;
+        return isDashing;
     }
 
     public void startDash(Vec3 direction) {
-        this.isDashing = true;
-        this.dashTicks = 0;
-        this.setDeltaMovement(direction.normalize().scale(2.6D));
-        this.setIsAttacking(true);
+        isDashing = true;
+        dashTicks = 0;
+        setDeltaMovement(direction.normalize().scale(2.6D));
+        setIsAttacking(true);
     }
 
     public void cancelDash() {
-        this.isDashing = false;
-        this.dashTicks = 0;
-        this.dashCooldown = 40;
-        this.setIsAttacking(false);
-        this.setDeltaMovement(0.0D, 0.0D, 0.0D);
+        isDashing = false;
+        dashTicks = 0;
+        dashCooldown = 40;
+        setIsAttacking(false);
+        setDeltaMovement(0.0D, 0.0D, 0.0D);
     }
 
     public int getDashCooldown() {
-        return this.dashCooldown;
+        return dashCooldown;
     }
 
     public void setDashCooldown(int dashCooldown) {
-        this.dashCooldown = dashCooldown;
+        dashCooldown = dashCooldown;
     }
 
     @Override
     public void die(DamageSource pDamageSource) {
-        if (!this.level().isClientSide() && !this.isCustomDying()) {
-            this.entityData.set(CUSTOM_DYING, true);
-            this.customDeathAnimationTicks = 0;
-            this.setNoAi(true);
-            this.setNoGravity(true);
-            this.setDeltaMovement(Vec3.ZERO);
-            this.setHealth(0.0F);
+        if (!level().isClientSide() && !isCustomDying()) {
+            entityData.set(CUSTOM_DYING, true);
+            customDeathAnimationTicks = 0;
+            setNoAi(true);
+            setNoGravity(true);
+            setDeltaMovement(Vec3.ZERO);
+            setHealth(0.0F);
             return;
         }
         super.die(pDamageSource);
@@ -224,14 +220,13 @@ public class ShardLizardCharger extends Monster {
 
     @Override
     protected void tickDeath() {
-        if (this.isCustomDying()) {
-            ++this.deathTime;
-            ++this.customDeathAnimationTicks;
+        if (isCustomDying()) {
+            ++deathTime;
+            ++customDeathAnimationTicks;
 
-            if (this.customDeathAnimationTicks >= CUSTOM_DEATH_ANIMATION_TICKS && !this.level().isClientSide()) {
-                log.atInfo().log("About to drop loot in charger.");
-                this.dropAllDeathLoot(this.damageSources().generic());
-                this.remove(RemovalReason.KILLED);
+            if (customDeathAnimationTicks >= CUSTOM_DEATH_ANIMATION_TICKS && !level().isClientSide()) {
+                dropAllDeathLoot(damageSources().generic());
+                remove(RemovalReason.KILLED);
             }
             return;
         }
@@ -242,12 +237,12 @@ public class ShardLizardCharger extends Monster {
     @Override
     protected void updateWalkAnimation(float partialTick) {
         float f;
-        if (this.getPose() == Pose.STANDING) {
+        if (getPose() == Pose.STANDING) {
             f = Math.min(partialTick * 6f, 1f);
         } else {
             f = 0;
         }
-        this.walkAnimation.update(f, 0.2f);
+        walkAnimation.update(f, 0.2f);
     }
 
     @Override

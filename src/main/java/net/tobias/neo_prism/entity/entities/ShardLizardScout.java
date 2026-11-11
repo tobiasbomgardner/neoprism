@@ -31,7 +31,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.tobias.neo_prism.Neo_Prism;
-import net.tobias.neo_prism.entity.ai.shard_lizards.goals.ShardLizardScoutBiteAttackGoal;
+import net.tobias.neo_prism.entity.ai.shard_lizards.goals.ShardLizardScoutAttackGoal;
 import net.tobias.neo_prism.item.ModItems;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -124,7 +124,7 @@ public class ShardLizardScout extends Monster implements InventoryCarrier {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new ShardLizardScoutBiteAttackGoal(this, 1.5f, true));
+        this.goalSelector.addGoal(1, new ShardLizardScoutAttackGoal(this, 1.5f, true));
         this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.1D));
         this.goalSelector.addGoal(3, new RandomLookAroundGoal(this));
 
@@ -207,7 +207,7 @@ public class ShardLizardScout extends Monster implements InventoryCarrier {
                 .add(Attributes.ARMOR_TOUGHNESS, 2f)
                 .add(Attributes.ATTACK_DAMAGE, 5f)
                 .add(Attributes.ATTACK_SPEED, 2f)
-                .add(Attributes.ATTACK_KNOCKBACK, 0.1f)
+                .add(Attributes.ATTACK_KNOCKBACK, 0.0f)
                 .add(Attributes.FOLLOW_RANGE, 50f)
                 .add(Attributes.JUMP_STRENGTH, 3f)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 3f)

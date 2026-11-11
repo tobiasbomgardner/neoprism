@@ -35,7 +35,8 @@ public class ModItems {
     private static final List<String> NONCOLOR_ITEMS_COMPLETE = null;
     private static final List<String> NONCOLOR_ITEMS_WIP = List.of(
             "raw_lizard_meat","cooked_lizard_meat","lizard_scale","lizard_scale_helmet",
-            "lizard_scale_chestplate","lizard_scale_leggings","lizard_scale_boots","lizard_teeth","lizard_claw"
+            "lizard_scale_chestplate","lizard_scale_leggings","lizard_scale_boots","lizard_tail_thwacker",
+            "lizard_teeth","lizard_claw","lizard_tail"
     );
 
 
@@ -57,6 +58,7 @@ public class ModItems {
         MODDED_TIERS.put("axe", ModToolTiers.PRISMATIC);
         MODDED_TIERS.put("shovel", ModToolTiers.PRISMATIC);
         MODDED_TIERS.put("hoe", ModToolTiers.PRISMATIC);
+        MODDED_TIERS.put("lizard_tail_thwacker", ModToolTiers.LIZARD);
 
         MINECRAFT_TIERS.put("sword", Tiers.DIAMOND);
         MINECRAFT_TIERS.put("pickaxe", Tiers.DIAMOND);
@@ -124,6 +126,7 @@ public class ModItems {
         MAX_STACK_SIZE.put("lizard_scale", 64);
         MAX_STACK_SIZE.put("lizard_claw", 64);
         MAX_STACK_SIZE.put("lizard_teeth", 64);
+        MAX_STACK_SIZE.put("lizard_tail", 64);
         MAX_STACK_SIZE.put("gem", 64);
         MAX_STACK_SIZE.put("shattered_shard", 64);
         MAX_STACK_SIZE.put("shard", 64);
@@ -145,6 +148,7 @@ public class ModItems {
         MAX_STACK_SIZE.put("lizard_scale_chestplate", 1);
         MAX_STACK_SIZE.put("lizard_scale_leggings", 1);
         MAX_STACK_SIZE.put("lizard_scale_boots", 1);
+        MAX_STACK_SIZE.put("lizard_tail_thwacker", 1);
     }
 
 
@@ -157,11 +161,14 @@ public class ModItems {
         ALL.put(id, obj);
         SORTED_ORDER_COMPLETE.add(id);
         String[] itemType = id.split("_");
-        if (itemType[1].equals("shard") || id.equals("prismatic_gem")) {
+        if (id.equals("lizard_scale") || itemType[1].equals("shard") || id.equals("prismatic_gem")) {
             ARMOR_ITEMS.put(id, obj);
             if (id.equals("prismatic_gem")) {
                 MODDED_TIER_MATERIALS.put(id, obj);
             }
+        }
+        if (id.equals("lizard_tail")) {
+            MODDED_TIER_MATERIALS.put(id, obj);
         }
     }
     private static void registerWIP(String id, int maxStackSize) {
@@ -169,13 +176,16 @@ public class ModItems {
         ALL.put(id, obj);
         SORTED_ORDER_WIP.add(id);
         String[] itemType = id.split("_");
-        if (itemType.length == 2) {
-            if (itemType[1].equals("shard") || id.equals("prismatic_gem")) {
+//        if (itemType.length == 2) {
+            if (id.equals("lizard_scale") || itemType[1].equals("shard") || id.equals("prismatic_gem")) {
                 ARMOR_ITEMS.put(id, obj);
                 if (id.equals("prismatic_gem")) {
                     MODDED_TIER_MATERIALS.put(id, obj);
                 }
             }
+//        }
+        if (id.equals("lizard_tail")) {
+            MODDED_TIER_MATERIALS.put(id, obj);
         }
     }
     private static void registerFoodCOMPLETE(String id, FoodProperties foodType, int maxStackSize) {
@@ -223,7 +233,7 @@ public class ModItems {
                         attackSpeedModifier, new Item.Properties()));
             }
             ALL.put(id, obj);
-            SORTED_ORDER_COMPLETE.add(id);
+            SORTED_ORDER_WIP.add(id);
         } else if (minecraftTier != null & moddedTier == null) {
             if (isFireResistant) {
                 obj = ITEMS.register(id, () -> new SwordItem(minecraftTier, attackDamageModifier,
@@ -233,7 +243,7 @@ public class ModItems {
                         attackSpeedModifier, new Item.Properties()));
             }
             ALL.put(id, obj);
-            SORTED_ORDER_COMPLETE.add(id);
+            SORTED_ORDER_WIP.add(id);
         }
     }
     private static void registerPickaxeCOMPLETE(String id, Tier minecraftTier, Tier moddedTier, int attackDamageModifier, float attackSpeedModifier, boolean isFireResistant) {
@@ -271,7 +281,7 @@ public class ModItems {
                         attackSpeedModifier, new Item.Properties()));
             }
             ALL.put(id, obj);
-            SORTED_ORDER_COMPLETE.add(id);
+            SORTED_ORDER_WIP.add(id);
         } else if (minecraftTier != null & moddedTier == null) {
             if (isFireResistant) {
                 obj = ITEMS.register(id, () -> new PickaxeItem(minecraftTier, attackDamageModifier,
@@ -281,7 +291,7 @@ public class ModItems {
                         attackSpeedModifier, new Item.Properties()));
             }
             ALL.put(id, obj);
-            SORTED_ORDER_COMPLETE.add(id);
+            SORTED_ORDER_WIP.add(id);
         }
     }
     private static void registerAxeCOMPLETE(String id, Tier minecraftTier, Tier moddedTier, float attackDamageModifier, float attackSpeedModifier, boolean isFireResistant) {
@@ -319,7 +329,7 @@ public class ModItems {
                         attackSpeedModifier, new Item.Properties()));
             }
             ALL.put(id, obj);
-            SORTED_ORDER_COMPLETE.add(id);
+            SORTED_ORDER_WIP.add(id);
         } else if (minecraftTier != null & moddedTier == null) {
             if (isFireResistant) {
                 obj = ITEMS.register(id, () -> new AxeItem(minecraftTier, attackDamageModifier,
@@ -329,7 +339,7 @@ public class ModItems {
                         attackSpeedModifier, new Item.Properties()));
             }
             ALL.put(id, obj);
-            SORTED_ORDER_COMPLETE.add(id);
+            SORTED_ORDER_WIP.add(id);
         }
     }
     private static void registerShovelCOMPLETE(String id, Tier minecraftTier, Tier moddedTier, float attackDamageModifier, float attackSpeedModifier, boolean isFireResistant) {
@@ -367,7 +377,7 @@ public class ModItems {
                         attackSpeedModifier, new Item.Properties()));
             }
             ALL.put(id, obj);
-            SORTED_ORDER_COMPLETE.add(id);
+            SORTED_ORDER_WIP.add(id);
         } else if (minecraftTier != null & moddedTier == null) {
             if (isFireResistant) {
                 obj = ITEMS.register(id, () -> new ShovelItem(minecraftTier, attackDamageModifier,
@@ -377,7 +387,7 @@ public class ModItems {
                         attackSpeedModifier, new Item.Properties()));
             }
             ALL.put(id, obj);
-            SORTED_ORDER_COMPLETE.add(id);
+            SORTED_ORDER_WIP.add(id);
         }
     }
     private static void registerHoeCOMPLETE(String id, Tier minecraftTier, Tier moddedTier, int attackDamageModifier, float attackSpeedModifier, boolean isFireResistant) {
@@ -415,7 +425,7 @@ public class ModItems {
                         attackSpeedModifier, new Item.Properties()));
             }
             ALL.put(id, obj);
-            SORTED_ORDER_COMPLETE.add(id);
+            SORTED_ORDER_WIP.add(id);
         } else if (minecraftTier != null & moddedTier == null) {
             if (isFireResistant) {
                 obj = ITEMS.register(id, () -> new HoeItem(minecraftTier, attackDamageModifier,
@@ -425,7 +435,7 @@ public class ModItems {
                         attackSpeedModifier, new Item.Properties()));
             }
             ALL.put(id, obj);
-            SORTED_ORDER_COMPLETE.add(id);
+            SORTED_ORDER_WIP.add(id);
         }
     }
     private static void registerArmorCOMPLETE(String id, ModArmorMaterials armorMaterial, ArmorItem.Type armorType) {
@@ -556,7 +566,12 @@ public class ModItems {
                     if (armorMaterial != null && armorType != null) {
                         registerArmorCOMPLETE(id, armorMaterial, armorType);
                     } else {
-                        registerCOMPLETE(id, maxStackSize);
+                        Tier tier = MODDED_TIERS.get(id);
+                        if (tier != null) {
+                            registerSwordCOMPLETE(id, null, tier, 5, -3.5f, false);
+                        } else {
+                            registerCOMPLETE(id, maxStackSize);
+                        }
                     }
                 }
             }
@@ -679,7 +694,12 @@ public class ModItems {
                     if (armorMaterial != null && armorType != null) {
                         registerArmorWIP(id, armorMaterial, armorType);
                     } else {
-                        registerWIP(id, maxStackSize);
+                        Tier tier = MODDED_TIERS.get(id);
+                        if (tier != null) {
+                            registerSwordWIP(id, null, tier, 5, -3.5f, false);
+                        } else {
+                            registerWIP(id, maxStackSize);
+                        }
                     }
                 }
             }

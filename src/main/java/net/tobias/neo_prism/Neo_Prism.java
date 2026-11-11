@@ -14,7 +14,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.tobias.neo_prism.effects.ModEffects;
 import net.tobias.neo_prism.entity.ModEntities;
-import net.tobias.neo_prism.entity.animations.ShardLizardChargerAnimations;
 import net.tobias.neo_prism.entity.client.renders.*;
 import net.tobias.neo_prism.item.ModItems;
 import net.tobias.neo_prism.block.ModBlocks;
@@ -22,11 +21,9 @@ import net.tobias.neo_prism.item.ModSpawnEggs;
 import net.tobias.neo_prism.sounds.ModSounds;
 import org.slf4j.Logger;
 
-// The value here should match an entry in the META-INF/mods.toml file
 @Mod(Neo_Prism.MOD_ID)
 public class Neo_Prism {
     public static final String MOD_ID = "neo_prism";
-    // Directly reference a slf4j logger
     private static final Logger LOGGER = LogUtils.getLogger();
 
     public Neo_Prism(FMLJavaModLoadingContext context) {
@@ -52,11 +49,9 @@ public class Neo_Prism {
 
     private void addCreative(BuildCreativeModeTabContentsEvent event) {}
 
-    // You can use SubscribeEvent and let the Event Bus discover methods to call
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {}
 
-    // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
     @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEvents {
         @SubscribeEvent
@@ -64,6 +59,7 @@ public class Neo_Prism {
             EntityRenderers.register(ModEntities.SHARD_LIZARD_SCOUT.get(), ShardLizardScoutRenderer::new);
             EntityRenderers.register(ModEntities.SHARD_LIZARD_CHARGER.get(), ShardLizardChargerRenderer::new);
             EntityRenderers.register(ModEntities.SHARD_LIZARD_SLASHER.get(), ShardLizardSlasherRenderer::new);
+            EntityRenderers.register(ModEntities.SHARD_LIZARD_THRASHER.get(), ShardLizardThrasherRenderer::new);
         }
     }
 }

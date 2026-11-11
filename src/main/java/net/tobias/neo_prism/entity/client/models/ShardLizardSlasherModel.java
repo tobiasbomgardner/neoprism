@@ -30,7 +30,7 @@ public class ShardLizardSlasherModel<T extends ShardLizardSlasher> extends Hiera
 
 
 	public ShardLizardSlasherModel(ModelPart root) {
-		shard_lizard_slasher = root.getChild("shard_lizard_scout");
+		shard_lizard_slasher = root.getChild("shard_lizard_slasher");
 		body = shard_lizard_slasher.getChild("body");
 		final ModelPart all_but_legs = body.getChild("all_but_legs");
 		final ModelPart body_neck = all_but_legs.getChild("body_neck");
@@ -103,9 +103,9 @@ public class ShardLizardSlasherModel<T extends ShardLizardSlasher> extends Hiera
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		PartDefinition shard_lizard_scout = partdefinition.addOrReplaceChild("shard_lizard_scout", CubeListBuilder.create(), PartPose.offset(0.0F, 24.1F, 0.0F));
+		PartDefinition shard_lizard_thrasher = partdefinition.addOrReplaceChild("shard_lizard_slasher", CubeListBuilder.create(), PartPose.offset(0.0F, 24.1F, 0.0F));
 
-		PartDefinition body = shard_lizard_scout.addOrReplaceChild("body", CubeListBuilder.create(), PartPose.offset(0.0F, -6.8F, 18.5F));
+		PartDefinition body = shard_lizard_thrasher.addOrReplaceChild("body", CubeListBuilder.create(), PartPose.offset(0.0F, -6.8F, 18.5F));
 
 		PartDefinition all_but_legs = body.addOrReplaceChild("all_but_legs", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
 
@@ -375,24 +375,24 @@ public class ShardLizardSlasherModel<T extends ShardLizardSlasher> extends Hiera
 
 	@Override
 	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		this.root().getAllParts().forEach(ModelPart::resetPose);
+		root().getAllParts().forEach(ModelPart::resetPose);
 
 		if (entity.isCustomDying()) {
-			this.animate(entity.deathAnimationState, ShardLizardSlasherAnimations.shard_lizard_slasher_death, ageInTicks, 2f);
+			animate(entity.deathAnimationState, ShardLizardSlasherAnimations.shard_lizard_slasher_death, ageInTicks, 2f);
 			return;
 		}
 
 		if (entity.isAttacking()) {
 			switch (entity.getActiveAttackType()) {
 				case ShardLizardSlasher.ATTACK_LEFT_SLASH:
-					this.animate(entity.leftSlashAnimationState, ShardLizardSlasherAnimations.shard_lizard_slasher_left_slash, ageInTicks, 1f);
+					animate(entity.leftSlashAnimationState, ShardLizardSlasherAnimations.shard_lizard_slasher_left_slash, ageInTicks, 1f);
 					break;
 				case ShardLizardSlasher.ATTACK_SLAM_SLASH:
-					this.animate(entity.slamSlashAnimationState, ShardLizardSlasherAnimations.shard_lizard_slasher_slam_slash, ageInTicks, 1f);
+					animate(entity.slamSlashAnimationState, ShardLizardSlasherAnimations.shard_lizard_slasher_slam_slash, ageInTicks, 1f);
 					break;
 				case ShardLizardSlasher.ATTACK_RIGHT_SLASH:
 				default:
-					this.animate(entity.rightSlashAnimationState, ShardLizardSlasherAnimations.shard_lizard_slasher_right_slash, ageInTicks, 1f);
+					animate(entity.rightSlashAnimationState, ShardLizardSlasherAnimations.shard_lizard_slasher_right_slash, ageInTicks, 1f);
 					break;
 			}
 
@@ -402,22 +402,22 @@ public class ShardLizardSlasherModel<T extends ShardLizardSlasher> extends Hiera
 			return;
 		}
 
-		this.applyHeadRotation(netHeadYaw, headPitch, ageInTicks);
-		boolean isMoving = limbSwingAmount > 0.01F || entity.getDeltaMovement().horizontalDistanceSqr() > 0.0001D;
+		applyHeadRotation(netHeadYaw, headPitch, ageInTicks);
+		boolean isMoving = limbSwingAmount > 0.01f || entity.getDeltaMovement().horizontalDistanceSqr() > 0.0001d;
 		if (isMoving) {
-			this.animateWalk(ShardLizardSlasherAnimations.shard_lizard_slasher_walk, limbSwing, limbSwingAmount, 5f, 2.5f);
+			animateWalk(ShardLizardSlasherAnimations.shard_lizard_slasher_walk, limbSwing, limbSwingAmount, 5f, 2.5f);
 			entity.idleAnimationState.stop();
 			return;
 		}
 
-		this.animate(entity.idleAnimationState, ShardLizardSlasherAnimations.shard_lizard_slasher_idle, ageInTicks, 1f);
+		animate(entity.idleAnimationState, ShardLizardSlasherAnimations.shard_lizard_slasher_idle, ageInTicks, 1f);
 	}
 
 	private void applyHeadRotation(float netHeadYaw, float headPitch, float ageInTicks) {
 		netHeadYaw = Mth.clamp(netHeadYaw, -30.0f, 30.0f);
 		headPitch = Mth.clamp(headPitch, -25.0f, 45.0f);
-		this.head.yRot = netHeadYaw * ((float)Math.PI / 180f);
-		this.head.xRot = headPitch * ((float)Math.PI / 180f);
+		head.yRot = netHeadYaw * ((float) Math.PI / 180f);
+		head.xRot = headPitch * ((float) Math.PI / 180f);
 	}
 
 	private void spawnComboFootParticles(T entity) {

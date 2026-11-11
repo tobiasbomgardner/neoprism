@@ -20,6 +20,7 @@ public class ModTags {
         public static final TagKey<Block> NEEDS_PINK_TOOL = tag("needs_pink_tool");
         public static final TagKey<Block> NEEDS_WHITE_TOOL = tag("needs_white_tool");
         public static final TagKey<Block> NEEDS_PRISMATIC_TOOL = tag("needs_prismatic_tool");
+        public static final TagKey<Block> NEEDS_LIZARD_TOOL = tag("needs_lizard_tool");
 
         private static TagKey<Block> tag(String name) {
             return BlockTags.create(new ResourceLocation(Neo_Prism.MOD_ID, name));
