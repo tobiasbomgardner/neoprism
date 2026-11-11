@@ -128,15 +128,15 @@ public class ShardLizardThrasherAttackGoal extends MeleeAttackGoal {
         int attackType = entity.getAttackType();
         if (attackType == ShardLizardThrasher.ATTACK_COMBO) {
             if (comboDamageTicksReached == amount.length - 1) {
-                enemy.addEffect(new MobEffectInstance(ModEffects.PARALYSIS.get(), 30 * 20, 0));
+                enemy.addEffect(new MobEffectInstance(ModEffects.PARALYSIS.get(), 10 * 20, 0));
             }
         } else if (attackType == ShardLizardThrasher.ATTACK_SLAM) {
             if (mob.getRandom().nextFloat() < 0.15f) {
-                enemy.addEffect(new MobEffectInstance(ModEffects.PARALYSIS.get(), 30 * 20, 0));
+                enemy.addEffect(new MobEffectInstance(ModEffects.PARALYSIS.get(), 10 * 20, 0));
             }
         } else if (attackType == ShardLizardThrasher.ATTACK_SPIN) {
             if (mob.getRandom().nextFloat() < 0.10f) {
-                enemy.addEffect(new MobEffectInstance(ModEffects.PARALYSIS.get(), 30 * 20, 0));
+                enemy.addEffect(new MobEffectInstance(ModEffects.PARALYSIS.get(), 10 * 20, 0));
             }
         }
     }

@@ -268,7 +268,6 @@ public class ShardLizardChargerAttackGoal extends Goal {
             preparingCharge = false;
             prepareTicks = 0;
             dashTicks = 0;
-            return;
         }
     }
 
