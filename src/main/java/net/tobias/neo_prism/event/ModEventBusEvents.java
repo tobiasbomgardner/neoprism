@@ -5,10 +5,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.tobias.neo_prism.Neo_Prism;
 import net.tobias.neo_prism.entity.ModEntities;
-import net.tobias.neo_prism.entity.entities.ShardLizardCharger;
-import net.tobias.neo_prism.entity.entities.ShardLizardScout;
-import net.tobias.neo_prism.entity.entities.ShardLizardSlasher;
-import net.tobias.neo_prism.entity.entities.ShardLizardThrasher;
+import net.tobias.neo_prism.entity.entities.*;
 
 @Mod.EventBusSubscriber(modid = Neo_Prism.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModEventBusEvents {
@@ -18,5 +15,6 @@ public class ModEventBusEvents {
         event.put(ModEntities.SHARD_LIZARD_CHARGER.get(), ShardLizardCharger.createAttributes().build());
         event.put(ModEntities.SHARD_LIZARD_SLASHER.get(), ShardLizardSlasher.createAttributes().build());
         event.put(ModEntities.SHARD_LIZARD_THRASHER.get(), ShardLizardThrasher.createAttributes().build());
+        event.put(ModEntities.SHARD_LIZARD_SPIKE_THROWER.get(), ShardLizardSpikeThrower.createAttributes().build());
     }
 }

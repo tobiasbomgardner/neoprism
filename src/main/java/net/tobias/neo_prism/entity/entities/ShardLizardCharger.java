@@ -60,8 +60,7 @@ public class ShardLizardCharger extends Monster {
         goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.1D));
         goalSelector.addGoal(3, new RandomLookAroundGoal(this));
 
-        targetSelector.addGoal(0, new HurtByTargetGoal(this));
-        targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 25, true, false, livingEntity -> true));
+        targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, Player.class, 25, true, false, livingEntity -> true));
     }
 
     public static AttributeSupplier.Builder createAttributes() {

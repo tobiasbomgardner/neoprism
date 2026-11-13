@@ -62,84 +62,83 @@ public class ShardLizardScout extends Monster implements InventoryCarrier {
 
     public ShardLizardScout(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
-        this.setCanPickUpLoot(true);
-        this.xpReward = 10;
+        setCanPickUpLoot(true);
+        xpReward = 10;
     }
 
     public void setIsAttacking(boolean isAttacking) {
-        this.entityData.set(IS_ATTACKING, isAttacking);
+        entityData.set(IS_ATTACKING, isAttacking);
     }
 
     public boolean isAttacking() {
-        return this.entityData.get(IS_ATTACKING);
+        return entityData.get(IS_ATTACKING);
     }
 
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(VARIANT, 0);
-        this.entityData.define(CUSTOM_DYING, false);
-        this.entityData.define(SHEDING_SCALE, false);
-        this.entityData.define(IS_ATTACKING, false);
+        entityData.define(VARIANT, 0);
+        entityData.define(CUSTOM_DYING, false);
+        entityData.define(SHEDING_SCALE, false);
+        entityData.define(IS_ATTACKING, false);
     }
 
     public int getVariant() {
-        return Mth.clamp(this.entityData.get(VARIANT), 0, VARIANT_COUNT - 1);
+        return Mth.clamp(entityData.get(VARIANT), 0, VARIANT_COUNT - 1);
     }
 
     public void setVariant(int variant) {
-        this.entityData.set(VARIANT, Mth.clamp(variant, 0, VARIANT_COUNT - 1));
+        entityData.set(VARIANT, Mth.clamp(variant, 0, VARIANT_COUNT - 1));
     }
 
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType,
                                         SpawnGroupData spawnGroupData, CompoundTag tag) {
         SpawnGroupData data = super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData, tag);
-        this.setVariant(this.random.nextInt(VARIANT_COUNT));
+        setVariant(random.nextInt(VARIANT_COUNT));
         return data;
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        tag.putInt("Variant", this.getVariant());
+        tag.putInt("Variant", getVariant());
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         if (tag.contains("Variant", Tag.TAG_INT)) {
-            this.setVariant(tag.getInt("Variant"));
+            setVariant(tag.getInt("Variant"));
         }
     }
 
     public boolean isCustomDying() {
-        return this.entityData.get(CUSTOM_DYING);
+        return entityData.get(CUSTOM_DYING);
     }
 
     public boolean isShedingScale() {
-        return this.entityData.get(SHEDING_SCALE);
+        return entityData.get(SHEDING_SCALE);
     }
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new ShardLizardScoutAttackGoal(this, 1.5f, true));
-        this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.1D));
-        this.goalSelector.addGoal(3, new RandomLookAroundGoal(this));
+        goalSelector.addGoal(0, new FloatGoal(this));
+        goalSelector.addGoal(1, new ShardLizardScoutAttackGoal(this, 1.5f, true));
+        goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.1D));
+        goalSelector.addGoal(3, new RandomLookAroundGoal(this));
 
-        this.targetSelector.addGoal(0, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 32, true, false,
+        targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 32, true, false,
                 target -> target instanceof Player player
-                        && (this.getTarget() == player
-                        || this.getLastHurtByMob() == player
+                        && (getTarget() == player
+                        || getLastHurtByMob() == player
                         || !isWearingLizardScaleFullSet(player))));
     }
 
     @Override
     public boolean canAttack(LivingEntity target) {
         if (target instanceof Player player) {
-            if (this.getTarget() == target || this.getLastHurtByMob() == player) {
+            if (getTarget() == target || getLastHurtByMob() == player) {
                 return true;
             }
             if (isWearingLizardScaleFullSet(player)) {
@@ -152,27 +151,27 @@ public class ShardLizardScout extends Monster implements InventoryCarrier {
     @Override
     public boolean hurt(DamageSource source, float amount) {
         boolean hurt = super.hurt(source, amount);
-        if (!this.level().isClientSide) {
+        if (!level().isClientSide) {
             alertNearbyLizardEntities(source.getEntity() instanceof LivingEntity living ? living : null);
         }
         return hurt;
     }
 
     private void alertNearbyLizardEntities(LivingEntity attacker) {
-        AABB alertBox = new AABB(this.getX() - 20.0D, this.getY() - 10.0D, this.getZ() - 20.0D,
-                this.getX() + 20.0D, this.getY() + 10.0D, this.getZ() + 20.0D);
+        AABB alertBox = new AABB(getX() - 20.0D, getY() - 10.0D, getZ() - 20.0D,
+                getX() + 20.0D, getY() + 10.0D, getZ() + 20.0D);
 
         if (attacker == null) {
             return;
         }
 
-        for (ShardLizardScout scout : this.level().getEntitiesOfClass(ShardLizardScout.class, alertBox,
+        for (ShardLizardScout scout : level().getEntitiesOfClass(ShardLizardScout.class, alertBox,
                 other -> other != this)) {
             scout.setTarget(attacker);
             scout.setLastHurtByMob(attacker);
         }
 
-        for (ShardLizardCharger charger : this.level().getEntitiesOfClass(ShardLizardCharger.class, alertBox,
+        for (ShardLizardCharger charger : level().getEntitiesOfClass(ShardLizardCharger.class, alertBox,
                 other -> !other.is(this))) {
             charger.setTarget(attacker);
             charger.setLastHurtByMob(attacker);
@@ -221,16 +220,16 @@ public class ShardLizardScout extends Monster implements InventoryCarrier {
 
     protected void pickUpItem(ItemEntity itemEntity) {
         ItemStack item = itemEntity.getItem();
-        if (this.wantsToPickUp(item)) {
-            SimpleContainer container = this.getInventory();
+        if (wantsToPickUp(item)) {
+            SimpleContainer container = getInventory();
             if (!container.canAddItem(item)) {
                 return;
             }
 
-            this.onItemPickup(itemEntity);
+            onItemPickup(itemEntity);
             int count = item.getCount();
             ItemStack itemStack = container.addItem(item);
-            this.take(itemEntity, count - itemStack.getCount());
+            take(itemEntity, count - itemStack.getCount());
             if (itemStack.isEmpty()) {
                 itemEntity.discard();
             } else {
@@ -257,33 +256,33 @@ public class ShardLizardScout extends Monster implements InventoryCarrier {
     public void tick() {
         super.tick();
 
-        LivingEntity target = this.getTarget();
+        LivingEntity target = getTarget();
         if (target instanceof Player player && isWearingLizardScaleFullSet(player)
-                && this.getTarget() != player && this.getLastHurtByMob() != player) {
-            this.setTarget(null);
+                && getTarget() != player && getLastHurtByMob() != player) {
+            setTarget(null);
         }
 
-        if (this.level().isClientSide) {
+        if (level().isClientSide) {
             setUpAnimationStates();
         }
 
-        if (this.level().isClientSide || this.isCustomDying()) {
+        if (level().isClientSide || isCustomDying()) {
             return;
         }
 
-        if (this.isShedingScale()) {
-            ++this.shedScaleAnimationTicks;
-            if (this.shedScaleAnimationTicks >= SHED_SCALE_ANIMATION_TICKS) {
-                this.entityData.set(SHEDING_SCALE, false);
-                this.shedScaleAnimationTicks = 0;
-                if (this.shouldDropLizardScale) {
-                    this.shouldDropLizardScale = false;
+        if (isShedingScale()) {
+            ++shedScaleAnimationTicks;
+            if (shedScaleAnimationTicks >= SHED_SCALE_ANIMATION_TICKS) {
+                entityData.set(SHEDING_SCALE, false);
+                shedScaleAnimationTicks = 0;
+                if (shouldDropLizardScale) {
+                    shouldDropLizardScale = false;
                     ItemStack drop = new ItemStack(ModItems.ALL.get("lizard_scale").get());
-                    ItemEntity itemEntity = new ItemEntity(this.level(),
+                    ItemEntity itemEntity = new ItemEntity(level(),
                             position().x + 0.5, position().y + 1.0,
                             position().z + 0.5, drop);
-                    this.level().addFreshEntity(itemEntity);
-                    this.setSpeed(0.3f);
+                    level().addFreshEntity(itemEntity);
+                    setSpeed(0.3f);
                 }
             }
             return;
@@ -308,10 +307,10 @@ public class ShardLizardScout extends Monster implements InventoryCarrier {
                 itemsRemoved += remove;
 
                 if (itemsRemoved == 10) {
-                    this.setSpeed(0.0f);
-                    this.entityData.set(SHEDING_SCALE, true);
-                    this.shedScaleAnimationTicks = 0;
-                    this.shouldDropLizardScale = true;
+                    setSpeed(0.0f);
+                    entityData.set(SHEDING_SCALE, true);
+                    shedScaleAnimationTicks = 0;
+                    shouldDropLizardScale = true;
                     break;
                 }
             }
@@ -320,55 +319,55 @@ public class ShardLizardScout extends Monster implements InventoryCarrier {
     }
 
     private void setUpAnimationStates() {
-        if (this.isCustomDying()) {
-            this.idleAnimationState.stop();
-            this.shedScaleAnimationState.stop();
-            if (!this.deathAnimationState.isStarted()) {
-                this.deathAnimationState.start(this.tickCount);
+        if (isCustomDying()) {
+            idleAnimationState.stop();
+            shedScaleAnimationState.stop();
+            if (!deathAnimationState.isStarted()) {
+                deathAnimationState.start(tickCount);
             }
             return;
         }
 
-        this.deathAnimationState.stop();
-        if (this.isShedingScale()) {
-            this.idleAnimationState.stop();
-            if (!this.shedScaleAnimationState.isStarted()) {
-                this.shedScaleAnimationState.start(this.tickCount);
+        deathAnimationState.stop();
+        if (isShedingScale()) {
+            idleAnimationState.stop();
+            if (!shedScaleAnimationState.isStarted()) {
+                shedScaleAnimationState.start(tickCount);
             }
             return;
         }
 
-        this.shedScaleAnimationState.stop();
+        shedScaleAnimationState.stop();
 
-        if (this.isAttacking()) {
-            this.idleAnimationState.stop();
-            if (!this.attackAnimationState.isStarted()) {
-                this.attackAnimationState.start(this.tickCount);
+        if (isAttacking()) {
+            idleAnimationState.stop();
+            if (!attackAnimationState.isStarted()) {
+                attackAnimationState.start(tickCount);
             }
             return;
         }
 
-        this.attackAnimationState.stop();
+        attackAnimationState.stop();
 
-        if (this.getDeltaMovement().horizontalDistanceSqr() > 0.0001D) {
-            this.idleAnimationState.stop();
+        if (getDeltaMovement().horizontalDistanceSqr() > 0.0001D) {
+            idleAnimationState.stop();
             return;
         }
 
-        if (!this.idleAnimationState.isStarted()) {
-            this.idleAnimationState.start(this.tickCount);
+        if (!idleAnimationState.isStarted()) {
+            idleAnimationState.start(tickCount);
         }
     }
 
     @Override
     public void die(DamageSource pDamageSource) {
-        if (!this.level().isClientSide() && !this.isCustomDying()) {
-            this.entityData.set(CUSTOM_DYING, true);
-            this.customDeathAnimationTicks = 0;
-            this.setNoAi(true);
-            this.setNoGravity(true);
-            this.setDeltaMovement(Vec3.ZERO);
-            this.setHealth(0.0F);
+        if (!level().isClientSide() && !isCustomDying()) {
+            entityData.set(CUSTOM_DYING, true);
+            customDeathAnimationTicks = 0;
+            setNoAi(true);
+            setNoGravity(true);
+            setDeltaMovement(Vec3.ZERO);
+            setHealth(0.0F);
             return;
         }
         super.die(pDamageSource);
@@ -376,13 +375,13 @@ public class ShardLizardScout extends Monster implements InventoryCarrier {
 
     @Override
     protected void tickDeath() {
-        if (this.isCustomDying()) {
-            ++this.deathTime;
-            ++this.customDeathAnimationTicks;
+        if (isCustomDying()) {
+            ++deathTime;
+            ++customDeathAnimationTicks;
 
-            if (this.customDeathAnimationTicks >= CUSTOM_DEATH_ANIMATION_TICKS && !this.level().isClientSide()) {
-                this.dropAllDeathLoot(this.damageSources().generic());
-                this.remove(RemovalReason.KILLED);
+            if (customDeathAnimationTicks >= CUSTOM_DEATH_ANIMATION_TICKS && !level().isClientSide()) {
+                dropAllDeathLoot(damageSources().generic());
+                remove(RemovalReason.KILLED);
             }
             return;
         }
@@ -393,21 +392,21 @@ public class ShardLizardScout extends Monster implements InventoryCarrier {
     @Override
     protected void updateWalkAnimation(float partialTick) {
         float f;
-        if (this.getPose() == Pose.STANDING) {
+        if (getPose() == Pose.STANDING) {
             f = Math.min(partialTick * 6f, 1f);
         } else {
             f = 0;
         }
-        this.walkAnimation.update(f, 0.2f);
+        walkAnimation.update(f, 0.2f);
     }
 
     @Override
     protected void dropCustomDeathLoot(DamageSource damageSource, int lootingLevel, boolean recentlyHit) {
         super.dropCustomDeathLoot(damageSource, lootingLevel, recentlyHit);
 
-        if (!this.level().isClientSide) {
-            Containers.dropContents(this.level(), this, this.inventory);
-            this.inventory.clearContent();
+        if (!level().isClientSide) {
+            Containers.dropContents(level(), this, inventory);
+            inventory.clearContent();
         }
     }
 

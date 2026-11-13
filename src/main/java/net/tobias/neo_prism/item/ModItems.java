@@ -176,14 +176,12 @@ public class ModItems {
         ALL.put(id, obj);
         SORTED_ORDER_WIP.add(id);
         String[] itemType = id.split("_");
-//        if (itemType.length == 2) {
             if (id.equals("lizard_scale") || itemType[1].equals("shard") || id.equals("prismatic_gem")) {
                 ARMOR_ITEMS.put(id, obj);
                 if (id.equals("prismatic_gem")) {
                     MODDED_TIER_MATERIALS.put(id, obj);
                 }
             }
-//        }
         if (id.equals("lizard_tail")) {
             MODDED_TIER_MATERIALS.put(id, obj);
         }
@@ -704,6 +702,7 @@ public class ModItems {
                 }
             }
         }
+        registerLizardTailSpike();
         registerPrismLighter();
     }
 
@@ -731,5 +730,10 @@ public class ModItems {
         RegistryObject<Item> obj = ITEMS.register("prism_lighter", () -> new PrismLighterItem(new Item.Properties().durability(100)));
         ALL.put("prism_lighter", obj);
         SORTED_ORDER_WIP.add("prism_lighter");
+    }
+    private static void registerLizardTailSpike() {
+        RegistryObject<Item> obj = ITEMS.register("lizard_tail_spike", () -> new LizardTailSpikeItem(new Item.Properties().stacksTo(64)));
+        ALL.put("lizard_tail_spike", obj);
+        SORTED_ORDER_WIP.add("lizard_tail_spike");
     }
 }

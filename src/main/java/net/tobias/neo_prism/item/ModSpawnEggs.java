@@ -22,7 +22,7 @@ public class ModSpawnEggs {
 
 private static final List<String> EGGS_COMPLETE = null;
     private static final List<String> EGGS_WIP = List.of(
-            "shard_lizard_scout","shard_lizard_charger","shard_lizard_slasher","shard_lizard_thrasher"
+            "shard_lizard_scout","shard_lizard_charger","shard_lizard_slasher","shard_lizard_thrasher","shard_lizard_spike_thrower"
     );
 
     private static final Map<String, Integer> BACKGROUND_COLORS = new HashMap<>();
@@ -41,6 +41,9 @@ private static final List<String> EGGS_COMPLETE = null;
         BACKGROUND_COLORS.put("shard_lizard_thrasher", 0x3d3d43);
         HIGHLIGHT_COLORS.put("shard_lizard_thrasher", 0x91919c);
         MOBS.put("shard_lizard_thrasher", ModEntities.SHARD_LIZARD_THRASHER);
+        BACKGROUND_COLORS.put("shard_lizard_spike_thrower", 0x3d3d43);
+        HIGHLIGHT_COLORS.put("shard_lizard_spike_thrower", 0x00ff08);
+        MOBS.put("shard_lizard_spike_thrower", ModEntities.SHARD_LIZARD_SPIKE_THROWER);
     }
 
 

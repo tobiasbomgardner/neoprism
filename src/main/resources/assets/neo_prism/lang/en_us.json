@@ -140,6 +140,7 @@
   "item.neo_prism.lizard_teeth": "Lizard Teeth",
   "item.neo_prism.lizard_claw": "Lizard Claw",
   "item.neo_prism.lizard_tail": "Lizard Tail",
+  "item.neo_prism.lizard_tail_spike": "Lizard Tail Spike",
   "item.neo_prism.lizard_tail_thwacker": "Lizard Tail Thwacker",
   "item.neo_prism.raw_lizard_meat": "Raw Lizard Meat",
   "item.neo_prism.cooked_lizard_meat": "Cooked Lizard Meat",
@@ -147,6 +148,7 @@
   "item.neo_prism.shard_lizard_charger_spawn_egg": "Shard Lizard Charger Spawn Egg",
   "item.neo_prism.shard_lizard_slasher_spawn_egg": "Shard Lizard Slasher Spawn Egg",
   "item.neo_prism.shard_lizard_thrasher_spawn_egg": "Shard Lizard Thrasher Spawn Egg",
+  "item.neo_prism.shard_lizard_spike_thrower_spawn_egg": "Shard Lizard Spike Thrower Spawn Egg",
   "item.neo_prism.prism_lighter": "Prism Lighter",
   "item.neo_prism.lizard_scale_helmet": "Lizard Scale Helmet",
   "item.neo_prism.lizard_scale_chestplate": "Lizard Scale Chestplate",
@@ -213,6 +215,10 @@
   "entity.neo_prism.shard_lizard_charger": "Shard Lizard Charger",
   "entity.neo_prism.shard_lizard_slasher": "Shard Lizard Slasher",
   "entity.neo_prism.shard_lizard_thrasher": "Shard Lizard Thrasher",
+  "entity.neo_prism.shard_lizard_spike_thrower": "Shard Lizard Spike Thrower",
+  "entity.neo_prism.shard_lizard_tail_spike": "Shard Lizard Tail Spike",
+
+  "effect.neo_prism.paralysis": "Paralyzed",
 
   "creativetabs.neo_prism_complete": "Neo Prism",
   "creativetabs.neo_prism_wip": "Neo Prism WIP",
@@ -312,7 +318,5 @@
   "advancements.neo_prism.pink_arsenal.title": "The Pink Arsenal!",
   "advancements.neo_prism.pink_arsenal.desc": "Craft all the pink tools and weapons",
   "advancements.neo_prism.white_arsenal.title": "The White Arsenal!",
-  "advancements.neo_prism.white_arsenal.desc": "Craft all the white tools and weapons",
-
-  "effect.neo_prism.paralysis": "Paralysis"
+  "advancements.neo_prism.white_arsenal.desc": "Craft all the white tools and weapons"
 }

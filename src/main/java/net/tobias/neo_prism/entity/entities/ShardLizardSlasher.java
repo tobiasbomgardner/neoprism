@@ -255,8 +255,7 @@ public class ShardLizardSlasher extends Monster {
         goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.1D));
         goalSelector.addGoal(3, new RandomLookAroundGoal(this));
 
-        targetSelector.addGoal(0, new HurtByTargetGoal(this));
-        targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true, false));
+        targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, Player.class, true, false));
     }
 
     public static AttributeSupplier.Builder createAttributes() {

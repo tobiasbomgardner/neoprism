@@ -13,4 +13,8 @@ public class ModModelLayers {
             new ResourceLocation(Neo_Prism.MOD_ID, "shard_lizard_slasher_layer"), "main");
     public static final ModelLayerLocation SHARD_LIZARD_THRASHER_LAYER = new ModelLayerLocation(
             new ResourceLocation(Neo_Prism.MOD_ID, "shard_lizard_thrasher_layer"), "main");
+    public static final ModelLayerLocation SHARD_LIZARD_SPIKE_THROWER_LAYER = new ModelLayerLocation(
+            new ResourceLocation(Neo_Prism.MOD_ID, "shard_lizard_spike_thrower_layer"), "main");
+    public static final ModelLayerLocation SHARD_LIZARD_TAIL_SPIKE_LAYER = new ModelLayerLocation(
+            new ResourceLocation(Neo_Prism.MOD_ID, "shard_lizard_tail_spike_layer"), "main");
 }

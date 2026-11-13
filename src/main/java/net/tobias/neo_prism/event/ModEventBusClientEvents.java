@@ -6,10 +6,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.tobias.neo_prism.Neo_Prism;
 import net.tobias.neo_prism.entity.client.ModModelLayers;
-import net.tobias.neo_prism.entity.client.models.ShardLizardChargerModel;
-import net.tobias.neo_prism.entity.client.models.ShardLizardScoutModel;
-import net.tobias.neo_prism.entity.client.models.ShardLizardSlasherModel;
-import net.tobias.neo_prism.entity.client.models.ShardLizardThrasherModel;
+import net.tobias.neo_prism.entity.client.models.*;
 
 @Mod.EventBusSubscriber(modid = Neo_Prism.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ModEventBusClientEvents {
@@ -19,5 +16,7 @@ public class ModEventBusClientEvents {
         event.registerLayerDefinition(ModModelLayers.SHARD_LIZARD_CHARGER_LAYER, ShardLizardChargerModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.SHARD_LIZARD_SLASHER_LAYER, ShardLizardSlasherModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.SHARD_LIZARD_THRASHER_LAYER, ShardLizardThrasherModel::createBodyLayer);
+        event.registerLayerDefinition(ModModelLayers.SHARD_LIZARD_SPIKE_THROWER_LAYER, ShardLizardSpikeThrowerModel::createBodyLayer);
+        event.registerLayerDefinition(ModModelLayers.SHARD_LIZARD_TAIL_SPIKE_LAYER, ShardLizardTailSpikeModel::createBodyLayer);
     }
 }

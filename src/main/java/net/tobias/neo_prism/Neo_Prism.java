@@ -15,6 +15,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.tobias.neo_prism.effects.ModEffects;
 import net.tobias.neo_prism.entity.ModEntities;
 import net.tobias.neo_prism.entity.client.renders.*;
+import net.tobias.neo_prism.entity.entities.projectiles.ShardLizardTailSpike;
 import net.tobias.neo_prism.item.ModItems;
 import net.tobias.neo_prism.block.ModBlocks;
 import net.tobias.neo_prism.item.ModSpawnEggs;
@@ -60,6 +61,8 @@ public class Neo_Prism {
             EntityRenderers.register(ModEntities.SHARD_LIZARD_CHARGER.get(), ShardLizardChargerRenderer::new);
             EntityRenderers.register(ModEntities.SHARD_LIZARD_SLASHER.get(), ShardLizardSlasherRenderer::new);
             EntityRenderers.register(ModEntities.SHARD_LIZARD_THRASHER.get(), ShardLizardThrasherRenderer::new);
+            EntityRenderers.register(ModEntities.SHARD_LIZARD_SPIKE_THROWER.get(), ShardLizardSpikeThrowerRenderer::new);
+            EntityRenderers.register(ModEntities.SHARD_LIZARD_TAIL_SPIKE.get(), ShardLizardTailSpikeRenderer::new);
         }
     }
 }
