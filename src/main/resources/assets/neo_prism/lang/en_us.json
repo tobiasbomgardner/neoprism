@@ -149,6 +149,7 @@
   "item.neo_prism.shard_lizard_slasher_spawn_egg": "Shard Lizard Slasher Spawn Egg",
   "item.neo_prism.shard_lizard_thrasher_spawn_egg": "Shard Lizard Thrasher Spawn Egg",
   "item.neo_prism.shard_lizard_spike_thrower_spawn_egg": "Shard Lizard Spike Thrower Spawn Egg",
+  "item.neo_prism.shard_lizard_commander_spawn_egg": "Shard Lizard Commander Spawn Egg (WIP)",
   "item.neo_prism.prism_lighter": "Prism Lighter",
   "item.neo_prism.lizard_scale_helmet": "Lizard Scale Helmet",
   "item.neo_prism.lizard_scale_chestplate": "Lizard Scale Chestplate",
@@ -216,6 +217,7 @@
   "entity.neo_prism.shard_lizard_slasher": "Shard Lizard Slasher",
   "entity.neo_prism.shard_lizard_thrasher": "Shard Lizard Thrasher",
   "entity.neo_prism.shard_lizard_spike_thrower": "Shard Lizard Spike Thrower",
+  "entity.neo_prism.shard_lizard_commander": "Shard Lizard Commander",
   "entity.neo_prism.shard_lizard_tail_spike": "Shard Lizard Tail Spike",
 
   "effect.neo_prism.paralysis": "Paralyzed",

@@ -378,21 +378,21 @@ public class ShardLizardSlasherModel<T extends ShardLizardSlasher> extends Hiera
 		root().getAllParts().forEach(ModelPart::resetPose);
 
 		if (entity.isCustomDying()) {
-			animate(entity.deathAnimationState, ShardLizardSlasherAnimations.shard_lizard_slasher_death, ageInTicks, 2f);
+			animate(entity.deathAnimationState, ShardLizardSlasherAnimations.DEATH, ageInTicks, 2f);
 			return;
 		}
 
 		if (entity.isAttacking()) {
 			switch (entity.getActiveAttackType()) {
 				case ShardLizardSlasher.ATTACK_LEFT_SLASH:
-					animate(entity.leftSlashAnimationState, ShardLizardSlasherAnimations.shard_lizard_slasher_left_slash, ageInTicks, 1f);
+					animate(entity.leftSlashAnimationState, ShardLizardSlasherAnimations.LEFT_SLASH, ageInTicks, 1f);
 					break;
 				case ShardLizardSlasher.ATTACK_SLAM_SLASH:
-					animate(entity.slamSlashAnimationState, ShardLizardSlasherAnimations.shard_lizard_slasher_slam_slash, ageInTicks, 1f);
+					animate(entity.slamSlashAnimationState, ShardLizardSlasherAnimations.SLAM_SLASH, ageInTicks, 1f);
 					break;
 				case ShardLizardSlasher.ATTACK_RIGHT_SLASH:
 				default:
-					animate(entity.rightSlashAnimationState, ShardLizardSlasherAnimations.shard_lizard_slasher_right_slash, ageInTicks, 1f);
+					animate(entity.rightSlashAnimationState, ShardLizardSlasherAnimations.RIGHT_SLASH, ageInTicks, 1f);
 					break;
 			}
 
@@ -405,12 +405,12 @@ public class ShardLizardSlasherModel<T extends ShardLizardSlasher> extends Hiera
 		applyHeadRotation(netHeadYaw, headPitch, ageInTicks);
 		boolean isMoving = limbSwingAmount > 0.01f || entity.getDeltaMovement().horizontalDistanceSqr() > 0.0001d;
 		if (isMoving) {
-			animateWalk(ShardLizardSlasherAnimations.shard_lizard_slasher_walk, limbSwing, limbSwingAmount, 5f, 2.5f);
+			animateWalk(ShardLizardSlasherAnimations.WALK, limbSwing, limbSwingAmount, 5f, 2.5f);
 			entity.idleAnimationState.stop();
 			return;
 		}
 
-		animate(entity.idleAnimationState, ShardLizardSlasherAnimations.shard_lizard_slasher_idle, ageInTicks, 1f);
+		animate(entity.idleAnimationState, ShardLizardSlasherAnimations.IDLE, ageInTicks, 1f);
 	}
 
 	private void applyHeadRotation(float netHeadYaw, float headPitch, float ageInTicks) {

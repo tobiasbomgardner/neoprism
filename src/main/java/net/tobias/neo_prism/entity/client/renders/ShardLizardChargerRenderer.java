@@ -18,27 +18,27 @@ import net.tobias.neo_prism.entity.entities.ShardLizardCharger;
 
 public class ShardLizardChargerRenderer extends MobRenderer<ShardLizardCharger, ShardLizardChargerModel<ShardLizardCharger>> {
     private static final ResourceLocation[] BASE = new ResourceLocation[] {
-            rl("textures/entity/shard_lizards/charger/red_charger.png"),
-            rl("textures/entity/shard_lizards/charger/orange_charger.png"),
-            rl("textures/entity/shard_lizards/charger/yellow_charger.png"),
-            rl("textures/entity/shard_lizards/charger/green_charger.png"),
-            rl("textures/entity/shard_lizards/charger/blue_charger.png"),
-            rl("textures/entity/shard_lizards/charger/cyan_charger.png"),
-            rl("textures/entity/shard_lizards/charger/purple_charger.png"),
-            rl("textures/entity/shard_lizards/charger/pink_charger.png"),
-            rl("textures/entity/shard_lizards/charger/white_charger.png")
+            rl("textures/entity/shard_lizards/charger/red.png"),
+            rl("textures/entity/shard_lizards/charger/orange.png"),
+            rl("textures/entity/shard_lizards/charger/yellow.png"),
+            rl("textures/entity/shard_lizards/charger/green.png"),
+            rl("textures/entity/shard_lizards/charger/blue.png"),
+            rl("textures/entity/shard_lizards/charger/cyan.png"),
+            rl("textures/entity/shard_lizards/charger/purple.png"),
+            rl("textures/entity/shard_lizards/charger/pink.png"),
+            rl("textures/entity/shard_lizards/charger/white.png")
     };
 
     public static final ResourceLocation[] EMISSIVE = new ResourceLocation[] {
-            rl("textures/entity/shard_lizards/emissive/red_emissive.png"),
-            rl("textures/entity/shard_lizards/emissive/orange_emissive.png"),
-            rl("textures/entity/shard_lizards/emissive/yellow_emissive.png"),
-            rl("textures/entity/shard_lizards/emissive/green_emissive.png"),
-            rl("textures/entity/shard_lizards/emissive/blue_emissive.png"),
-            rl("textures/entity/shard_lizards/emissive/cyan_emissive.png"),
-            rl("textures/entity/shard_lizards/emissive/purple_emissive.png"),
-            rl("textures/entity/shard_lizards/emissive/pink_emissive.png"),
-            rl("textures/entity/shard_lizards/emissive/white_emissive.png")
+            rl("textures/entity/shard_lizards/emissive/red.png"),
+            rl("textures/entity/shard_lizards/emissive/orange.png"),
+            rl("textures/entity/shard_lizards/emissive/yellow.png"),
+            rl("textures/entity/shard_lizards/emissive/green.png"),
+            rl("textures/entity/shard_lizards/emissive/blue.png"),
+            rl("textures/entity/shard_lizards/emissive/cyan.png"),
+            rl("textures/entity/shard_lizards/emissive/purple.png"),
+            rl("textures/entity/shard_lizards/emissive/pink.png"),
+            rl("textures/entity/shard_lizards/emissive/white.png")
     };
     public ShardLizardChargerRenderer(EntityRendererProvider.Context pContext) {
         super(pContext, new ShardLizardChargerModel<>(pContext.bakeLayer(ModModelLayers.SHARD_LIZARD_CHARGER_LAYER)), 1f);

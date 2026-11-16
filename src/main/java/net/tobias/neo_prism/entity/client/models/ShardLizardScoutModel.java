@@ -347,28 +347,28 @@ public class ShardLizardScoutModel<T extends ShardLizardScout> extends Hierarchi
 		root().getAllParts().forEach(ModelPart::resetPose);
 
 		if (entity.isCustomDying()) {
-			animate(entity.deathAnimationState, ShardLizardScoutAnimations.shard_lizard_scout_death, ageInTicks, 1f);
+			animate(entity.deathAnimationState, ShardLizardScoutAnimations.DEATH, ageInTicks, 1f);
 			return;
 		}
 
 		if (entity.isShedingScale()) {
-			animate(entity.shedScaleAnimationState, ShardLizardScoutAnimations.shard_lizard_scout_shed_scale, ageInTicks, 1f);
+			animate(entity.shedScaleAnimationState, ShardLizardScoutAnimations.SHED_SCALE, ageInTicks, 1f);
 			return;
 		}
 		if (entity.isAttacking()) {
-			animate(entity.attackAnimationState, ShardLizardScoutAnimations.shard_lizard_scout_bite_attack, ageInTicks, 1f);
+			animate(entity.attackAnimationState, ShardLizardScoutAnimations.BITE, ageInTicks, 1f);
 			return;
 		}
 
 		applyHeadRotation(netHeadYaw, headPitch, ageInTicks);
 		boolean isMoving = limbSwingAmount > 0.01F || entity.getDeltaMovement().horizontalDistanceSqr() > 0.0001D;
 		if (isMoving) {
-			animateWalk(ShardLizardScoutAnimations.shard_lizard_scout_walking, limbSwing, limbSwingAmount, 5f, 2.5f);
+			animateWalk(ShardLizardScoutAnimations.WALK, limbSwing, limbSwingAmount, 5f, 2.5f);
 			entity.idleAnimationState.stop();
 			return;
 		}
 
-		animate(entity.idleAnimationState, ShardLizardScoutAnimations.shard_lizard_scout_idle, ageInTicks, 2f);
+		animate(entity.idleAnimationState, ShardLizardScoutAnimations.IDLE, ageInTicks, 2f);
 	}
 
 	private void applyHeadRotation(float netheadYaw, float headPitch, float ageInTicks) {

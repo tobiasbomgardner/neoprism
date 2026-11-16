@@ -18,5 +18,6 @@ public class ModEventBusClientEvents {
         event.registerLayerDefinition(ModModelLayers.SHARD_LIZARD_THRASHER_LAYER, ShardLizardThrasherModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.SHARD_LIZARD_SPIKE_THROWER_LAYER, ShardLizardSpikeThrowerModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.SHARD_LIZARD_TAIL_SPIKE_LAYER, ShardLizardTailSpikeModel::createBodyLayer);
+        event.registerLayerDefinition(ModModelLayers.SHARD_LIZARD_COMMANDER_LAYER, ShardLizardCommanderModel::createBodyLayer);
     }
 }

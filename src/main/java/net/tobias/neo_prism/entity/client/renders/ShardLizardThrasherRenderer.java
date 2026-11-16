@@ -18,32 +18,32 @@ import net.tobias.neo_prism.entity.entities.ShardLizardThrasher;
 
 public class ShardLizardThrasherRenderer extends MobRenderer<ShardLizardThrasher, ShardLizardThrasherModel<ShardLizardThrasher>> {
     private static final ResourceLocation[] BASE = new ResourceLocation[] {
-            rl("textures/entity/shard_lizards/thrasher/red_thrasher.png"),
-            rl("textures/entity/shard_lizards/thrasher/orange_thrasher.png"),
-            rl("textures/entity/shard_lizards/thrasher/yellow_thrasher.png"),
-            rl("textures/entity/shard_lizards/thrasher/green_thrasher.png"),
-            rl("textures/entity/shard_lizards/thrasher/blue_thrasher.png"),
-            rl("textures/entity/shard_lizards/thrasher/cyan_thrasher.png"),
-            rl("textures/entity/shard_lizards/thrasher/purple_thrasher.png"),
-            rl("textures/entity/shard_lizards/thrasher/pink_thrasher.png"),
-            rl("textures/entity/shard_lizards/thrasher/white_thrasher.png")
+            rl("textures/entity/shard_lizards/thrasher/red.png"),
+            rl("textures/entity/shard_lizards/thrasher/orange.png"),
+            rl("textures/entity/shard_lizards/thrasher/yellow.png"),
+            rl("textures/entity/shard_lizards/thrasher/green.png"),
+            rl("textures/entity/shard_lizards/thrasher/blue.png"),
+            rl("textures/entity/shard_lizards/thrasher/cyan.png"),
+            rl("textures/entity/shard_lizards/thrasher/purple.png"),
+            rl("textures/entity/shard_lizards/thrasher/pink.png"),
+            rl("textures/entity/shard_lizards/thrasher/white.png")
     };
 
     public static final ResourceLocation[] EMISSIVE = new ResourceLocation[] {
-            rl("textures/entity/shard_lizards/emissive/red_emissive.png"),
-            rl("textures/entity/shard_lizards/emissive/orange_emissive.png"),
-            rl("textures/entity/shard_lizards/emissive/yellow_emissive.png"),
-            rl("textures/entity/shard_lizards/emissive/green_emissive.png"),
-            rl("textures/entity/shard_lizards/emissive/blue_emissive.png"),
-            rl("textures/entity/shard_lizards/emissive/cyan_emissive.png"),
-            rl("textures/entity/shard_lizards/emissive/purple_emissive.png"),
-            rl("textures/entity/shard_lizards/emissive/pink_emissive.png"),
-            rl("textures/entity/shard_lizards/emissive/white_emissive.png")
+            rl("textures/entity/shard_lizards/emissive/red.png"),
+            rl("textures/entity/shard_lizards/emissive/orange.png"),
+            rl("textures/entity/shard_lizards/emissive/yellow.png"),
+            rl("textures/entity/shard_lizards/emissive/green.png"),
+            rl("textures/entity/shard_lizards/emissive/blue.png"),
+            rl("textures/entity/shard_lizards/emissive/cyan.png"),
+            rl("textures/entity/shard_lizards/emissive/purple.png"),
+            rl("textures/entity/shard_lizards/emissive/pink.png"),
+            rl("textures/entity/shard_lizards/emissive/white.png")
     };
 
     public ShardLizardThrasherRenderer(EntityRendererProvider.Context context) {
         super(context, new ShardLizardThrasherModel<>(context.bakeLayer(ModModelLayers.SHARD_LIZARD_THRASHER_LAYER)), 1f);
-        this.addLayer(new ThrasherEmissiveLayer(this));
+        addLayer(new ThrasherEmissiveLayer(this));
     }
 
     @Override
@@ -81,7 +81,7 @@ public class ShardLizardThrasherRenderer extends MobRenderer<ShardLizardThrasher
         public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, ShardLizardThrasher entity,
                            float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch) {
             VertexConsumer vc = buffer.getBuffer(RenderType.eyes(EMISSIVE[textureIndex(entity)]));
-            this.getParentModel().renderToBuffer(poseStack, vc, 15728640, LivingEntityRenderer.getOverlayCoords(entity, 0.0f), 1, 1, 1, 1);
+            getParentModel().renderToBuffer(poseStack, vc, 15728640, LivingEntityRenderer.getOverlayCoords(entity, 0.0f), 1, 1, 1, 1);
         }
     }
 }

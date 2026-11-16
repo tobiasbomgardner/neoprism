@@ -16,5 +16,6 @@ public class ModEventBusEvents {
         event.put(ModEntities.SHARD_LIZARD_SLASHER.get(), ShardLizardSlasher.createAttributes().build());
         event.put(ModEntities.SHARD_LIZARD_THRASHER.get(), ShardLizardThrasher.createAttributes().build());
         event.put(ModEntities.SHARD_LIZARD_SPIKE_THROWER.get(), ShardLizardSpikeThrower.createAttributes().build());
+        event.put(ModEntities.SHARD_LIZARD_COMMANDER.get(), ShardLizardCommander.createAttributes().build());
     }
 }

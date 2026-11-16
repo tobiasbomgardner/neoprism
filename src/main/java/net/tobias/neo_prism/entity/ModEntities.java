@@ -32,6 +32,9 @@ public class ModEntities {
     public static final RegistryObject<EntityType<ShardLizardTailSpike>> SHARD_LIZARD_TAIL_SPIKE =
             ENTITY_TYPES.register("shard_lizard_tail_spike", () -> EntityType.Builder.<ShardLizardTailSpike>of(ShardLizardTailSpike::new, MobCategory.MISC)
                     .sized(0.35f, 0.35f).build("shard_lizard_tail_spike"));
+    public static final RegistryObject<EntityType<ShardLizardCommander>> SHARD_LIZARD_COMMANDER =
+            ENTITY_TYPES.register("shard_lizard_commander", () -> EntityType.Builder.of(ShardLizardCommander::new, MobCategory.MONSTER)
+                    .sized(1.0f, 3.0f).build("shard_lizard_commander"));
 
     public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);

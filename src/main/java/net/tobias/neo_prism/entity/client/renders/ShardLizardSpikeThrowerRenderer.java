@@ -18,27 +18,27 @@ import net.tobias.neo_prism.entity.entities.ShardLizardSpikeThrower;
 
 public class ShardLizardSpikeThrowerRenderer extends MobRenderer<ShardLizardSpikeThrower, ShardLizardSpikeThrowerModel<ShardLizardSpikeThrower>> {
     private static final ResourceLocation[] BASE = new ResourceLocation[] {
-            rl("textures/entity/shard_lizards/spike_thrower/red_spikethrower.png"),
-            rl("textures/entity/shard_lizards/spike_thrower/orange_spikethrower.png"),
-            rl("textures/entity/shard_lizards/spike_thrower/yellow_spikethrower.png"),
-            rl("textures/entity/shard_lizards/spike_thrower/green_spikethrower.png"),
-            rl("textures/entity/shard_lizards/spike_thrower/blue_spikethrower.png"),
-            rl("textures/entity/shard_lizards/spike_thrower/cyan_spikethrower.png"),
-            rl("textures/entity/shard_lizards/spike_thrower/purple_spikethrower.png"),
-            rl("textures/entity/shard_lizards/spike_thrower/pink_spikethrower.png"),
-            rl("textures/entity/shard_lizards/spike_thrower/white_spikethrower.png")
+            rl("textures/entity/shard_lizards/spike_thrower/red.png"),
+            rl("textures/entity/shard_lizards/spike_thrower/orange.png"),
+            rl("textures/entity/shard_lizards/spike_thrower/yellow.png"),
+            rl("textures/entity/shard_lizards/spike_thrower/green.png"),
+            rl("textures/entity/shard_lizards/spike_thrower/blue.png"),
+            rl("textures/entity/shard_lizards/spike_thrower/cyan.png"),
+            rl("textures/entity/shard_lizards/spike_thrower/purple.png"),
+            rl("textures/entity/shard_lizards/spike_thrower/pink.png"),
+            rl("textures/entity/shard_lizards/spike_thrower/white.png")
     };
 
     public static final ResourceLocation[] EMISSIVE = new ResourceLocation[] {
-            rl("textures/entity/shard_lizards/emissive/red_emissive.png"),
-            rl("textures/entity/shard_lizards/emissive/orange_emissive.png"),
-            rl("textures/entity/shard_lizards/emissive/yellow_emissive.png"),
-            rl("textures/entity/shard_lizards/emissive/green_emissive.png"),
-            rl("textures/entity/shard_lizards/emissive/blue_emissive.png"),
-            rl("textures/entity/shard_lizards/emissive/cyan_emissive.png"),
-            rl("textures/entity/shard_lizards/emissive/purple_emissive.png"),
-            rl("textures/entity/shard_lizards/emissive/pink_emissive.png"),
-            rl("textures/entity/shard_lizards/emissive/white_emissive.png")
+            rl("textures/entity/shard_lizards/emissive/red.png"),
+            rl("textures/entity/shard_lizards/emissive/orange.png"),
+            rl("textures/entity/shard_lizards/emissive/yellow.png"),
+            rl("textures/entity/shard_lizards/emissive/green.png"),
+            rl("textures/entity/shard_lizards/emissive/blue.png"),
+            rl("textures/entity/shard_lizards/emissive/cyan.png"),
+            rl("textures/entity/shard_lizards/emissive/purple.png"),
+            rl("textures/entity/shard_lizards/emissive/pink.png"),
+            rl("textures/entity/shard_lizards/emissive/white.png")
     };
 
     public ShardLizardSpikeThrowerRenderer(EntityRendererProvider.Context context) {

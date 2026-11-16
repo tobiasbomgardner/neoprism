@@ -399,24 +399,24 @@ public class ShardLizardChargerModel<T extends ShardLizardCharger> extends Hiera
 		root().getAllParts().forEach(ModelPart::resetPose);
 
 		if (entity.isCustomDying()) {
-			animate(entity.deathAnimationState, ShardLizardChargerAnimations.shard_lizard_charger_death, ageInTicks, 2f);
+			animate(entity.deathAnimationState, ShardLizardChargerAnimations.DEATH, ageInTicks, 2f);
 			return;
 		}
 
 		if (entity.isAttacking()) {
-			animate(entity.attackAnimationState, ShardLizardChargerAnimations.shard_lizard_charger_bite_attack, ageInTicks, 2f);
+			animate(entity.attackAnimationState, ShardLizardChargerAnimations.BITE, ageInTicks, 2f);
 			return;
 		}
 
 		applyHeadRotation(netHeadYaw, headPitch, ageInTicks);
 		boolean isMoving = limbSwingAmount > 0.01F || entity.getDeltaMovement().horizontalDistanceSqr() > 0.0001D;
 		if (isMoving) {
-			animateWalk(ShardLizardChargerAnimations.shard_lizard_charger_walk, limbSwing, limbSwingAmount, 4f, 2.5f);
+			animateWalk(ShardLizardChargerAnimations.WALK, limbSwing, limbSwingAmount, 4f, 2.5f);
 			entity.idleAnimationState.stop();
 			return;
 		}
 
-		animate(entity.idleAnimationState, ShardLizardChargerAnimations.shard_lizard_charger_idle, ageInTicks, 2f);
+		animate(entity.idleAnimationState, ShardLizardChargerAnimations.IDLE, ageInTicks, 2f);
 	}
 
 	@Override

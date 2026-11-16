@@ -20,27 +20,27 @@ import net.tobias.neo_prism.entity.entities.ShardLizardSlasher;
 
 public class ShardLizardSlasherRenderer extends MobRenderer<ShardLizardSlasher, ShardLizardSlasherModel<ShardLizardSlasher>> {
     private static final ResourceLocation[] BASE = new ResourceLocation[] {
-            rl("textures/entity/shard_lizards/slasher/red_slasher.png"),
-            rl("textures/entity/shard_lizards/slasher/orange_slasher.png"),
-            rl("textures/entity/shard_lizards/slasher/yellow_slasher.png"),
-            rl("textures/entity/shard_lizards/slasher/green_slasher.png"),
-            rl("textures/entity/shard_lizards/slasher/blue_slasher.png"),
-            rl("textures/entity/shard_lizards/slasher/cyan_slasher.png"),
-            rl("textures/entity/shard_lizards/slasher/purple_slasher.png"),
-            rl("textures/entity/shard_lizards/slasher/pink_slasher.png"),
-            rl("textures/entity/shard_lizards/slasher/white_slasher.png")
+            rl("textures/entity/shard_lizards/slasher/red.png"),
+            rl("textures/entity/shard_lizards/slasher/orange.png"),
+            rl("textures/entity/shard_lizards/slasher/yellow.png"),
+            rl("textures/entity/shard_lizards/slasher/green.png"),
+            rl("textures/entity/shard_lizards/slasher/blue.png"),
+            rl("textures/entity/shard_lizards/slasher/cyan.png"),
+            rl("textures/entity/shard_lizards/slasher/purple.png"),
+            rl("textures/entity/shard_lizards/slasher/pink.png"),
+            rl("textures/entity/shard_lizards/slasher/white.png")
     };
 
     public static final ResourceLocation[] EMISSIVE = new ResourceLocation[] {
-            rl("textures/entity/shard_lizards/emissive/red_emissive.png"),
-            rl("textures/entity/shard_lizards/emissive/orange_emissive.png"),
-            rl("textures/entity/shard_lizards/emissive/yellow_emissive.png"),
-            rl("textures/entity/shard_lizards/emissive/green_emissive.png"),
-            rl("textures/entity/shard_lizards/emissive/blue_emissive.png"),
-            rl("textures/entity/shard_lizards/emissive/cyan_emissive.png"),
-            rl("textures/entity/shard_lizards/emissive/purple_emissive.png"),
-            rl("textures/entity/shard_lizards/emissive/pink_emissive.png"),
-            rl("textures/entity/shard_lizards/emissive/white_emissive.png")
+            rl("textures/entity/shard_lizards/emissive/red.png"),
+            rl("textures/entity/shard_lizards/emissive/orange.png"),
+            rl("textures/entity/shard_lizards/emissive/yellow.png"),
+            rl("textures/entity/shard_lizards/emissive/green.png"),
+            rl("textures/entity/shard_lizards/emissive/blue.png"),
+            rl("textures/entity/shard_lizards/emissive/cyan.png"),
+            rl("textures/entity/shard_lizards/emissive/purple.png"),
+            rl("textures/entity/shard_lizards/emissive/pink.png"),
+            rl("textures/entity/shard_lizards/emissive/white.png")
     };
     public ShardLizardSlasherRenderer(EntityRendererProvider.Context pContext) {
         super(pContext, new ShardLizardSlasherModel<>(pContext.bakeLayer(ModModelLayers.SHARD_LIZARD_SLASHER_LAYER)), 1f);

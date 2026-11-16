@@ -3,6 +3,7 @@ package net.tobias.neo_prism;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
@@ -15,10 +16,11 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.tobias.neo_prism.effects.ModEffects;
 import net.tobias.neo_prism.entity.ModEntities;
 import net.tobias.neo_prism.entity.client.renders.*;
-import net.tobias.neo_prism.entity.entities.projectiles.ShardLizardTailSpike;
 import net.tobias.neo_prism.item.ModItems;
 import net.tobias.neo_prism.block.ModBlocks;
 import net.tobias.neo_prism.item.ModSpawnEggs;
+import net.tobias.neo_prism.particles.ModParticles;
+import net.tobias.neo_prism.particles.custom.Flame;
 import net.tobias.neo_prism.sounds.ModSounds;
 import org.slf4j.Logger;
 
@@ -38,6 +40,7 @@ public class Neo_Prism {
 
         ModSounds.register(modEventBus);
         ModEntities.register(modEventBus);
+        ModParticles.register(modEventBus);
         ModEffects.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
@@ -63,6 +66,12 @@ public class Neo_Prism {
             EntityRenderers.register(ModEntities.SHARD_LIZARD_THRASHER.get(), ShardLizardThrasherRenderer::new);
             EntityRenderers.register(ModEntities.SHARD_LIZARD_SPIKE_THROWER.get(), ShardLizardSpikeThrowerRenderer::new);
             EntityRenderers.register(ModEntities.SHARD_LIZARD_TAIL_SPIKE.get(), ShardLizardTailSpikeRenderer::new);
+            EntityRenderers.register(ModEntities.SHARD_LIZARD_COMMANDER.get(), ShardLizardCommanderRenderer::new);
+        }
+
+        @SubscribeEvent
+        public static void registerParticleFactories(RegisterParticleProvidersEvent event) {
+            event.registerSpriteSet(ModParticles.FLAME.get(), Flame.Provider::new);
         }
     }
 }

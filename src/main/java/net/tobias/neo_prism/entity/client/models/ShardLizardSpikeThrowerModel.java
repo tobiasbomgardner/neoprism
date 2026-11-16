@@ -387,24 +387,24 @@ public class ShardLizardSpikeThrowerModel<T extends ShardLizardSpikeThrower> ext
 		root().getAllParts().forEach(ModelPart::resetPose);
 
 		if (entity.isCustomDying()) {
-			animate(entity.deathAnimationState, ShardLizardSpikeThrowerAnimations.shard_lizard_spike_thrower_death, ageInTicks, 1.0f);
+			animate(entity.deathAnimationState, ShardLizardSpikeThrowerAnimations.DEATH, ageInTicks, 1.0f);
 			return;
 		}
 
 		if (entity.isAttacking()) {
-			animate(entity.fireSpikeAnimationState, ShardLizardSpikeThrowerAnimations.shard_lizard_spike_thrower_throw_spike, ageInTicks, 1.0f);
+			animate(entity.fireSpikeAnimationState, ShardLizardSpikeThrowerAnimations.THROW_SPIKE, ageInTicks, 1.0f);
 			return;
 		}
 
 		applyHeadRotation(netHeadYaw, headPitch, ageInTicks);
 		boolean isMoving = limbSwingAmount > 0.01F || entity.getDeltaMovement().horizontalDistanceSqr() > 0.0001D;
 		if (isMoving) {
-			animateWalk(ShardLizardSpikeThrowerAnimations.shard_lizard_spike_thrower_walk, limbSwing, limbSwingAmount, 5.0f, 2.5f);
+			animateWalk(ShardLizardSpikeThrowerAnimations.WALK, limbSwing, limbSwingAmount, 5.0f, 2.5f);
 			entity.idleAnimationState.stop();
 			return;
 		}
 
-		animate(entity.idleAnimationState, ShardLizardSpikeThrowerAnimations.shard_lizard_spike_thrower_idle, ageInTicks, 1.0f);
+		animate(entity.idleAnimationState, ShardLizardSpikeThrowerAnimations.IDLE, ageInTicks, 1.0f);
 	}
 
 	private void applyHeadRotation(float netheadYaw, float headPitch, float ageInTicks) {
