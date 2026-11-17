@@ -39,10 +39,13 @@ public class ShardLizardCommanderRenderer extends MobRenderer<ShardLizardCommand
             rl("textures/entity/shard_lizards/commander/emissive/pink.png"),
             rl("textures/entity/shard_lizards/commander/emissive/white.png")
     };
+    private static final ResourceLocation BPE_EMISSIVE = new ResourceLocation(
+            Neo_Prism.MOD_ID, "textures/entity/shard_lizards/commander/emissive/bpe.png");
 
     public ShardLizardCommanderRenderer(EntityRendererProvider.Context context) {
         super(context, new ShardLizardCommanderModel<>(context.bakeLayer(ModModelLayers.SHARD_LIZARD_COMMANDER_LAYER)), 1f);
         addLayer(new FireSpiterEmissiveLayer(this));
+        addLayer(new BpeEmissiveLayer(this));
     }
 
     @Override
@@ -79,6 +82,19 @@ public class ShardLizardCommanderRenderer extends MobRenderer<ShardLizardCommand
         public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, ShardLizardCommander entity,
                            float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch) {
             VertexConsumer vc = buffer.getBuffer(RenderType.eyes(EMISSIVE[textureIndex(entity)]));
+            getParentModel().renderToBuffer(poseStack, vc, 15728640, LivingEntityRenderer.getOverlayCoords(entity, 0.0f), 1, 1, 1, 1);
+        }
+    }
+
+    public static class BpeEmissiveLayer extends RenderLayer<ShardLizardCommander, ShardLizardCommanderModel<ShardLizardCommander>> {
+        public BpeEmissiveLayer(RenderLayerParent<ShardLizardCommander, ShardLizardCommanderModel<ShardLizardCommander>> parent) {
+            super(parent);
+        }
+
+        @Override
+        public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, ShardLizardCommander entity,
+                           float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch) {
+            VertexConsumer vc = buffer.getBuffer(RenderType.eyes(BPE_EMISSIVE));
             getParentModel().renderToBuffer(poseStack, vc, 15728640, LivingEntityRenderer.getOverlayCoords(entity, 0.0f), 1, 1, 1, 1);
         }
     }

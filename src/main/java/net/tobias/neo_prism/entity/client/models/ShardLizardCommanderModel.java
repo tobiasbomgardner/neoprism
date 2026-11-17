@@ -34,6 +34,8 @@ public class ShardLizardCommanderModel<T extends ShardLizardCommander> extends H
 		final ModelPart right_arm = arms.getChild("right_arm");
 		final ModelPart top_right_arm = right_arm.getChild("top_right_arm");
 		final ModelPart bottom_right_arm = top_right_arm.getChild("bottom_right_arm");
+		final ModelPart flap = bottom_right_arm.getChild("flap");
+		final ModelPart broken_prismatic_eye = bottom_right_arm.getChild("broken_prismatic_eye");
 		final ModelPart crystal_right = top_right_arm.getChild("crystal_right");
 		head = top_body.getChild("head");
 		final ModelPart jaw = head.getChild("jaw");
@@ -121,6 +123,14 @@ public class ShardLizardCommanderModel<T extends ShardLizardCommander> extends H
 		PartDefinition bottom_right_arm = top_right_arm.addOrReplaceChild("bottom_right_arm", CubeListBuilder.create(), PartPose.offset(3.0F, 11.8568F, -4.3069F));
 
 		PartDefinition bottom_right_arm_r1 = bottom_right_arm.addOrReplaceChild("bottom_right_arm_r1", CubeListBuilder.create().texOffs(24, 106).addBox(-4.1557F, -0.1674F, -3.9435F, 8.0F, 14.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.1822F, -0.557F, 0.2112F, -0.3491F, 0.0F, 0.0F));
+
+		PartDefinition flap = bottom_right_arm.addOrReplaceChild("flap", CubeListBuilder.create(), PartPose.offset(-3.6F, 12.2F, -3.8F));
+
+		PartDefinition flap_r1 = flap.addOrReplaceChild("flap_r1", CubeListBuilder.create().texOffs(24, 119).addBox(-4.0F, -1.0F, -4.0F, 8.0F, 1.0F, 8.0F, new CubeDeformation(0.1f)), PartPose.offsetAndRotation(3.61F, 0.1946F, -0.635F, -0.3491F, 0.0F, 0.0F));
+
+		PartDefinition broken_prismatic_eye = bottom_right_arm.addOrReplaceChild("broken_prismatic_eye", CubeListBuilder.create(), PartPose.offset(0.0265F, 6.7591F, -2.3432F));
+
+		PartDefinition broken_prismatic_eye_r1 = broken_prismatic_eye.addOrReplaceChild("broken_prismatic_eye_r1", CubeListBuilder.create().texOffs(57, 108).addBox(-3.5F, -5.5F, -4.5F, 8.0F, 11.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.5F, 0.171F, 0.4698F, -0.3491F, 0.0F, 0.0F));
 
 		PartDefinition crystal_right = top_right_arm.addOrReplaceChild("crystal_right", CubeListBuilder.create(), PartPose.offset(6.0F, 0.0F, -0.1F));
 
@@ -211,6 +221,9 @@ public class ShardLizardCommanderModel<T extends ShardLizardCommander> extends H
 					break;
 				case ShardLizardCommander.THREE_STRIKES_COMBO:
 					animate(entity.threeStrikesComboAnimationState, ShardLizardCommanderAnimations.THREE_STRIKES_COMBO, ageInTicks, 1.0f);
+					break;
+				case ShardLizardCommander.SUMMON:
+					animate(entity.summonAnimationState, ShardLizardCommanderAnimations.SUMMON, ageInTicks, 1.0f);
 					break;
 				case ShardLizardCommander.DOUBLE_WHIP_HEAVY_SLASHES_W_SLAM:
 					animate(entity.doubleWhipHeavySlashesWSlamAnimationState, ShardLizardCommanderAnimations.DOUBLE_WHIP_HEAVY_SLASHES_W_SLAM, ageInTicks, 1.0f);

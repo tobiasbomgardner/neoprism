@@ -2,10 +2,12 @@ package net.tobias.neo_prism.entity.entities;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
@@ -38,8 +40,7 @@ public class ShardLizardCommander extends Monster {
     private static final EntityDataAccessor<Integer> ATTACK_TYPE =
             SynchedEntityData.defineId(ShardLizardCommander.class, EntityDataSerializers.INT);
     public static final int STUN_ROAR = 0;
-    public static final int SUMMON_SCOUTS = 1;
-    //    public static final int COMMAND = 2;
+    public static final int SUMMON = 1;
     public static final int SPIT_FIRE = 2;
     public static final int BITE = 3;
     public static final int STUN_SLAM = 4;
@@ -50,13 +51,13 @@ public class ShardLizardCommander extends Monster {
     public static final int HEAVY_SLASHES_W_SLAM = 9;
     public static final int THREE_STRIKES_COMBO = 10;
     public static final int DOUBLE_WHIP_HEAVY_SLASHES_W_SLAM = 11;
-    private static final int DEATH_ANIM_TICKS = 50;
+    public static final int VENGEANCE = 12;
+    private static final int DEATH_ANIM_TICKS = 40;
 
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState deathAnimationState = new AnimationState();
-    public final AnimationState startBattleRoarAnimationState = new AnimationState();
     public final AnimationState stunRoarAnimationState = new AnimationState();
-    public final AnimationState commandAnimationState = new AnimationState();
+    public final AnimationState summonAnimationState = new AnimationState();
     public final AnimationState spitFireAnimationState = new AnimationState();
     public final AnimationState biteAnimationState = new AnimationState();
     public final AnimationState stunSlamAnimationState = new AnimationState();
@@ -72,6 +73,7 @@ public class ShardLizardCommander extends Monster {
     public int attackAnimTicks = 0;
     private boolean attackDamageApplied = false;
     private float lastComboDamageTicksReached = -1.0f;
+    public int vengeanceMeter = 0;
 
     public ShardLizardCommander(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
@@ -89,7 +91,11 @@ public class ShardLizardCommander extends Monster {
     }
 
     public void startAttackAnimation() {
-        setAttackType(selectAttackType());
+        if (getVengeanceMeterValue() >= 7) {
+            setAttackType(VENGEANCE);
+        } else {
+            setAttackType(selectAttackType());
+        }
         attackAnimTicks = 0;
         attackDamageApplied = false;
         lastComboDamageTicksReached = -1.0f;
@@ -153,13 +159,14 @@ public class ShardLizardCommander extends Monster {
             case HEAVY_SLASHES_W_SLAM -> new float[] {24.0f, 30.0f, 40.0f};
             case THREE_STRIKES_COMBO -> new float[] {24.0f, 29.0f, 39.0f};
             case DOUBLE_WHIP_HEAVY_SLASHES_W_SLAM -> new float[] {24.0f, 29.0f, 39.0f, 44.0f, 55.0f};
+            case VENGEANCE -> new float[] {};
             default -> new float[] {};
         };
     }
 
     public float getAttackAnimationDurationTicks() {
         return switch (getAttackType()) {
-            case STUN_ROAR -> 100.0f;
+            case STUN_ROAR -> 40.0f;
             case SPIT_FIRE -> 175.0f;
             case BITE, WHIP -> 20.0f;
             case STUN_SLAM -> 35.3f;
@@ -169,6 +176,7 @@ public class ShardLizardCommander extends Monster {
             case HEAVY_SLASHES_W_SLAM -> 55.0f;
             case THREE_STRIKES_COMBO -> 65.0f;
             case DOUBLE_WHIP_HEAVY_SLASHES_W_SLAM -> 70.0f;
+//            case VENGEANCE -> ;
             default -> 0.0f;
         };
     }
@@ -182,6 +190,7 @@ public class ShardLizardCommander extends Monster {
             case HEAVY_SLASHES_W_SLAM -> new float[] {5.0f, 5.0f, 7.0f};
             case THREE_STRIKES_COMBO -> new float[] {3.0f, 5.0f, 5.0f};
             case DOUBLE_WHIP_HEAVY_SLASHES_W_SLAM -> new float[] {3.0f, 5.0f, 5.0f, 5.0f, 7.0f};
+            case VENGEANCE -> new float[] {};
             default -> new float[] {};
         };
     }
@@ -196,6 +205,35 @@ public class ShardLizardCommander extends Monster {
 
     public void setAttackType(int attackType) {
         entityData.set(ATTACK_TYPE, Mth.clamp(attackType, STUN_ROAR, DOUBLE_WHIP_HEAVY_SLASHES_W_SLAM));
+        if (level() instanceof ServerLevel serverLevel) {
+            String attackName = switch (getAttackType()) {
+                case 0 -> "Stun Roar";
+                case 1 -> "Summon";
+                case 2 -> "Spit Fire";
+                case 3 -> "Bite";
+                case 4 -> "Stun Slam";
+                case 5 -> "Whip";
+                case 6 -> "Heavy Slash";
+                case 7 -> "Double Whip";
+                case 8 -> "Heavy Slashes";
+                case 9 -> "Heavy Slashes with Slam";
+                case 10 -> "Three Strikes Combo";
+                case 11 -> "Double Whip and Heavy Slashes with Slam";
+                case 12 -> "VENGEANCE";
+                default -> "Unknown";
+            };
+            for (Player player : serverLevel.players()) {
+                player.displayClientMessage(Component.literal(attackName), true);
+            }
+        }
+    }
+
+    public void resetVengeanceMeter(int startPoint) {
+        vengeanceMeter = startPoint;
+    }
+
+    public int getVengeanceMeterValue() {
+        return vengeanceMeter;
     }
 
     @Override
@@ -225,18 +263,24 @@ public class ShardLizardCommander extends Monster {
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
+        int vengeanceMeterMultiplier = 0;
         if (source.getDirectEntity() instanceof Projectile) {
             amount *= 0.5f;
+            vengeanceMeterMultiplier = 1;
         }
 
-        if (source.getDirectEntity() instanceof Projectile && isAttacking() && (getAttackType() == STUN_ROAR || getAttackType() == SPIT_FIRE || getAttackType() == SUMMON_SCOUTS)) {
+        if (source.getDirectEntity() instanceof Projectile && isAttacking() && (getAttackType() == STUN_ROAR || getAttackType() == SPIT_FIRE || getAttackType() == SUMMON)) {
             return false;
         }
 
         boolean damaged = super.hurt(source, amount);
         if (damaged) {
-            this.invulnerableTime = Math.max(this.invulnerableTime, 20);
-            this.hurtTime = Math.max(this.hurtTime, 15);
+            invulnerableTime = Math.max(invulnerableTime, 20);
+            hurtTime = Math.max(hurtTime, 15);
+            vengeanceMeter++;
+            if (source.getDirectEntity() instanceof Projectile) {
+                vengeanceMeter = vengeanceMeter + vengeanceMeterMultiplier;
+            }
         }
         return damaged;
     }
@@ -306,7 +350,7 @@ public class ShardLizardCommander extends Monster {
     public void tick() {
         super.tick();
 
-        if (isAttacking() && (getAttackType() == STUN_ROAR || getAttackType() == SPIT_FIRE || getAttackType() == SUMMON_SCOUTS)) {
+        if (isAttacking() && (getAttackType() == STUN_ROAR || getAttackType() == SPIT_FIRE || getAttackType() == SUMMON)) {
             getNavigation().stop();
             setDeltaMovement(getDeltaMovement().x * 0.1D, getDeltaMovement().y, getDeltaMovement().z * 0.1D);
         }

@@ -190,7 +190,7 @@ public class ShardLizardCharger extends Monster {
     public void cancelDash() {
         isDashing = false;
         dashTicks = 0;
-        dashCooldown = 40;
+        this.dashCooldown = 40;
         setIsAttacking(false);
         setDeltaMovement(0.0D, 0.0D, 0.0D);
     }
@@ -200,7 +200,7 @@ public class ShardLizardCharger extends Monster {
     }
 
     public void setDashCooldown(int dashCooldown) {
-        dashCooldown = dashCooldown;
+        this.dashCooldown = Math.max(0, dashCooldown);
     }
 
     @Override

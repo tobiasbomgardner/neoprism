@@ -16,6 +16,9 @@ import java.util.Set;
 public class ShardLizardCommanderAttackGoal extends MeleeAttackGoal {
     private final ShardLizardCommander entity;
     private final Set<Entity> roarPushedTargets = new HashSet<>();
+    private boolean vengeancePunishmentActive = false;
+    private boolean vengeanceRoarApplied = false;
+    private boolean vengeanceFollowUpStarted = false;
     private int attacksDelay = 40;
     private int ticksUntilNextAttack = 45;
     private boolean shouldCountTillNextAttack = false;
@@ -35,6 +38,9 @@ public class ShardLizardCommanderAttackGoal extends MeleeAttackGoal {
     @Override
     public void stop() {
         roarPushedTargets.clear();
+        vengeancePunishmentActive = false;
+        vengeanceRoarApplied = false;
+        vengeanceFollowUpStarted = false;
         entity.setIsAttacking(false);
         super.stop();
     }
@@ -49,11 +55,7 @@ public class ShardLizardCommanderAttackGoal extends MeleeAttackGoal {
 
     @Override
     protected void checkAndPerformAttack(LivingEntity enemy, double distToEnemySqr) {
-        boolean isRoarAttack = entity.getAttackType() == ShardLizardCommander.STUN_ROAR;
-        boolean isSpitFireAttack = entity.getAttackType() == ShardLizardCommander.SPIT_FIRE;
-        boolean isInSpitFireRange = enemy.distanceToSqr(entity) <= 10.0D * 10.0D;
-
-        if (isEnemyWithinAttackDistance(enemy, distToEnemySqr) || isRoarAttack || (isSpitFireAttack && isInSpitFireRange)) {
+        if (isEnemyWithinAttackDistance(enemy, distToEnemySqr)) {
             shouldCountTillNextAttack = true;
 
             if (!entity.isAttacking()) {
@@ -72,8 +74,9 @@ public class ShardLizardCommanderAttackGoal extends MeleeAttackGoal {
                     entity.getAttackType() == ShardLizardCommander.THREE_STRIKES_COMBO ||
                     entity.getAttackType() == ShardLizardCommander.DOUBLE_WHIP_HEAVY_SLASHES_W_SLAM &&
                     entity.getAttackType() != ShardLizardCommander.STUN_ROAR &&
-                    entity.getAttackType() != ShardLizardCommander.SUMMON_SCOUTS &&
-                    entity.getAttackType() != ShardLizardCommander.SPIT_FIRE) {
+                    entity.getAttackType() != ShardLizardCommander.SUMMON &&
+                    entity.getAttackType() != ShardLizardCommander.SPIT_FIRE &&
+                    entity.getAttackType() != ShardLizardCommander.VENGEANCE) {
                 for (int i = 0; i < damageTicks.length; i++) {
                     comboDamageTicksReached = i;
                     if (entity.attackAnimTicks >= damageTicks[i] && damageTicks[i] > entity.getLastComboDamageTicksReached()) {
@@ -83,9 +86,11 @@ public class ShardLizardCommanderAttackGoal extends MeleeAttackGoal {
                         break;
                     }
                 }
-            } else if (entity.getAttackType() != ShardLizardCommander.STUN_ROAR &&
-                    entity.getAttackType() != ShardLizardCommander.SUMMON_SCOUTS &&
-                    entity.getAttackType() != ShardLizardCommander.SPIT_FIRE) {
+            } else if (
+                    entity.getAttackType() != ShardLizardCommander.STUN_ROAR &&
+                    entity.getAttackType() != ShardLizardCommander.SUMMON &&
+                    entity.getAttackType() != ShardLizardCommander.SPIT_FIRE &&
+                    entity.getAttackType() != ShardLizardCommander.VENGEANCE) {
                 for (float tick : damageTicks) {
                     if (!entity.hasAttackDamageApplied() && entity.attackAnimTicks >= tick) {
                         mob.getLookControl().setLookAt(enemy.getX(), enemy.getEyeY(), enemy.getZ());
@@ -134,14 +139,19 @@ public class ShardLizardCommanderAttackGoal extends MeleeAttackGoal {
                         roarPushedTargets.clear();
                     }
                 }
+                if (entity.getAttackType() == ShardLizardCommander.SUMMON) {}
+                if (entity.getAttackType() == ShardLizardCommander.SPIT_FIRE) {}
             }
 
             if (!entity.isAttacking()) {
                 roarPushedTargets.clear();
+                vengeancePunishmentActive = false;
+                vengeanceRoarApplied = false;
+                vengeanceFollowUpStarted = false;
                 resetAttackCooldown();
             }
             return;
-        }
+        } else if (entity.getAttackType() == ShardLizardCommander.VENGEANCE) {}
 
         if (entity.isAttacking() && entity.getAttackType() == ShardLizardCommander.SPIT_FIRE) {
             return;
@@ -214,6 +224,9 @@ public class ShardLizardCommanderAttackGoal extends MeleeAttackGoal {
         if (didDamage) {
             target.setDeltaMovement(oldVelocity.x, oldVelocity.y, oldVelocity.z);
             target.hurtMarked = true;
+            if (entity.vengeanceMeter >= 1) {
+                entity.vengeanceMeter--;
+            }
         }
         return didDamage;
     }
