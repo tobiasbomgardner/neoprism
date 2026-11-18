@@ -54,7 +54,7 @@ public class ShardLizardSpikeThrowerRenderer extends MobRenderer<ShardLizardSpik
     @Override
     public void render(ShardLizardSpikeThrower entity, float entityYaw, float partialTicks, PoseStack matrixStack,
                        MultiBufferSource buffer, int packedLight) {
-        matrixStack.scale(0.5f, 0.5f, 0.5f);
+        matrixStack.scale(0.7f, 0.7f, 0.7f);
 
         super.render(entity, entityYaw, partialTicks, matrixStack, buffer, packedLight);
     }

@@ -53,7 +53,7 @@ public class ShardLizardChargerRenderer extends MobRenderer<ShardLizardCharger, 
     @Override
     public void render(ShardLizardCharger pEntity, float pEntityYaw, float pPartialTicks, PoseStack pMatrixStack,
                        MultiBufferSource pBuffer, int pPackedLight) {
-        pMatrixStack.scale(0.5f, 0.5f, 0.5f);
+        pMatrixStack.scale(0.7f, 0.7f, 0.7f);
 
         super.render(pEntity, pEntityYaw, pPartialTicks, pMatrixStack, pBuffer, pPackedLight);
     }

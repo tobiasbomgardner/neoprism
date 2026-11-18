@@ -54,7 +54,7 @@ public class ShardLizardThrasherRenderer extends MobRenderer<ShardLizardThrasher
     @Override
     public void render(ShardLizardThrasher entity, float entityYaw, float partialTicks, PoseStack matrixStack,
                        MultiBufferSource source, int packedLight) {
-        matrixStack.scale(0.5f, 0.5f, 0.5f);
+        matrixStack.scale(0.7f, 0.7f, 0.7f);
 
         super.render(entity, entityYaw, partialTicks, matrixStack, source, packedLight);
     }
