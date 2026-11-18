@@ -1,5 +1,6 @@
 package net.tobias.neo_prism.entity.entities;
 
+import com.mojang.logging.LogUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
@@ -28,8 +29,10 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
 import net.tobias.neo_prism.Neo_Prism;
 import net.tobias.neo_prism.entity.ai.shard_lizards.goals.ShardLizardCommanderAttackGoal;
+import org.slf4j.Logger;
 
 public class ShardLizardCommander extends Monster {
+    private static final Logger LOGGER = LogUtils.getLogger();
     private static final EntityDataAccessor<Integer> VARIANT =
             SynchedEntityData.defineId(ShardLizardCommander.class, EntityDataSerializers.INT);
     private static final int VARIANT_COUNT = 9;
@@ -129,10 +132,11 @@ public class ShardLizardCommander extends Monster {
                     HEAVY_SLASHES_W_SLAM,
                     STUN_SLAM,
                     STUN_ROAR,
+                    SUMMON,
                     SPIT_FIRE
             };
             if (!canUseSpitFire) {
-                int[] filtered = {THREE_STRIKES_COMBO, HEAVY_SLASHES_W_SLAM, STUN_SLAM, STUN_ROAR};
+                int[] filtered = {THREE_STRIKES_COMBO, HEAVY_SLASHES_W_SLAM, STUN_SLAM, STUN_ROAR, SUMMON};
                 return filtered[getRandom().nextInt(filtered.length)];
             }
             return secondRarest[getRandom().nextInt(secondRarest.length)];
@@ -420,6 +424,7 @@ public class ShardLizardCommander extends Monster {
             threeStrikesComboAnimationState.stop();
             doubleWhipHeavySlashesWSlamAnimationState.stop();
             vengeanceAnimationState.stop();
+            summonAnimationState.stop();
             if (!deathAnimationState.isStarted()) {
                 deathAnimationState.start(tickCount);
             }
@@ -444,6 +449,7 @@ public class ShardLizardCommander extends Monster {
                     threeStrikesComboAnimationState.stop();
                     doubleWhipHeavySlashesWSlamAnimationState.stop();
                     vengeanceAnimationState.stop();
+                    summonAnimationState.stop();
                     if (!stunRoarAnimationState.isStarted()) {
                         stunRoarAnimationState.start(tickCount);
                     }
@@ -460,6 +466,7 @@ public class ShardLizardCommander extends Monster {
                     threeStrikesComboAnimationState.stop();
                     doubleWhipHeavySlashesWSlamAnimationState.stop();
                     vengeanceAnimationState.stop();
+                    summonAnimationState.stop();
                     if (!spitFireAnimationState.isStarted()) {
                         spitFireAnimationState.start(tickCount);
                     }
@@ -476,8 +483,26 @@ public class ShardLizardCommander extends Monster {
                     threeStrikesComboAnimationState.stop();
                     doubleWhipHeavySlashesWSlamAnimationState.stop();
                     vengeanceAnimationState.stop();
+                    summonAnimationState.stop();
                     if (!stunSlamAnimationState.isStarted()) {
                         stunSlamAnimationState.start(tickCount);
+                    }
+                    break;
+                case SUMMON:
+                    stunRoarAnimationState.stop();
+                    spitFireAnimationState.stop();
+                    biteAnimationState.stop();
+                    whipAnimationState.stop();
+                    heavySlashAnimationState.stop();
+                    doubleWhipAnimationState.stop();
+                    heavySlashesAnimationState.stop();
+                    heavySlashesWSlamAnimationState.stop();
+                    threeStrikesComboAnimationState.stop();
+                    doubleWhipHeavySlashesWSlamAnimationState.stop();
+                    vengeanceAnimationState.stop();
+                    stunSlamAnimationState.stop();
+                    if (!summonAnimationState.isStarted()) {
+                        summonAnimationState.start(tickCount);
                     }
                     break;
                 case WHIP:
@@ -492,6 +517,7 @@ public class ShardLizardCommander extends Monster {
                     threeStrikesComboAnimationState.stop();
                     doubleWhipHeavySlashesWSlamAnimationState.stop();
                     vengeanceAnimationState.stop();
+                    summonAnimationState.stop();
                     if (!whipAnimationState.isStarted()) {
                         whipAnimationState.start(tickCount);
                     }
@@ -508,6 +534,7 @@ public class ShardLizardCommander extends Monster {
                     threeStrikesComboAnimationState.stop();
                     doubleWhipHeavySlashesWSlamAnimationState.stop();
                     vengeanceAnimationState.stop();
+                    summonAnimationState.stop();
                     if (!heavySlashAnimationState.isStarted()) {
                         heavySlashAnimationState.start(tickCount);
                     }
@@ -524,6 +551,7 @@ public class ShardLizardCommander extends Monster {
                     threeStrikesComboAnimationState.stop();
                     doubleWhipHeavySlashesWSlamAnimationState.stop();
                     vengeanceAnimationState.stop();
+                    summonAnimationState.stop();
                     if (!doubleWhipAnimationState.isStarted()) {
                         doubleWhipAnimationState.start(tickCount);
                     }
@@ -540,6 +568,7 @@ public class ShardLizardCommander extends Monster {
                     threeStrikesComboAnimationState.stop();
                     doubleWhipHeavySlashesWSlamAnimationState.stop();
                     vengeanceAnimationState.stop();
+                    summonAnimationState.stop();
                     if (!heavySlashesAnimationState.isStarted()) {
                         heavySlashesAnimationState.start(tickCount);
                     }
@@ -556,6 +585,7 @@ public class ShardLizardCommander extends Monster {
                     threeStrikesComboAnimationState.stop();
                     doubleWhipHeavySlashesWSlamAnimationState.stop();
                     vengeanceAnimationState.stop();
+                    summonAnimationState.stop();
                     if (!heavySlashesWSlamAnimationState.isStarted()) {
                         heavySlashesWSlamAnimationState.start(tickCount);
                     }
@@ -572,6 +602,7 @@ public class ShardLizardCommander extends Monster {
                     heavySlashesWSlamAnimationState.stop();
                     doubleWhipHeavySlashesWSlamAnimationState.stop();
                     vengeanceAnimationState.stop();
+                    summonAnimationState.stop();
                     if (!threeStrikesComboAnimationState.isStarted()) {
                         threeStrikesComboAnimationState.start(tickCount);
                     }
@@ -588,6 +619,7 @@ public class ShardLizardCommander extends Monster {
                     heavySlashesWSlamAnimationState.stop();
                     threeStrikesComboAnimationState.stop();
                     vengeanceAnimationState.stop();
+                    summonAnimationState.stop();
                     if (!doubleWhipHeavySlashesWSlamAnimationState.isStarted()) {
                         doubleWhipHeavySlashesWSlamAnimationState.start(tickCount);
                     }
@@ -604,6 +636,7 @@ public class ShardLizardCommander extends Monster {
                     heavySlashesWSlamAnimationState.stop();
                     threeStrikesComboAnimationState.stop();
                     doubleWhipHeavySlashesWSlamAnimationState.stop();
+                    summonAnimationState.stop();
                     if (!vengeanceAnimationState.isStarted()) {
                         vengeanceAnimationState.start(tickCount);
                     }
@@ -621,6 +654,7 @@ public class ShardLizardCommander extends Monster {
                     threeStrikesComboAnimationState.stop();
                     doubleWhipHeavySlashesWSlamAnimationState.stop();
                     vengeanceAnimationState.stop();
+                    summonAnimationState.stop();
                     if (!biteAnimationState.isStarted()) {
                         biteAnimationState.start(tickCount);
                     }
@@ -641,6 +675,7 @@ public class ShardLizardCommander extends Monster {
         threeStrikesComboAnimationState.stop();
         doubleWhipHeavySlashesWSlamAnimationState.stop();
         vengeanceAnimationState.stop();
+        summonAnimationState.stop();
         attackAnimationState.stop();
 
         if (getDeltaMovement().horizontalDistanceSqr() > 0.0001d) {

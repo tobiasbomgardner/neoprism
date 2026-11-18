@@ -1,6 +1,7 @@
 package net.tobias.neo_prism.entity.ai.shard_lizards.goals;
 
 import com.mojang.logging.LogUtils;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -8,10 +9,12 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.tobias.neo_prism.effects.ModEffects;
-import net.tobias.neo_prism.entity.entities.ShardLizardCommander;
+import net.tobias.neo_prism.entity.ModEntities;
+import net.tobias.neo_prism.entity.entities.*;
 import org.slf4j.Logger;
 
 import java.util.HashSet;
@@ -124,7 +127,7 @@ public class ShardLizardCommanderAttackGoal extends MeleeAttackGoal {
                         }
                     }
 
-                    if (entity.attackAnimTicks >= 30) {
+                    if (entity.attackAnimTicks >= 20) {
                         for (Entity target : roarPushedTargets) {
                             if (target == null || !target.isAlive()) continue;
                             if (target instanceof LivingEntity livingTarget) {
@@ -140,7 +143,100 @@ public class ShardLizardCommanderAttackGoal extends MeleeAttackGoal {
                         roarPushedTargets.clear();
                     }
                 }
-                if (entity.getAttackType() == ShardLizardCommander.SUMMON) {}
+                if (entity.getAttackType() == ShardLizardCommander.SUMMON) {
+                    if (entity.level().isClientSide) return;
+
+                    if (entity.attackAnimTicks >= 20) {
+                        int entityX = (int) entity.getX();
+                        int entityY = (int) entity.getY();
+                        int entityZ = (int) entity.getZ();
+                        BlockPos summon1Pos = new BlockPos(entityX + 1, entityY, entityZ);
+                        BlockPos summon2Pos = new BlockPos(entityX - 1, entityY, entityZ);
+                        BlockPos summon3Pos = new BlockPos(entityX, entityY, entityZ + 1);
+                        BlockPos summon4Pos = new BlockPos(entityX, entityY, entityZ - 1);
+                        Monster summon2;
+                        Monster summon3;
+                        Monster summon4;
+                        Monster summon1;
+                        LivingEntity target = entity.getTarget();
+                        float roll;
+
+                        roll = entity.getRandom().nextFloat();
+                        if (roll < 0.001f) {
+                            summon1 = new ShardLizardCommander(ModEntities.SHARD_LIZARD_COMMANDER.get(), entity.level());
+                        } else if (roll < 0.25f) {
+                            summon1 = new ShardLizardThrasher(ModEntities.SHARD_LIZARD_THRASHER.get(), entity.level());
+                        } else if (roll < 0.30f) {
+                            summon1 = new ShardLizardSlasher(ModEntities.SHARD_LIZARD_SLASHER.get(), entity.level());
+                        } else if (roll < 0.35f) {
+                            summon1 = new ShardLizardSpikeThrower(ModEntities.SHARD_LIZARD_SPIKE_THROWER.get(), entity.level());
+                        } else if (roll < 0.40f) {
+                            summon1 = new ShardLizardCharger(ModEntities.SHARD_LIZARD_CHARGER.get(), entity.level());
+                        } else {
+                            summon1 = new ShardLizardScout(ModEntities.SHARD_LIZARD_SCOUT.get(), entity.level());
+                        }
+
+                        roll = entity.getRandom().nextFloat();
+                        if (roll < 0.001f) {
+                            summon2 = new ShardLizardCommander(ModEntities.SHARD_LIZARD_COMMANDER.get(), entity.level());
+                        } else if (roll < 0.25f) {
+                            summon2 = new ShardLizardThrasher(ModEntities.SHARD_LIZARD_THRASHER.get(), entity.level());
+                        } else if (roll < 0.30f) {
+                            summon2 = new ShardLizardSlasher(ModEntities.SHARD_LIZARD_SLASHER.get(), entity.level());
+                        } else if (roll < 0.35f) {
+                            summon2 = new ShardLizardSpikeThrower(ModEntities.SHARD_LIZARD_SPIKE_THROWER.get(), entity.level());
+                        } else if (roll < 0.40f) {
+                            summon2 = new ShardLizardCharger(ModEntities.SHARD_LIZARD_CHARGER.get(), entity.level());
+                        } else {
+                            summon2 = new ShardLizardScout(ModEntities.SHARD_LIZARD_SCOUT.get(), entity.level());
+                        }
+
+                        roll = entity.getRandom().nextFloat();
+                        if (roll < 0.001f) {
+                            summon3 = new ShardLizardCommander(ModEntities.SHARD_LIZARD_COMMANDER.get(), entity.level());
+                        } else if (roll < 0.25f) {
+                            summon3 = new ShardLizardThrasher(ModEntities.SHARD_LIZARD_THRASHER.get(), entity.level());
+                        } else if (roll < 0.30f) {
+                            summon3 = new ShardLizardSlasher(ModEntities.SHARD_LIZARD_SLASHER.get(), entity.level());
+                        } else if (roll < 0.35f) {
+                            summon3 = new ShardLizardSpikeThrower(ModEntities.SHARD_LIZARD_SPIKE_THROWER.get(), entity.level());
+                        } else if (roll < 0.40f) {
+                            summon3 = new ShardLizardCharger(ModEntities.SHARD_LIZARD_CHARGER.get(), entity.level());
+                        } else {
+                            summon3 = new ShardLizardScout(ModEntities.SHARD_LIZARD_SCOUT.get(), entity.level());
+                        }
+
+                        roll = entity.getRandom().nextFloat();
+                        if (roll < 0.001f) {
+                            summon4 = new ShardLizardCommander(ModEntities.SHARD_LIZARD_COMMANDER.get(), entity.level());
+                        } else if (roll < 0.25f) {
+                            summon4 = new ShardLizardThrasher(ModEntities.SHARD_LIZARD_THRASHER.get(), entity.level());
+                        } else if (roll < 0.30f) {
+                            summon4 = new ShardLizardSlasher(ModEntities.SHARD_LIZARD_SLASHER.get(), entity.level());
+                        } else if (roll < 0.35f) {
+                            summon4 = new ShardLizardSpikeThrower(ModEntities.SHARD_LIZARD_SPIKE_THROWER.get(), entity.level());
+                        } else if (roll < 0.40f) {
+                            summon4 = new ShardLizardCharger(ModEntities.SHARD_LIZARD_CHARGER.get(), entity.level());
+                        } else {
+                            summon4 = new ShardLizardScout(ModEntities.SHARD_LIZARD_SCOUT.get(), entity.level());
+                        }
+
+                        summon1.moveTo(summon1Pos, 0.0f, 0.0f);
+                        summon2.moveTo(summon2Pos, 0.0f, 0.0f);
+                        summon3.moveTo(summon3Pos, 0.0f, 0.0f);
+                        summon4.moveTo(summon4Pos, 0.0f, 0.0f);
+
+                        summon1.setTarget(target);
+                        summon2.setTarget(target);
+                        summon3.setTarget(target);
+                        summon4.setTarget(target);
+
+                        entity.level().addFreshEntity(summon1);
+                        entity.level().addFreshEntity(summon2);
+                        entity.level().addFreshEntity(summon3);
+                        entity.level().addFreshEntity(summon4);
+                    }
+                }
                 if (entity.getAttackType() == ShardLizardCommander.SPIT_FIRE) {}
             }
 
