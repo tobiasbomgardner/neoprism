@@ -39,6 +39,8 @@ public class ShardLizardCommander extends Monster {
             SynchedEntityData.defineId(ShardLizardCommander.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> ATTACK_TYPE =
             SynchedEntityData.defineId(ShardLizardCommander.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> VENGEANCE_METER_VALUE =
+            SynchedEntityData.defineId(ShardLizardCommander.class, EntityDataSerializers.INT);
     public static final int STUN_ROAR = 0;
     public static final int SUMMON = 1;
     public static final int SPIT_FIRE = 2;
@@ -52,7 +54,7 @@ public class ShardLizardCommander extends Monster {
     public static final int THREE_STRIKES_COMBO = 10;
     public static final int DOUBLE_WHIP_HEAVY_SLASHES_W_SLAM = 11;
     public static final int VENGEANCE = 12;
-    private static final int DEATH_ANIM_TICKS = 40;
+    private static final int DEATH_ANIM_TICKS = 80;
 
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState deathAnimationState = new AnimationState();
@@ -68,11 +70,13 @@ public class ShardLizardCommander extends Monster {
     public final AnimationState heavySlashesWSlamAnimationState = new AnimationState();
     public final AnimationState threeStrikesComboAnimationState = new AnimationState();
     public final AnimationState doubleWhipHeavySlashesWSlamAnimationState = new AnimationState();
+    public final AnimationState vengeanceAnimationState = new AnimationState();
     public final AnimationState attackAnimationState = new AnimationState();
     private int deathAnimTicks = 0;
     public int attackAnimTicks = 0;
     private boolean attackDamageApplied = false;
     private float lastComboDamageTicksReached = -1.0f;
+    private float lastEffectTicksReached = -1.0f;
     public int vengeanceMeter = 0;
 
     public ShardLizardCommander(EntityType<? extends Monster> entityType, Level level) {
@@ -88,6 +92,7 @@ public class ShardLizardCommander extends Monster {
         attackAnimTicks = 0;
         attackDamageApplied = false;
         lastComboDamageTicksReached = -1.0f;
+        lastEffectTicksReached = - 1.0f;
     }
 
     public void startAttackAnimation() {
@@ -99,6 +104,15 @@ public class ShardLizardCommander extends Monster {
         attackAnimTicks = 0;
         attackDamageApplied = false;
         lastComboDamageTicksReached = -1.0f;
+        lastEffectTicksReached = -1.0f;
+        setIsAttacking(true);
+    }
+    public void startAttackAnimation(int forceSet) {
+        setAttackType(forceSet);
+        attackAnimTicks = 0;
+        attackDamageApplied = false;
+        lastComboDamageTicksReached = -1.0f;
+        lastEffectTicksReached = -1.0f;
         setIsAttacking(true);
     }
 
@@ -148,6 +162,14 @@ public class ShardLizardCommander extends Monster {
         this.lastComboDamageTicksReached = lastComboDamageTicksReached;
     }
 
+    public float getLastEffectTicksReached() {
+        return lastEffectTicksReached;
+    }
+
+    public void setLastEffectTicksReached(float lastEffectTicksReached) {
+        this.lastEffectTicksReached = lastEffectTicksReached;
+    }
+
     public float[] getAttackDamageTick() {
         return switch (getAttackType()) {
             case BITE -> new float[] {13.0f};
@@ -159,7 +181,7 @@ public class ShardLizardCommander extends Monster {
             case HEAVY_SLASHES_W_SLAM -> new float[] {24.0f, 30.0f, 40.0f};
             case THREE_STRIKES_COMBO -> new float[] {24.0f, 29.0f, 39.0f};
             case DOUBLE_WHIP_HEAVY_SLASHES_W_SLAM -> new float[] {24.0f, 29.0f, 39.0f, 44.0f, 55.0f};
-            case VENGEANCE -> new float[] {};
+            case VENGEANCE -> new float[] {247.6f, 252.6f, 257.6f, 262.6f, 266.6f, 271.6f, 275.0f, 280.0f, 283.4f, 288.4f, 328.4f};
             default -> new float[] {};
         };
     }
@@ -176,7 +198,7 @@ public class ShardLizardCommander extends Monster {
             case HEAVY_SLASHES_W_SLAM -> 55.0f;
             case THREE_STRIKES_COMBO -> 65.0f;
             case DOUBLE_WHIP_HEAVY_SLASHES_W_SLAM -> 70.0f;
-//            case VENGEANCE -> ;
+            case VENGEANCE -> 355.0f;
             default -> 0.0f;
         };
     }
@@ -190,9 +212,18 @@ public class ShardLizardCommander extends Monster {
             case HEAVY_SLASHES_W_SLAM -> new float[] {5.0f, 5.0f, 7.0f};
             case THREE_STRIKES_COMBO -> new float[] {3.0f, 5.0f, 5.0f};
             case DOUBLE_WHIP_HEAVY_SLASHES_W_SLAM -> new float[] {3.0f, 5.0f, 5.0f, 5.0f, 7.0f};
-            case VENGEANCE -> new float[] {};
+            case VENGEANCE -> new float[] {4.0f, 4.0f, 4.0f, 4.0f, 3.0f, 3.0f, 3.0f, 3.0f, 3.0f, 3.0f, 7.0f};
             default -> new float[] {};
         };
+    }
+
+    public float[] getEffectTicks() {
+        if (getAttackType() == VENGEANCE) {
+            return new float[] {175.0f, 220.0f, 230.0f};
+            //175.0f start lift, 220.0f stop lift and make invisible, 230.0f tp.
+        } else {
+            return new float[] {};
+        }
     }
 
     public boolean isAttacking() {
@@ -204,7 +235,7 @@ public class ShardLizardCommander extends Monster {
     }
 
     public void setAttackType(int attackType) {
-        entityData.set(ATTACK_TYPE, Mth.clamp(attackType, STUN_ROAR, DOUBLE_WHIP_HEAVY_SLASHES_W_SLAM));
+        entityData.set(ATTACK_TYPE, Mth.clamp(attackType, STUN_ROAR, VENGEANCE));
         if (level() instanceof ServerLevel serverLevel) {
             String attackName = switch (getAttackType()) {
                 case 0 -> "Stun Roar";
@@ -243,6 +274,7 @@ public class ShardLizardCommander extends Monster {
         entityData.define(CUSTOM_DYING, false);
         entityData.define(IS_ATTACKING, false);
         entityData.define(ATTACK_TYPE, BITE);
+        entityData.define(VENGEANCE_METER_VALUE, 0);
     }
 
     public int getVariant() {
@@ -290,6 +322,7 @@ public class ShardLizardCommander extends Monster {
         super.addAdditionalSaveData(tag);
         tag.putInt("Variant", getVariant());
         tag.putInt("AttackType", getAttackType());
+        tag.putInt("VengeanceMeterValue", getVengeanceMeterValue());
     }
 
     @Override
@@ -300,6 +333,9 @@ public class ShardLizardCommander extends Monster {
         }
         if (tag.contains("AttackType", Tag.TAG_INT)) {
             setAttackType(tag.getInt("AttackType"));
+        }
+        if (tag.contains("VengeanceMeterValue", Tag.TAG_INT)) {
+            resetVengeanceMeter(tag.getInt("VengeanceMeterValue"));
         }
     }
 
@@ -383,6 +419,7 @@ public class ShardLizardCommander extends Monster {
             heavySlashesWSlamAnimationState.stop();
             threeStrikesComboAnimationState.stop();
             doubleWhipHeavySlashesWSlamAnimationState.stop();
+            vengeanceAnimationState.stop();
             if (!deathAnimationState.isStarted()) {
                 deathAnimationState.start(tickCount);
             }
@@ -406,6 +443,7 @@ public class ShardLizardCommander extends Monster {
                     heavySlashesWSlamAnimationState.stop();
                     threeStrikesComboAnimationState.stop();
                     doubleWhipHeavySlashesWSlamAnimationState.stop();
+                    vengeanceAnimationState.stop();
                     if (!stunRoarAnimationState.isStarted()) {
                         stunRoarAnimationState.start(tickCount);
                     }
@@ -421,6 +459,7 @@ public class ShardLizardCommander extends Monster {
                     heavySlashesWSlamAnimationState.stop();
                     threeStrikesComboAnimationState.stop();
                     doubleWhipHeavySlashesWSlamAnimationState.stop();
+                    vengeanceAnimationState.stop();
                     if (!spitFireAnimationState.isStarted()) {
                         spitFireAnimationState.start(tickCount);
                     }
@@ -436,6 +475,7 @@ public class ShardLizardCommander extends Monster {
                     heavySlashesWSlamAnimationState.stop();
                     threeStrikesComboAnimationState.stop();
                     doubleWhipHeavySlashesWSlamAnimationState.stop();
+                    vengeanceAnimationState.stop();
                     if (!stunSlamAnimationState.isStarted()) {
                         stunSlamAnimationState.start(tickCount);
                     }
@@ -451,6 +491,7 @@ public class ShardLizardCommander extends Monster {
                     heavySlashesWSlamAnimationState.stop();
                     threeStrikesComboAnimationState.stop();
                     doubleWhipHeavySlashesWSlamAnimationState.stop();
+                    vengeanceAnimationState.stop();
                     if (!whipAnimationState.isStarted()) {
                         whipAnimationState.start(tickCount);
                     }
@@ -466,6 +507,7 @@ public class ShardLizardCommander extends Monster {
                     heavySlashesWSlamAnimationState.stop();
                     threeStrikesComboAnimationState.stop();
                     doubleWhipHeavySlashesWSlamAnimationState.stop();
+                    vengeanceAnimationState.stop();
                     if (!heavySlashAnimationState.isStarted()) {
                         heavySlashAnimationState.start(tickCount);
                     }
@@ -481,6 +523,7 @@ public class ShardLizardCommander extends Monster {
                     heavySlashesWSlamAnimationState.stop();
                     threeStrikesComboAnimationState.stop();
                     doubleWhipHeavySlashesWSlamAnimationState.stop();
+                    vengeanceAnimationState.stop();
                     if (!doubleWhipAnimationState.isStarted()) {
                         doubleWhipAnimationState.start(tickCount);
                     }
@@ -496,6 +539,7 @@ public class ShardLizardCommander extends Monster {
                     heavySlashesWSlamAnimationState.stop();
                     threeStrikesComboAnimationState.stop();
                     doubleWhipHeavySlashesWSlamAnimationState.stop();
+                    vengeanceAnimationState.stop();
                     if (!heavySlashesAnimationState.isStarted()) {
                         heavySlashesAnimationState.start(tickCount);
                     }
@@ -511,6 +555,7 @@ public class ShardLizardCommander extends Monster {
                     heavySlashesAnimationState.stop();
                     threeStrikesComboAnimationState.stop();
                     doubleWhipHeavySlashesWSlamAnimationState.stop();
+                    vengeanceAnimationState.stop();
                     if (!heavySlashesWSlamAnimationState.isStarted()) {
                         heavySlashesWSlamAnimationState.start(tickCount);
                     }
@@ -526,6 +571,7 @@ public class ShardLizardCommander extends Monster {
                     heavySlashesAnimationState.stop();
                     heavySlashesWSlamAnimationState.stop();
                     doubleWhipHeavySlashesWSlamAnimationState.stop();
+                    vengeanceAnimationState.stop();
                     if (!threeStrikesComboAnimationState.isStarted()) {
                         threeStrikesComboAnimationState.start(tickCount);
                     }
@@ -541,8 +587,25 @@ public class ShardLizardCommander extends Monster {
                     heavySlashesAnimationState.stop();
                     heavySlashesWSlamAnimationState.stop();
                     threeStrikesComboAnimationState.stop();
+                    vengeanceAnimationState.stop();
                     if (!doubleWhipHeavySlashesWSlamAnimationState.isStarted()) {
                         doubleWhipHeavySlashesWSlamAnimationState.start(tickCount);
+                    }
+                    break;
+                case VENGEANCE:
+                    stunRoarAnimationState.stop();
+                    spitFireAnimationState.stop();
+                    biteAnimationState.stop();
+                    stunSlamAnimationState.stop();
+                    whipAnimationState.stop();
+                    heavySlashAnimationState.stop();
+                    doubleWhipAnimationState.stop();
+                    heavySlashesAnimationState.stop();
+                    heavySlashesWSlamAnimationState.stop();
+                    threeStrikesComboAnimationState.stop();
+                    doubleWhipHeavySlashesWSlamAnimationState.stop();
+                    if (!vengeanceAnimationState.isStarted()) {
+                        vengeanceAnimationState.start(tickCount);
                     }
                     break;
                 case BITE:
@@ -557,6 +620,7 @@ public class ShardLizardCommander extends Monster {
                     heavySlashesWSlamAnimationState.stop();
                     threeStrikesComboAnimationState.stop();
                     doubleWhipHeavySlashesWSlamAnimationState.stop();
+                    vengeanceAnimationState.stop();
                     if (!biteAnimationState.isStarted()) {
                         biteAnimationState.start(tickCount);
                     }
@@ -576,6 +640,7 @@ public class ShardLizardCommander extends Monster {
         heavySlashesWSlamAnimationState.stop();
         threeStrikesComboAnimationState.stop();
         doubleWhipHeavySlashesWSlamAnimationState.stop();
+        vengeanceAnimationState.stop();
         attackAnimationState.stop();
 
         if (getDeltaMovement().horizontalDistanceSqr() > 0.0001d) {

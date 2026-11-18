@@ -1,24 +1,29 @@
 package net.tobias.neo_prism.entity.ai.shard_lizards.goals;
 
+import com.mojang.logging.LogUtils;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.tobias.neo_prism.effects.ModEffects;
 import net.tobias.neo_prism.entity.entities.ShardLizardCommander;
+import org.slf4j.Logger;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class ShardLizardCommanderAttackGoal extends MeleeAttackGoal {
+    private static final Logger LOGGER = LogUtils.getLogger();
     private final ShardLizardCommander entity;
     private final Set<Entity> roarPushedTargets = new HashSet<>();
-    private boolean vengeancePunishmentActive = false;
-    private boolean vengeanceRoarApplied = false;
-    private boolean vengeanceFollowUpStarted = false;
+    private boolean vengeanceLiftActive = false;
+    private int vengeanceLiftTicksRemaining = 0;
+    private boolean vengeanceHovering = false;
     private int attacksDelay = 40;
     private int ticksUntilNextAttack = 45;
     private boolean shouldCountTillNextAttack = false;
@@ -38,9 +43,7 @@ public class ShardLizardCommanderAttackGoal extends MeleeAttackGoal {
     @Override
     public void stop() {
         roarPushedTargets.clear();
-        vengeancePunishmentActive = false;
-        vengeanceRoarApplied = false;
-        vengeanceFollowUpStarted = false;
+        resetVengeanceLiftState();
         entity.setIsAttacking(false);
         super.stop();
     }
@@ -55,7 +58,10 @@ public class ShardLizardCommanderAttackGoal extends MeleeAttackGoal {
 
     @Override
     protected void checkAndPerformAttack(LivingEntity enemy, double distToEnemySqr) {
-        if (isEnemyWithinAttackDistance(enemy, distToEnemySqr)) {
+        float[] damageTicks = entity.getAttackDamageTick();
+        int comboDamageTicksReached = 0;
+
+        if (entity.getVengeanceMeterValue() != 7 && isEnemyWithinAttackDistance(enemy, distToEnemySqr)) {
             shouldCountTillNextAttack = true;
 
             if (!entity.isAttacking()) {
@@ -65,9 +71,6 @@ public class ShardLizardCommanderAttackGoal extends MeleeAttackGoal {
                 return;
             }
 
-            float[] damageTicks = entity.getAttackDamageTick();
-            int comboDamageTicksReached = 0;
-
             if (entity.getAttackType() == ShardLizardCommander.DOUBLE_WHIP ||
                     entity.getAttackType() == ShardLizardCommander.HEAVY_SLASHES ||
                     entity.getAttackType() == ShardLizardCommander.HEAVY_SLASHES_W_SLAM ||
@@ -75,8 +78,7 @@ public class ShardLizardCommanderAttackGoal extends MeleeAttackGoal {
                     entity.getAttackType() == ShardLizardCommander.DOUBLE_WHIP_HEAVY_SLASHES_W_SLAM &&
                     entity.getAttackType() != ShardLizardCommander.STUN_ROAR &&
                     entity.getAttackType() != ShardLizardCommander.SUMMON &&
-                    entity.getAttackType() != ShardLizardCommander.SPIT_FIRE &&
-                    entity.getAttackType() != ShardLizardCommander.VENGEANCE) {
+                    entity.getAttackType() != ShardLizardCommander.SPIT_FIRE) {
                 for (int i = 0; i < damageTicks.length; i++) {
                     comboDamageTicksReached = i;
                     if (entity.attackAnimTicks >= damageTicks[i] && damageTicks[i] > entity.getLastComboDamageTicksReached()) {
@@ -89,8 +91,7 @@ public class ShardLizardCommanderAttackGoal extends MeleeAttackGoal {
             } else if (
                     entity.getAttackType() != ShardLizardCommander.STUN_ROAR &&
                     entity.getAttackType() != ShardLizardCommander.SUMMON &&
-                    entity.getAttackType() != ShardLizardCommander.SPIT_FIRE &&
-                    entity.getAttackType() != ShardLizardCommander.VENGEANCE) {
+                    entity.getAttackType() != ShardLizardCommander.SPIT_FIRE) {
                 for (float tick : damageTicks) {
                     if (!entity.hasAttackDamageApplied() && entity.attackAnimTicks >= tick) {
                         mob.getLookControl().setLookAt(enemy.getX(), enemy.getEyeY(), enemy.getZ());
@@ -145,13 +146,111 @@ public class ShardLizardCommanderAttackGoal extends MeleeAttackGoal {
 
             if (!entity.isAttacking()) {
                 roarPushedTargets.clear();
-                vengeancePunishmentActive = false;
-                vengeanceRoarApplied = false;
-                vengeanceFollowUpStarted = false;
                 resetAttackCooldown();
             }
             return;
-        } else if (entity.getAttackType() == ShardLizardCommander.VENGEANCE) {}
+        } else if (entity.getVengeanceMeterValue() == 7) {
+            LOGGER.atInfo().log("VENGEANCE ACTIVE: VM == " + entity.getVengeanceMeterValue());
+            shouldCountTillNextAttack = true;
+            if (!entity.isAttacking()) {
+                LOGGER.atInfo().log("Entity not attacking!");
+                entity.startAttackAnimation(ShardLizardCommander.VENGEANCE);
+                return;
+            }
+
+            if (vengeanceLiftActive && vengeanceLiftTicksRemaining > 0) {
+                LOGGER.atInfo().log("vengeanceLiftActive && vengeanceLiftTicksRemaining > 0 passed! ( vLA == " + vengeanceLiftActive + ", vLTR == " + vengeanceLiftTicksRemaining + ")");
+                entity.setDeltaMovement(0.0d, 0.12d, 0.0d);
+                LOGGER.atInfo().log("Movement set! (0.0d, 0.12d, 0.0d)");
+                entity.hurtMarked = true;
+                vengeanceLiftTicksRemaining--;
+            }
+
+            float[] effectTicks = entity.getEffectTicks();
+            for (int i = 0; i < effectTicks.length; i++) {
+                if (i == 0) {
+                    LOGGER.atInfo().log("i == 0!");
+                    if (entity.attackAnimTicks >= effectTicks[i] && effectTicks[i] > entity.getLastEffectTicksReached()) {
+                        LOGGER.atInfo().log("(i == 0) entity.attackAnimTicks >= effectTicks[i] && effectTicks[i] > entity.getLastEffectTicksReached() passed! ( e.aAT == " + entity.attackAnimTicks + ", eT[i] == " + effectTicks[i] + ", e.gLETR() == " + entity.getLastEffectTicksReached() + ")");
+                        vengeanceLiftActive = true;
+                        vengeanceLiftTicksRemaining = 45;
+                        if (vengeanceHovering) {
+                            LOGGER.atInfo().log("entity is vengeanceHovering! Resetting...");
+                            entity.setNoGravity(false);
+                            vengeanceHovering = false;
+                            LOGGER.atInfo().log("...Reset!");
+                        }
+                        entity.setLastEffectTicksReached(effectTicks[i]);
+                        LOGGER.atInfo().log("lastEffectTicksReached == " + effectTicks[i] + "!");
+                        break;
+                    }
+                    LOGGER.atInfo().log("(i == 0) entity.attackAnimTicks >= effectTicks[i] && effectTicks[i] > entity.getLastEffectTicksReached() FAILED! ( e.aAT == " + entity.attackAnimTicks + ", eT[i] == " + effectTicks[i] + ", e.gLETR() == " + entity.getLastEffectTicksReached() + ")");
+                } else if (i == 1) {
+                    LOGGER.atInfo().log("i == 1!");
+                    if (entity.attackAnimTicks >= effectTicks[i] && effectTicks[i] > entity.getLastEffectTicksReached()) {
+                        LOGGER.atInfo().log("(i == 1) entity.attackAnimTicks >= effectTicks[i] && effectTicks[i] > entity.getLastEffectTicksReached() passed! ( e.aAT == " + entity.attackAnimTicks + ", eT[i] == " + effectTicks[i] + ", e.gLETR() == " + entity.getLastEffectTicksReached() + ")");
+                        vengeanceLiftActive = false;
+                        vengeanceLiftTicksRemaining = 0;
+                        entity.setDeltaMovement(0.0d, 0.0d, 0.0d);
+                        LOGGER.atInfo().log("deltaMovement == 0.0d, 0.0d, 0.0d.");
+                        entity.setNoGravity(true);
+                        vengeanceHovering = true;
+                        entity.setInvisible(true);
+                        LOGGER.atInfo().log("entity is Invisible!");
+                        LivingEntity target = entity.getTarget();
+                        if (target != null) {
+                            LOGGER.atInfo().log("target != null (target == " + target.getDisplayName() + ")");
+                            target.addEffect(new MobEffectInstance(ModEffects.PARALYSIS.get(), -1, 0,
+                                    false, false, true));
+                            target.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, -1, 0,
+                                    false, false, true));
+                            LOGGER.atInfo().log("added effects to target.");
+                            double targetX = target.getX();
+                            double targetY = target.getY();
+                            double targetZ = target.getZ();
+                            entity.teleportTo(targetX, targetY, targetZ);
+                            LOGGER.atInfo().log("teleported entity to target.");
+                        } else LOGGER.atInfo().log("target is NULL!!!");
+                        entity.setLastEffectTicksReached(effectTicks[i]);
+                        LOGGER.atInfo().log("lastEffectTicksReached == " + effectTicks[i] + "!");
+                        break;
+                    }
+                    LOGGER.atInfo().log("(i == 1) entity.attackAnimTicks >= effectTicks[i] && effectTicks[i] > entity.getLastEffectTicksReached() FAILED! ( e.aAT == " + entity.attackAnimTicks + ", eT[i] == " + effectTicks[i] + ", e.gLETR() == " + entity.getLastEffectTicksReached() + ")");
+                } else if (i == 2) {
+                    LOGGER.atInfo().log("i == 2!");
+                    if (entity.attackAnimTicks >= effectTicks[i] && effectTicks[i] > entity.getLastEffectTicksReached()) {
+                        LOGGER.atInfo().log("(i == 2) entity.attackAnimTicks >= effectTicks[i] && effectTicks[i] > entity.getLastEffectTicksReached() passed! ( e.aAT == " + entity.attackAnimTicks + ", eT[i] == " + effectTicks[i] + ", e.gLETR() == " + entity.getLastEffectTicksReached() + ")");
+                        entity.setNoGravity(false);
+                        vengeanceHovering = false;
+                        entity.setInvisible(false);
+                        LOGGER.atInfo().log("entity != isInvisible");
+                        for (int d = 0; d < damageTicks.length; d++) {
+                            comboDamageTicksReached = d;
+                            if (entity.attackAnimTicks >= damageTicks[d] && damageTicks[d] > entity.getLastComboDamageTicksReached()) {
+                                LOGGER.atInfo().log("entity.attackAnimTicks >= damageTicks[d] && damageTicks[d] > entity.getLastComboDamageTicksReached() passed! (e.aAT == " + entity.attackAnimTicks + ", dT[d] == " + damageTicks[d] + ", e.gLCDTR() == " + entity.getLastComboDamageTicksReached() + ")");
+                                mob.getLookControl().setLookAt(enemy.getX(), enemy.getEyeY(), enemy.getZ());
+                                performAttack(enemy, comboDamageTicksReached);
+                                LOGGER.atInfo().log("performAttack(enemy, comboDamageTicksReached) has been called");
+                                entity.setLastComboDamageTicksReached(damageTicks[d]);
+                                LOGGER.atInfo().log("lastComboDamageTicksReached == " + damageTicks[d] + "!");
+                                entity.setLastEffectTicksReached(effectTicks[i]);
+                                LOGGER.atInfo().log("lastEffectTicksReached == " + effectTicks[i] + "!");
+                                break;
+                            }
+                        }
+                        LivingEntity target = entity.getTarget();
+                        if (target != null) {
+                            target.removeEffect(MobEffects.BLINDNESS);
+                            target.removeEffect(ModEffects.PARALYSIS.get());
+                            LOGGER.atInfo().log("removed given effects (BLINDNESS, PARALYSIS) from target.");
+                        } else LOGGER.atInfo().log("target == NULL!!!");
+                    }
+                    LOGGER.atInfo().log("(i == 3) entity.attackAnimTicks >= effectTicks[i] && effectTicks[i] > entity.getLastEffectTicksReached() FAILED! ( e.aAT == " + entity.attackAnimTicks + ", eT[i] == " + effectTicks[i] + ", e.gLETR() == " + entity.getLastEffectTicksReached() + ")");
+                    entity.resetVengeanceMeter(0);
+                    LOGGER.atInfo().log("vengeanceMeter is now at 0");
+                }
+            }
+        }
 
         if (entity.isAttacking() && entity.getAttackType() == ShardLizardCommander.SPIT_FIRE) {
             return;
@@ -160,8 +259,18 @@ public class ShardLizardCommanderAttackGoal extends MeleeAttackGoal {
         roarPushedTargets.clear();
         resetAttackCooldown();
         shouldCountTillNextAttack = false;
+        resetVengeanceLiftState();
         entity.setIsAttacking(false);
         entity.attackAnimTicks = 0;
+    }
+
+    private void resetVengeanceLiftState() {
+        vengeanceLiftActive = false;
+        vengeanceLiftTicksRemaining = 0;
+        if (vengeanceHovering) {
+            entity.setNoGravity(false);
+            vengeanceHovering = false;
+        }
     }
 
     private boolean isEnemyWithinAttackDistance(LivingEntity enemy, double distToEnemySqr) {
